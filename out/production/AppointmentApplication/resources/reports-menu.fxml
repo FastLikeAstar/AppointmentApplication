@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportsMenuController">
+   <children>
+      <HBox prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <Separator orientation="VERTICAL" prefHeight="720.0" prefWidth="257.0" visible="false" />
+            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="720.0" prefWidth="475.0" spacing="20.0">
+               <children>
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="245.0" text="Report Menu">
+                     <VBox.margin>
+                        <Insets bottom="100.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="ButtonCustomerAppointment" mnemonicParsing="false" onAction="#NavToCustomerAppointmentReport" text="Customer Appointment Breakdown">
+                     <VBox.margin>
+                        <Insets left="100.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="ButtonContactAppointment" mnemonicParsing="false" onAction="#NavToContactAppointmentReport" text="Contact Appointment Breakdown">
+                     <VBox.margin>
+                        <Insets left="100.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="ButtonContactSchedule" mnemonicParsing="false" onAction="#NavToContactSchedule" text="Detailed Contact Schedule">
+                     <VBox.margin>
+                        <Insets left="100.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="ButtonLogin" mnemonicParsing="false" onAction="#ShowLoginLogPath" text="Login Log">
+                     <VBox.margin>
+                        <Insets left="100.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="LabelLoginLogPath" text="Login Log Pathway: " />
+                  <Separator prefHeight="129.0" prefWidth="200.0" visible="false" />
+               </children>
+            </VBox>
+            <Button fx:id="ButtonBack" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#BackToMainMenu" text="Back to Main Menu">
+               <HBox.margin>
+                  <Insets left="300.0" top="580.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
