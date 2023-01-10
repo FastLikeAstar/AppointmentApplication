@@ -1,0 +1,62 @@
+package controllers;
+
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import sample.Main;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MainMenuController implements Initializable {
+    /**
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
+        Scene productScene;
+        FXMLLoader controllerLoader = new FXMLLoader();
+        controllerLoader.setLocation(getClass().getResource("/customer-records.fxml"));
+        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-records.fxml"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        productScene = new Scene(tempParent);
+        stage.setScene(productScene);
+    }
+
+    public void NavToCustomerAppointments(ActionEvent actionEvent) throws IOException {
+        Scene productScene;
+        FXMLLoader controllerLoader = new FXMLLoader();
+        controllerLoader.setLocation(getClass().getResource("/customer-appointments.fxml"));
+        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-appointments.fxml"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        productScene = new Scene(tempParent);
+        stage.setScene(productScene);
+    }
+
+    public void NavToReportsMenu(ActionEvent actionEvent) throws IOException {
+        Scene productScene;
+        FXMLLoader controllerLoader = new FXMLLoader();
+        controllerLoader.setLocation(getClass().getResource("/reports-menu.fxml"));
+        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/reports-menu.fxml"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        productScene = new Scene(tempParent);
+        stage.setScene(productScene);
+    }
+
+    public void ExitApplication(ActionEvent actionEvent) {
+
+        // Exit the Program after disconnecting
+        Platform.exit();
+    }
+}

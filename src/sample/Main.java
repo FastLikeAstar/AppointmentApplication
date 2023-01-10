@@ -1,23 +1,39 @@
 package sample;
 
+import JDBC.Jdbc;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+import java.io.IOException;
+import java.util.Locale;
 
+public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+    public void start(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+//        HelloApplication.class.getResource("hello-view.fxml")
+        Parent mainMenu = loader.load(Main.class.getResource("/login.fxml"));
+
+        Locale montreal = new Locale("fr", "CA");
+        Locale.getDefault();
+
+        FXMLLoader controllerLoader = new FXMLLoader();
+        controllerLoader.setLocation(getClass().getResource("/login.fxml"));
+//        Parent tempParent = (Parent) controllerLoader.load();
+
+        Scene mainScene = new Scene(mainMenu);
+
+        stage.setTitle("Appointment Manager");
+        stage.setScene(mainScene);
+        stage.show();
     }
 
-
     public static void main(String[] args) {
-        launch(args);
+        Jdbc.openConnection();
+        launch();
+        Jdbc.closeConnection();
     }
 }
