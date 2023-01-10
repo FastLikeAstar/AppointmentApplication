@@ -1,205 +1,74 @@
 package dao;
 
+import JDBC.Jdbc;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import sample.Country;
+import sample.Customer;
+
+
+
+import java.sql.*;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao{
-    @Override
-    public void createCustomerId(int newId) {
 
+
+    /**
+     * Method to retrieve all customers from the Database.
+     * @return an ObservableList of Customer containing all customers.
+     */
+    @Override
+    public ObservableList<Customer> getAllCustomers() {
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM customers";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int customerId = results.getInt("customer_id");
+                String customerName = results.getString("customer_name");
+                String address = results.getString("address");
+                String zipCode = results.getString("postal_code");
+                String phone = results.getString("phone");
+                Timestamp createdDate = results.getTimestamp("create_date");
+                String createdBy = results.getString("created_by");
+                Timestamp lastUpdate = results.getTimestamp("last_update");
+                String lastUpdatedBy = results.getString("last_updated_by");
+                int divisionId = results.getInt("division_id");
+
+                Customer customer = new Customer(customerId, customerName, address, zipCode, phone, createdDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
+                customerList.add(customer);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return customerList;
     }
 
     @Override
-    public void createDivisionId(int newId) {
-
-    }
-
-    @Override
-    public void createCustomerName(String newName) {
-
-    }
-
-    @Override
-    public void createCreatedDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void createCreatedBy(String newName) {
-
-    }
-
-    @Override
-    public void createLastUpdateDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void createLastUpdatedBy(String newName) {
-
-    }
-
-    @Override
-    public void createPhoneNumber(String newPhoneNumber) {
-
-    }
-
-    @Override
-    public void createPostalCode(String newPostalCode) {
-
-    }
-
-    @Override
-    public void createAddress(String newAddress) {
-
-    }
-
-    @Override
-    public int getCustomerId() {
-        return 0;
-    }
-
-    @Override
-    public int getDivisionId() {
-        return 0;
-    }
-
-    @Override
-    public String getCustomerName() {
+    public Customer getById(int id) {
         return null;
     }
 
     @Override
-    public ZonedDateTime getCreatedDate() {
-        return null;
-    }
-
-    @Override
-    public String getCreatedBy() {
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getLastUpdateDate() {
-        return null;
-    }
-
-    @Override
-    public String getLastUpdatedBy() {
-        return null;
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        return null;
-    }
-
-    @Override
-    public String getPostalCode() {
-        return null;
-    }
-
-    @Override
-    public String getAddress() {
-        return null;
-    }
-
-    @Override
-    public void updateCustomerId(int newId) {
+    public void save(Customer customer) {
 
     }
 
     @Override
-    public void updateDivisionId(int newId) {
+    public void update(Customer customer) {
 
     }
 
     @Override
-    public void updateCustomerName(String newName) {
-
-    }
-
-    @Override
-    public void updateCreatedDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void updateCreatedBy(String newName) {
-
-    }
-
-    @Override
-    public void updateLastUpdateDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void updateLastUpdatedBy(String newName) {
-
-    }
-
-    @Override
-    public void updatePhoneNumber(String newPhoneNumber) {
-
-    }
-
-    @Override
-    public void updatePostalCode(String newPostalCode) {
-
-    }
-
-    @Override
-    public void updateAddress(String newAddress) {
-
-    }
-
-    @Override
-    public void deleteCustomerId() {
-
-    }
-
-    @Override
-    public void deleteDivisionId() {
-
-    }
-
-    @Override
-    public void deleteCustomerName() {
-
-    }
-
-    @Override
-    public void deleteCreatedDate() {
-
-    }
-
-    @Override
-    public void deleteCreatedBy() {
-
-    }
-
-    @Override
-    public void deleteLastUpdateDate() {
-
-    }
-
-    @Override
-    public void deleteLastUpdatedBy() {
-
-    }
-
-    @Override
-    public void deletePhoneNumber() {
-
-    }
-
-    @Override
-    public void deletePostalCode() {
-
-    }
-
-    @Override
-    public void deleteAddress() {
+    public void delete(int id) {
 
     }
 }
