@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerDao {
     ObservableList<Customer> getAllCustomers();
     Customer getById(int id);
-    void save(Customer customer);
-    void update(Customer customer);
+    int save(Customer customer);
+    int update(Customer customer);
     void delete(int id);
 }
