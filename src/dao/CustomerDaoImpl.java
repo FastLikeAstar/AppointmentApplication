@@ -1,17 +1,13 @@
 package dao;
 
-import JDBC.Jdbc;
-import javafx.beans.Observable;
+import sample.Jdbc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import sample.Country;
 import sample.Customer;
 
 
 
 import java.sql.*;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao{
 
