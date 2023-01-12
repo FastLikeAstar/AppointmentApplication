@@ -1,6 +1,9 @@
 package dao;
 
-import java.time.ZonedDateTime;
+import javafx.collections.ObservableList;
+import sample.Country;
+
+
 
 /**
  * This interface follows the Data Access Object (DAO) Pattern for the Countries
@@ -8,36 +11,10 @@ import java.time.ZonedDateTime;
  */
 public interface CountryDao {
 
-    // Create
-    void createCountryId(int newId);
-    void createCountryName(String newName);
-    void createCreatedDate(ZonedDateTime newDate);
-    void createCreatedBy(String newName);
-    void createLastUpdateDate(ZonedDateTime newDate);
-    void createLastUpdatedBy(String newName);
-
-    // Read
-    int getCountryId();
-    String getCountryName();
-    ZonedDateTime getCreatedDate();
-    String getCreatedBy();
-    ZonedDateTime getLastUpdateDate();
-    String getLastUpdatedBy();
-
-    // Update
-    void updateCountryId(int newId);
-    void updateCountryName(String newName);
-    void updateCreatedDate(ZonedDateTime newDate);
-    void updateCreatedBy(String newName);
-    void updateLastUpdateDate(ZonedDateTime newDate);
-    void updateLastUpdatedBy(String newName);
-
-    // Delete
-    void deleteCountryId();
-    void deleteCountryName();
-    void deleteCreatedDate();
-    void deleteCreatedBy();
-    void deleteLastUpdateDate();
-    void deleteLastUpdatedBy();
+    ObservableList<Country> getAllCountries();
+    Country getById(int id);
+    int save(Country country);
+    int update(Country country);
+    void delete(int id);
 
 }

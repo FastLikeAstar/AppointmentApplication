@@ -1,17 +1,13 @@
 package dao;
 
-import JDBC.Jdbc;
-import javafx.beans.Observable;
+import sample.Jdbc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import sample.Country;
 import sample.Customer;
 
 
 
 import java.sql.*;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao{
 
@@ -30,16 +26,16 @@ public class CustomerDaoImpl implements CustomerDao{
             ResultSet results = statement.executeQuery();
 
             while(results.next()){
-                int customerId = results.getInt("customer_id");
-                String customerName = results.getString("customer_name");
-                String address = results.getString("address");
-                String zipCode = results.getString("postal_code");
-                String phone = results.getString("phone");
-                Timestamp createdDate = results.getTimestamp("create_date");
-                String createdBy = results.getString("created_by");
-                Timestamp lastUpdate = results.getTimestamp("last_update");
-                String lastUpdatedBy = results.getString("last_updated_by");
-                int divisionId = results.getInt("division_id");
+                int customerId = results.getInt("Customer_ID");
+                String customerName = results.getString("Customer_Name");
+                String address = results.getString("Address");
+                String zipCode = results.getString("Postal_Code");
+                String phone = results.getString("Phone");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdatedBy = results.getString("Last_Updated_By");
+                int divisionId = results.getInt("Division_Id");
 
                 Customer customer = new Customer(customerId, customerName, address, zipCode, phone, createdDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
                 customerList.add(customer);
@@ -54,21 +50,128 @@ public class CustomerDaoImpl implements CustomerDao{
 
     @Override
     public Customer getById(int id) {
-        return null;
+
+        Customer customerIfExists = null;
+        String sql = "SELECT * FROM customers WHERE Customer_ID = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet results = statement.executeQuery();
+
+                int customerId = results.getInt("Customer_ID");
+                String customerName = results.getString("Customer_Name");
+                String address = results.getString("Address");
+                String zipCode = results.getString("Postal_Code");
+                String phone = results.getString("Phone");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdatedBy = results.getString("Last_Updated_By");
+                int divisionId = results.getInt("Division_ID");
+
+                customerIfExists = new Customer(customerId, customerName, address, zipCode, phone, createdDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return customerIfExists;
     }
 
     @Override
-    public void save(Customer customer) {
+    public int save(Customer customer) {
+        int affectedRows = -1;
+        String sql = "INSERT INTO customers "+
+                "(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID)"+
+                " VALUES (?,?,?,?,NOW(),?,NOW(),?,?)";
 
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1,customer.getCustomerName());
+            statement.setString(2,customer.getAddress());
+            statement.setString(3,customer.getPostalCode());
+            statement.setString(4,customer.getPhone());
+            statement.setString(5,customer.getCreatedBy());
+            statement.setString(6,customer.getLastUpdatedBy());
+            statement.setInt(7,customer.getDivisionId());
+
+            affectedRows = statement.executeUpdate();
+            ResultSet generatedKey = statement.getGeneratedKeys();
+            customer.setCustomerId(generatedKey.getInt(1));
+
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
+            if (affectedRows <= 0){
+                throw new SQLException("Could not create user. -1 or 0 denotes no rows affected."
+                + "Rows affected:" + affectedRows);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+    return affectedRows;
     }
 
     @Override
-    public void update(Customer customer) {
+    public int update(Customer customer) {
+        int affectedRows = -1;
+        String sql = "UPDATE customers " +
+                "SET Customer_Name = ?, " +
+                "SET Address = ?, " +
+                "SET Postal_Code = ?, " +
+                "SET Phone = ?, " +
+                "SET Last_Update = NOW(), " +
+                "SET Last_Updated_By = ?, " +
+                "SET Division_ID = ? "+
+                "WHERE Customer_ID = ?";
 
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1,customer.getCustomerName());
+            statement.setString(2,customer.getAddress());
+            statement.setString(3,customer.getPostalCode());
+            statement.setString(4,customer.getPhone());
+            statement.setString(5,customer.getLastUpdatedBy());
+            statement.setInt(6,customer.getDivisionId());
+            statement.setInt(7,customer.getCustomerId());
+
+            affectedRows = statement.executeUpdate();
+
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
+            if (affectedRows <= 0){
+                throw new SQLException("Could not update user. -1 or 0 denotes no rows affected."
+                        + "Rows affected:" + affectedRows);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return affectedRows;
     }
 
     @Override
     public void delete(int id) {
+
+        String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1,id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
 
     }
 }

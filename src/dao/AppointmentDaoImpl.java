@@ -1,286 +1,190 @@
 package dao;
 
-import java.time.ZonedDateTime;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import sample.Appointment;
+import sample.Jdbc;
+
+import java.sql.*;
 
 public class AppointmentDaoImpl implements AppointmentDao{
-
     @Override
-    public void createCustomerId(int newId) {
+    public ObservableList<Appointment> getAllAppointments() {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
 
+            while(results.next()){
+                int appointmentId = results.getInt("Appointment_ID");
+                String appointmentName = results.getString("Title");
+                String description = results.getString("Description");
+                String location = results.getString("Location");
+                String type = results.getString("Type");
+                Timestamp startTime = results.getTimestamp("Start");
+                Timestamp endTime = results.getTimestamp("End");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdateBy = results.getString("Last_Updated_By");
+                int customerId = results.getInt("Customer_ID");
+                int userId = results.getInt("User_ID");
+                int contactId = results.getInt("Contact_ID");
+
+
+
+
+                Appointment appointment = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
+                appointmentList.add(appointment);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return appointmentList;
     }
 
     @Override
-    public void createAppointmentId(int newId) {
+    public Appointment getById(int id) {
+        Appointment appointmentIfExists = null;
+        String sql = "SELECT * FROM appointments WHERE Appointment_ID = ?";
 
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet results = statement.executeQuery();
+
+            int appointmentId = results.getInt("Appointment_ID");
+            String appointmentName = results.getString("Title");
+            String description = results.getString("Description");
+            String location = results.getString("Location");
+            String type = results.getString("Type");
+            Timestamp startTime = results.getTimestamp("Start");
+            Timestamp endTime = results.getTimestamp("End");
+            Timestamp createdDate = results.getTimestamp("Create_Date");
+            String createdBy = results.getString("Created_By");
+            Timestamp lastUpdate = results.getTimestamp("Last_Update");
+            String lastUpdateBy = results.getString("Last_Updated_By");
+            int customerId = results.getInt("Customer_ID");
+            int userId = results.getInt("User_ID");
+            int contactId = results.getInt("Contact_ID");
+
+            appointmentIfExists = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return appointmentIfExists;
     }
 
     @Override
-    public void createTitle(String newName) {
+    public int save(Appointment appointment) {
+        int affectedRows = -1;
+        String sql = "INSERT INTO appointments "+
+                "(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)"+
+                " VALUES (t?, d?, l?, t?, s?,e?, NOW(), c?, NOW(), l?, c?, u?, c?)";
 
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1, appointment.getTitle());
+            statement.setString(2, appointment.getDescription());
+            statement.setString(3, appointment.getLocation());
+            statement.setString(4, appointment.getType());
+            statement.setTimestamp(5, appointment.getStartTime());
+            statement.setTimestamp(6, appointment.getEndTime());
+            statement.setString(7, appointment.getCreatedBy());
+            statement.setString(8, appointment.getLastUpdatedBy());
+            statement.setInt(9, appointment.getCustomerId());
+            statement.setInt(10, appointment.getUserId());
+            statement.setInt(11, appointment.getContactId());
+
+
+            affectedRows = statement.executeUpdate();
+            ResultSet generatedKey = statement.getGeneratedKeys();
+            appointment.setAppointmentId(generatedKey.getInt(1));
+
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
+            if (affectedRows <= 0){
+                throw new SQLException("Could not create appointment. -1 or 0 denotes no rows affected."
+                        + "Rows affected:" + affectedRows);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return affectedRows;
     }
 
     @Override
-    public void createCreatedDate(ZonedDateTime newDate) {
+    public int update(Appointment appointment) {
+        int affectedRows = -1;
+        String sql = "UPDATE appointments " +
+                "SET Title = ?, " +
+                "SET Description = ?, " +
+                "SET Location = ?, " +
+                "SET Type = ?, " +
+                "SET Start = ?, " +
+                "SET End = ?, " +
+                "SET Last_Update = NOW(), " +
+                "SET Last_Update_By = ?, " +
+                "SET Customer_ID = ?, " +
+                "SET User_ID = ?, " +
+                "SET Contact_ID = ?, " +
+                "WHERE Appointment_ID = ?";
 
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, appointment.getTitle());
+            statement.setString(2, appointment.getDescription());
+            statement.setString(3, appointment.getLocation());
+            statement.setString(4, appointment.getType());
+            statement.setTimestamp(5, appointment.getStartTime());
+            statement.setTimestamp(6, appointment.getEndTime());
+            statement.setString(7, appointment.getLastUpdatedBy());
+            statement.setInt(8, appointment.getCustomerId());
+            statement.setInt(9, appointment.getUserId());
+            statement.setInt(10, appointment.getContactId());
+            statement.setInt(11, appointment.getAppointmentId());
+
+            affectedRows = statement.executeUpdate();
+
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
+            if (affectedRows <= 0){
+                throw new SQLException("Could not update appointment. -1 or 0 denotes no rows affected."
+                        + "Rows affected:" + affectedRows);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return affectedRows;
     }
 
     @Override
-    public void createCreatedBy(String newName) {
+    public void delete(int id) {
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
 
-    }
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
 
-    @Override
-    public void createLastUpdateDate(ZonedDateTime newDate) {
+            statement.setInt(1,id);
 
-    }
+            statement.executeUpdate();
 
-    @Override
-    public void createLastUpdatedBy(String newName) {
-
-    }
-
-    @Override
-    public void createDescription(String newDescription) {
-
-    }
-
-    @Override
-    public void createLocation(String newLocation) {
-
-    }
-
-    @Override
-    public void createType(String newType) {
-
-    }
-
-    @Override
-    public void createUserId(int newId) {
-
-    }
-
-    @Override
-    public void createContactId(int newId) {
-
-    }
-
-    @Override
-    public void createStartTime(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void createEndTime(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public int getCustomerId() {
-        return 0;
-    }
-
-    @Override
-    public int getAppointmentId() {
-        return 0;
-    }
-
-    @Override
-    public String getTitle() {
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getCreatedDate() {
-        return null;
-    }
-
-    @Override
-    public String getCreatedBy() {
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getLastUpdateDate() {
-        return null;
-    }
-
-    @Override
-    public String getLastUpdatedBy() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public String getLocation() {
-        return null;
-    }
-
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public int getUserId() {
-        return 0;
-    }
-
-    @Override
-    public int getContactId() {
-        return 0;
-    }
-
-    @Override
-    public ZonedDateTime getStartTime() {
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getEndTime() {
-        return null;
-    }
-
-    @Override
-    public void updateCustomerId(int newId) {
-
-    }
-
-    @Override
-    public void updateAppointmentId(int newId) {
-
-    }
-
-    @Override
-    public void updateTitle(String newName) {
-
-    }
-
-    @Override
-    public void updateCreatedDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void updateCreatedBy(String newName) {
-
-    }
-
-    @Override
-    public void updateLastUpdateDate(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void updateLastUpdatedBy(String newName) {
-
-    }
-
-    @Override
-    public void updateDescription(String newDescription) {
-
-    }
-
-    @Override
-    public void updateLocation(String newLocation) {
-
-    }
-
-    @Override
-    public void updateType(String newType) {
-
-    }
-
-    @Override
-    public void updateUserId(int newId) {
-
-    }
-
-    @Override
-    public void updateContactId(int newId) {
-
-    }
-
-    @Override
-    public void updateStartTime(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void updateEndTime(ZonedDateTime newDate) {
-
-    }
-
-    @Override
-    public void deleteCustomerId() {
-
-    }
-
-    @Override
-    public void deleteAppointmentId() {
-
-    }
-
-    @Override
-    public void deleteTitle() {
-
-    }
-
-    @Override
-    public void deleteCreatedDate() {
-
-    }
-
-    @Override
-    public void deleteCreatedBy() {
-
-    }
-
-    @Override
-    public void deleteLastUpdateDate() {
-
-    }
-
-    @Override
-    public void deleteLastUpdatedBy() {
-
-    }
-
-    @Override
-    public void deleteDescription() {
-
-    }
-
-    @Override
-    public void deleteLocation() {
-
-    }
-
-    @Override
-    public void deleteType() {
-
-    }
-
-    @Override
-    public void deleteUserId() {
-
-    }
-
-    @Override
-    public void deleteContactId() {
-
-    }
-
-    @Override
-    public void deleteStartTime() {
-
-    }
-
-    @Override
-    public void deleteEndTime() {
-
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
     }
 }
