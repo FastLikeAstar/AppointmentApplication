@@ -103,7 +103,7 @@ public class CustomerDaoImpl implements CustomerDao{
             ResultSet generatedKey = statement.getGeneratedKeys();
             customer.setCustomerId(generatedKey.getInt(1));
 
-            // If SQL statement fails or affectedRows included incase the database is full (should see and Int rollover).
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
             if (affectedRows <= 0){
                 throw new SQLException("Could not create user. -1 or 0 denotes no rows affected."
                 + "Rows affected:" + affectedRows);
@@ -131,7 +131,7 @@ public class CustomerDaoImpl implements CustomerDao{
 
         try{
             Connection connection = Jdbc.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1,customer.getCustomerName());
             statement.setString(2,customer.getAddress());
@@ -143,9 +143,9 @@ public class CustomerDaoImpl implements CustomerDao{
 
             affectedRows = statement.executeUpdate();
 
-            // If SQL statement fails or affectedRows included incase the database is full (should see and Int rollover).
+            // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
             if (affectedRows <= 0){
-                throw new SQLException("Could not create user. -1 or 0 denotes no rows affected."
+                throw new SQLException("Could not update user. -1 or 0 denotes no rows affected."
                         + "Rows affected:" + affectedRows);
             }
 
