@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class Main extends Application {
+    public static String user = "";
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
