@@ -19,12 +19,12 @@ public class CountryDaoImpl implements CountryDao{
             ResultSet results = statement.executeQuery();
 
             while(results.next()){
-                int countryId = results.getInt("country_id");
-                String countryName = results.getString("country");
-                Timestamp createdDate = results.getTimestamp("create_date");
-                String createdBy = results.getString("created_by");
-                Timestamp lastUpdate = results.getTimestamp("last_update");
-                String lastUpdatedBy = results.getString("last_updated_by");
+                int countryId = results.getInt("Country_ID");
+                String countryName = results.getString("Country");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdatedBy = results.getString("Last_Updated_By");
 
                 Country country = new Country(countryId, countryName, createdDate, createdBy, lastUpdate, lastUpdatedBy);
                 countryList.add(country);
@@ -40,7 +40,7 @@ public class CountryDaoImpl implements CountryDao{
     @Override
     public Country getById(int id) {
         Country countryIfExists = null;
-        String sql = "SELECT * FROM countries WHERE country_id = ?";
+        String sql = "SELECT * FROM countries WHERE Country_ID = ?";
 
         try {
             Connection connection = Jdbc.getConnection();
@@ -48,12 +48,12 @@ public class CountryDaoImpl implements CountryDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int countryId = results.getInt("country_id");
-            String countryName = results.getString("country");
-            Timestamp createdDate = results.getTimestamp("create_date");
-            String createdBy = results.getString("created_by");
-            Timestamp lastUpdate = results.getTimestamp("last_update");
-            String lastUpdatedBy = results.getString("last_updated_by");
+            int countryId = results.getInt("Country_ID");
+            String countryName = results.getString("Country");
+            Timestamp createdDate = results.getTimestamp("Create_Date");
+            String createdBy = results.getString("Created_By");
+            Timestamp lastUpdate = results.getTimestamp("Last_Update");
+            String lastUpdatedBy = results.getString("Last_Updated_By");
 
             countryIfExists = new Country(countryId, countryName, createdDate, createdBy, lastUpdate, lastUpdatedBy);
 
@@ -68,7 +68,7 @@ public class CountryDaoImpl implements CountryDao{
     public int save(Country country) {
         int affectedRows = -1;
         String sql = "INSERT INTO countries "+
-                "(country, create_date, created_by, last_update, last_updated_by)"+
+                "(Country, Create_Date, Created_By, Last_Update, Last_Updated_By)"+
                 " VALUES (?,NOW(),?,NOW(),?)";
 
         try{
@@ -100,10 +100,10 @@ public class CountryDaoImpl implements CountryDao{
     public int update(Country country) {
         int affectedRows = -1;
         String sql = "UPDATE countries " +
-                "SET country = ?, " +
-                "SET last_update = NOW(), " +
-                "SET last_updated_by = ?, " +
-                "WHERE id = ?";
+                "SET Country = ?, " +
+                "SET Last_Update = NOW(), " +
+                "SET Last_Updated_By = ?, " +
+                "WHERE Country_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();
@@ -130,7 +130,7 @@ public class CountryDaoImpl implements CountryDao{
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM countries WHERE id = ?";
+        String sql = "DELETE FROM countries WHERE Country_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();

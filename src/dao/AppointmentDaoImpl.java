@@ -6,7 +6,6 @@ import sample.Appointment;
 import sample.Jdbc;
 
 import java.sql.*;
-import java.time.ZonedDateTime;
 
 public class AppointmentDaoImpl implements AppointmentDao{
     @Override
@@ -128,9 +127,18 @@ public class AppointmentDaoImpl implements AppointmentDao{
     public int update(Appointment appointment) {
         int affectedRows = -1;
         String sql = "UPDATE appointments " +
-                "SET appointment_name = ?, " +
-                "SET email = ?, " +
-                "WHERE id = ?";
+                "SET Title = ?, " +
+                "SET Description = ?, " +
+                "SET Location = ?, " +
+                "SET Type = ?, " +
+                "SET Start = ?, " +
+                "SET End = ?, " +
+                "SET Last_Update = NOW(), " +
+                "SET Last_Update_By = ?, " +
+                "SET Customer_ID = ?, " +
+                "SET User_ID = ?, " +
+                "SET Contact_ID = ?, " +
+                "WHERE Appointment_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();
@@ -142,10 +150,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
             statement.setString(4, appointment.getType());
             statement.setTimestamp(5, appointment.getStartTime());
             statement.setTimestamp(6, appointment.getEndTime());
-            statement.setString(8, appointment.getLastUpdatedBy());
-            statement.setInt(9, appointment.getCustomerId());
-            statement.setInt(10, appointment.getUserId());
-            statement.setInt(11, appointment.getContactId());
+            statement.setString(7, appointment.getLastUpdatedBy());
+            statement.setInt(8, appointment.getCustomerId());
+            statement.setInt(9, appointment.getUserId());
+            statement.setInt(10, appointment.getContactId());
 
             affectedRows = statement.executeUpdate();
 
@@ -164,7 +172,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM appointments WHERE id = ?";
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();

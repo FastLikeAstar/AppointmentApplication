@@ -20,9 +20,9 @@ public class ContactDaoImpl implements ContactDao{
             ResultSet results = statement.executeQuery();
 
             while(results.next()){
-                int contactId = results.getInt("contact_id");
-                String contactName = results.getString("contact_name");
-                String email = results.getString("email");
+                int contactId = results.getInt("Contact_ID");
+                String contactName = results.getString("Contact_Name");
+                String email = results.getString("Email");
 
                 Contact contact = new Contact(contactId, contactName, email);
                 contactList.add(contact);
@@ -38,7 +38,7 @@ public class ContactDaoImpl implements ContactDao{
     @Override
     public Contact getById(int id) {
         Contact contactIfExists = null;
-        String sql = "SELECT * FROM contacts WHERE contact_id = ?";
+        String sql = "SELECT * FROM contacts WHERE Contact_ID = ?";
 
         try {
             Connection connection = Jdbc.getConnection();
@@ -46,9 +46,9 @@ public class ContactDaoImpl implements ContactDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int contactId = results.getInt("contact_id");
-            String contactName = results.getString("contact");
-            String email = results.getString("email");
+            int contactId = results.getInt("Contact_ID");
+            String contactName = results.getString("Contact_Name");
+            String email = results.getString("Email");
 
             contactIfExists = new Contact(contactId, contactName, email);
 
@@ -63,7 +63,7 @@ public class ContactDaoImpl implements ContactDao{
     public int save(Contact contact) {
         int affectedRows = -1;
         String sql = "INSERT INTO contacts "+
-                "(contact_name, email)"+
+                "(Contact_Name, Email)"+
                 " VALUES (?, ?)";
 
         try{
@@ -94,9 +94,9 @@ public class ContactDaoImpl implements ContactDao{
     public int update(Contact contact) {
         int affectedRows = -1;
         String sql = "UPDATE contacts " +
-                "SET contact_name = ?, " +
-                "SET email = ?, " +
-                "WHERE id = ?";
+                "SET Contact_Name = ?, " +
+                "SET Email = ?, " +
+                "WHERE Contact_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();
@@ -123,7 +123,7 @@ public class ContactDaoImpl implements ContactDao{
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM contacts WHERE id = ?";
+        String sql = "DELETE FROM contacts WHERE Contact_ID = ?";
 
         try{
             Connection connection = Jdbc.getConnection();

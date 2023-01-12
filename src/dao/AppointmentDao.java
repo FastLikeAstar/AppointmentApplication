@@ -3,7 +3,6 @@ package dao;
 import javafx.collections.ObservableList;
 import sample.Appointment;
 
-import java.time.ZonedDateTime;
 
 public interface AppointmentDao {
 
