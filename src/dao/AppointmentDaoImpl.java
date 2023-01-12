@@ -154,6 +154,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
             statement.setInt(8, appointment.getCustomerId());
             statement.setInt(9, appointment.getUserId());
             statement.setInt(10, appointment.getContactId());
+            statement.setInt(11, appointment.getAppointmentId());
 
             affectedRows = statement.executeUpdate();
 
