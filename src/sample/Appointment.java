@@ -1,6 +1,11 @@
 package sample;
 
+import tools.DateConverter;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class Appointment {
 
@@ -18,6 +23,14 @@ public class Appointment {
     int customerId;
     int userId;
     int contactId;
+    LocalDateTime startTimeAsLocal;
+    LocalDateTime endTimeAsLocal;
+    LocalDateTime createdDateAsLocal;
+    LocalDateTime lastUpdateAsLocal;
+    ZonedDateTime startTimeAsUtc;
+    ZonedDateTime endTimeAsUtc;
+    ZonedDateTime createdDateAsUtc;
+    ZonedDateTime lastUpdateAsUtc;
 
     public Appointment(int appointmentId, String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, Timestamp createdDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
@@ -34,6 +47,17 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+
+
+        this.startTimeAsUtc = DateConverter.convertTimestampToUtc(startTime);
+        this.endTimeAsUtc = DateConverter.convertTimestampToUtc(endTime);
+        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+        this.startTimeAsLocal = DateConverter.convertUtcToLocal(startTimeAsUtc);
+        this.endTimeAsLocal = DateConverter.convertUtcToLocal(endTimeAsUtc);
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+
     }
 
     public int getAppointmentId() {
@@ -81,7 +105,10 @@ public class Appointment {
     }
 
     public void setStartTime(Timestamp startTime) {
+
         this.startTime = startTime;
+        this.startTimeAsUtc = DateConverter.convertTimestampToUtc(startTime);
+        this.startTimeAsLocal = DateConverter.convertUtcToLocal(this.startTimeAsUtc);
     }
 
     public Timestamp getEndTime() {
@@ -90,6 +117,8 @@ public class Appointment {
 
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+        this.endTimeAsUtc = DateConverter.convertTimestampToUtc(endTime);
+        this.endTimeAsLocal = DateConverter.convertUtcToLocal(this.endTimeAsUtc);
     }
 
     public Timestamp getCreatedDate() {
@@ -98,6 +127,8 @@ public class Appointment {
 
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
+        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(this.createdDateAsUtc);
     }
 
     public String getCreatedBy() {
@@ -114,6 +145,8 @@ public class Appointment {
 
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
+        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(this.lastUpdateAsUtc);
     }
 
     public String getLastUpdatedBy() {
@@ -146,5 +179,85 @@ public class Appointment {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+    }
+
+    public LocalDateTime getStartTimeAsLocal() {
+        return startTimeAsLocal;
+    }
+
+    public void setStartTimeAsLocal(LocalDateTime startTimeAsLocal) {
+        this.startTimeAsLocal = startTimeAsLocal;
+        this.startTimeAsUtc = DateConverter.convertLocalToUtc(startTimeAsLocal);
+        this.endTime = DateConverter.convertUtcToTimestamp(this.startTimeAsUtc);
+    }
+
+    public LocalDateTime getEndTimeAsLocal() {
+        return endTimeAsLocal;
+    }
+
+    public void setEndTimeAsLocal(LocalDateTime endTimeAsLocal) {
+        this.endTimeAsLocal = endTimeAsLocal;
+        this.endTimeAsUtc = DateConverter.convertLocalToUtc(endTimeAsLocal);
+        this.endTime = DateConverter.convertUtcToTimestamp(this.endTimeAsUtc);
+    }
+
+    public LocalDateTime getCreatedDateAsLocal() {
+        return createdDateAsLocal;
+    }
+
+    public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
+        this.createdDateAsLocal = createdDateAsLocal;
+        this.createdDateAsUtc = DateConverter.convertLocalToUtc(createdDateAsLocal);
+        this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
+    }
+
+    public LocalDateTime getLastUpdateAsLocal() {
+        return lastUpdateAsLocal;
+    }
+
+    public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
+        this.lastUpdateAsLocal = lastUpdateAsLocal;
+        this.lastUpdateAsUtc = DateConverter.convertLocalToUtc(lastUpdateAsLocal);
+        this.lastUpdate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
+    }
+
+    public ZonedDateTime getStartTimeAsUtc() {
+        return startTimeAsUtc;
+    }
+
+    public void setStartTimeAsUtc(ZonedDateTime startTimeAsUtc) {
+        this.startTimeAsUtc = startTimeAsUtc;
+        this.startTimeAsLocal = DateConverter.convertUtcToLocal(startTimeAsUtc);
+        this.startTime = DateConverter.convertUtcToTimestamp(startTimeAsUtc);
+    }
+
+    public ZonedDateTime getEndTimeAsUtc() {
+        return endTimeAsUtc;
+    }
+
+    public void setEndTimeAsUtc(ZonedDateTime endTimeAsUtc) {
+        this.endTimeAsUtc = endTimeAsUtc;
+        this.endTimeAsLocal = DateConverter.convertUtcToLocal(endTimeAsUtc);
+        this.endTime = DateConverter.convertUtcToTimestamp(endTimeAsUtc);
+    }
+
+    public ZonedDateTime getCreatedDateAsUtc() {
+        return createdDateAsUtc;
+    }
+
+    public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
+        this.createdDateAsUtc = createdDateAsUtc;
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
+    }
+
+    public ZonedDateTime getLastUpdateAsUtc() {
+        return lastUpdateAsUtc;
+    }
+
+    public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
+        this.lastUpdateAsUtc = lastUpdateAsUtc;
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.lastUpdate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
     }
 }
