@@ -52,7 +52,7 @@ public class Appointment {
         this.startTimeAsUtc = DateConverter.convertTimestampToUtc(startTime);
         this.endTimeAsUtc = DateConverter.convertTimestampToUtc(endTime);
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
         this.startTimeAsLocal = DateConverter.convertUtcToLocal(startTimeAsUtc);
         this.endTimeAsLocal = DateConverter.convertUtcToLocal(endTimeAsUtc);
         this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);

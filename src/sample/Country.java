@@ -1,6 +1,10 @@
 package sample;
 
+import tools.DateConverter;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Country {
 
@@ -10,6 +14,11 @@ public class Country {
     String createdBy;
     Timestamp lastUpdate;
     String lastUpdatedBy;
+
+    LocalDateTime createdDateAsLocal;
+    LocalDateTime lastUpdateAsLocal;
+    ZonedDateTime createdDateAsUtc;
+    ZonedDateTime lastUpdateAsUtc;
 
     /**
      * Constructor for Country. Data provided in database
@@ -27,6 +36,11 @@ public class Country {
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
+
+        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
     }
 
     /**
@@ -79,6 +93,8 @@ public class Country {
      */
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
+        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(this.createdDateAsUtc);
     }
 
     public String getCreatedBy() {
@@ -95,6 +111,8 @@ public class Country {
 
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
+        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(this.lastUpdateAsUtc);
     }
 
     public String getLastUpdatedBy() {
@@ -103,5 +121,45 @@ public class Country {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public ZonedDateTime getCreatedDateAsUtc() {
+        return createdDateAsUtc;
+    }
+
+    public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
+        this.createdDateAsUtc = createdDateAsUtc;
+        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
+    }
+
+    public ZonedDateTime getLastUpdateAsUtc() {
+        return lastUpdateAsUtc;
+    }
+
+    public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
+        this.lastUpdateAsUtc = lastUpdateAsUtc;
+        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.lastUpdate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
+    }
+
+    public LocalDateTime getCreatedDateAsLocal() {
+        return createdDateAsLocal;
+    }
+
+    public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
+        this.createdDateAsLocal = createdDateAsLocal;
+        this.createdDateAsUtc = DateConverter.convertLocalToUtc(createdDateAsLocal);
+        this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
+    }
+
+    public LocalDateTime getLastUpdateAsLocal() {
+        return lastUpdateAsLocal;
+    }
+
+    public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
+        this.lastUpdateAsLocal = lastUpdateAsLocal;
+        this.lastUpdateAsUtc = DateConverter.convertLocalToUtc(lastUpdateAsLocal);
+        this.lastUpdate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
     }
 }
