@@ -93,9 +93,7 @@ public class CustomerRecordsController implements Initializable {
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
         Scene scene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/main-menu.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/main-menu.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(tempParent);
         stage.setScene(scene);

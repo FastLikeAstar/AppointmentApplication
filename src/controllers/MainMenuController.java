@@ -64,8 +64,6 @@ public class MainMenuController implements Initializable {
 
     public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/customer-records.fxml"));
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
@@ -75,9 +73,7 @@ public class MainMenuController implements Initializable {
 
     public void NavToCustomerAppointments(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/customer-appointments.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-appointments.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
@@ -86,9 +82,7 @@ public class MainMenuController implements Initializable {
 
     public void NavToReportsMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/reports-menu.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/reports-menu.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);

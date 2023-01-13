@@ -40,9 +40,7 @@ public class CustomerAppointmentsController implements Initializable {
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/main-menu.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/main-menu.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);

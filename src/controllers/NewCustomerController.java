@@ -63,6 +63,7 @@ public class NewCustomerController implements Initializable {
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
         comboCountry.setItems(countryNames);
 
+        comboFirstDiv.setDisable(true);
     }
 
 
@@ -120,6 +121,7 @@ public class NewCustomerController implements Initializable {
     }
 
     public void UpdateDivisionSelection(ActionEvent actionEvent){
+        comboFirstDiv.setDisable(false);
         String country = comboCountry.getValue().toString();
         ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(country);
 
