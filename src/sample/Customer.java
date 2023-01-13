@@ -178,6 +178,10 @@ public class Customer {
     }
 
     public String getDivision() {
+        if (this.division == null){
+            FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(this.divisionId);
+            this.division = firstLevelDivision.getDivisionName();
+        }
         return division;
     }
 
@@ -186,6 +190,12 @@ public class Customer {
     }
 
     public String getCountry() {
+        if (this.country == null){
+            FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);
+            Country countryOfDivision = Main.dbCountries.getById(firstLevelDivision.getCountryId());
+            this.country = countryOfDivision.getCountryName();
+        }
+
         return country;
     }
 

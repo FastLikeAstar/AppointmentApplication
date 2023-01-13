@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,26 +9,52 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sample.Appointment;
+import sample.Country;
 import sample.Customer;
 import sample.Main;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class CustomerRecordsController implements Initializable {
 
     @FXML
+    public Button buttonNewCustomer;
+    @FXML
+    public Button buttonEditCustomer;
+    @FXML
+    public Button buttonDeleteCustomer;
+    @FXML
+    public TextField textFieldCustomerId;
+    @FXML
+    public TextField textFieldCustomerName;
+    @FXML
+    public TextField textFieldPhoneNumber;
+    @FXML
+    public TextField textFieldAddress;
+    @FXML
+    public TextField textFieldPostalCode;
+    @FXML
+    public ComboBox comboCountry;
+    @FXML
+    public ComboBox comboFirstDiv;
+    @FXML
+    public Button buttonSaveChanges;
+    @FXML
+    public Button buttonCancelChanges;
+    @FXML
+    public Button buttonBack;
+    @FXML
     Label labelFeedback;
     @FXML
-    TableView tableCustomerRecords;
+    TableView<Customer> tableCustomerRecords;
 
 
 
@@ -38,7 +65,8 @@ public class CustomerRecordsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        labelFeedback.setText("No Appointments in 15 Minutes");
+        labelFeedback.setText("");
+        textFieldCustomerId.setDisable(true);
 
 
         ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
@@ -79,7 +107,44 @@ public class CustomerRecordsController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Lambda 3: Lambda is used to increase readability and maintainability of the code by using parsing through a list
+     * of countries instead of writing an addition method in the CountryDaoImpl class that returns the names.
+     * @param actionEvent
+     */
     public void EditSelectedCustomer(ActionEvent actionEvent) {
+
+        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+
+        ObservableList<Country> countries = Main.dbCountries.getAllCountries();
+        // Lambda 3
+        ObservableList<String> countryNames = countries.stream()
+                .map(c -> c.getCountryName())
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        comboCountry.setItems(countryNames);
+
+        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
+
+        if (!possibleDivisions.isEmpty()){
+            comboFirstDiv.setItems(possibleDivisions);
+        }
+        else{
+            labelFeedback.setText("No Divisions Found in Country.");
+        }
+
+
+        textFieldCustomerId.setText(""+ selectedCustomer.getCustomerId() + "");
+        textFieldCustomerName.setText(selectedCustomer.getCustomerName());
+        textFieldAddress.setText(selectedCustomer.getAddress());
+        textFieldPhoneNumber.setText(selectedCustomer.getPhone());
+        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
+        textFieldCustomerId.setDisable(true);
+        comboCountry.setValue(selectedCustomer.getCountry());
+        comboFirstDiv.setValue(selectedCustomer.getDivision());
+
+        labelFeedback.setText("You may now edit the selected customer.");
+
+
     }
 
     public void DeleteSelectedCustomer(ActionEvent actionEvent) {
@@ -98,5 +163,18 @@ public class CustomerRecordsController implements Initializable {
         scene = new Scene(tempParent);
         stage.setScene(scene);
         stage.centerOnScreen();
+    }
+
+    public void UpdateDivisionSelection(ActionEvent actionEvent){
+        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+        String country = selectedCustomer.getCountry();
+        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(country);
+
+        if (!possibleDivisions.isEmpty()){
+            comboFirstDiv.setItems(possibleDivisions);
+        }
+        else {
+            labelFeedback.setText("No Divisions Found in Country.");
+        }
     }
 }
