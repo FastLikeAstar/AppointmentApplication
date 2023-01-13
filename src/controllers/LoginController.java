@@ -68,9 +68,10 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         locale = Locale.getDefault();
+        //Locale locale = new Locale("fr", "CA"); // Test Locale.
         languageCode = locale.getLanguage();
         countryName = locale.getDisplayCountry();
-        //        Locale montreal = new Locale("fr", "CA");
+
         if (languageCode.contentEquals("fr")){
                 labelWelcome.setText("Bienvenu");
                 labelLogin.setText("Connectez-vous pour continuer");
@@ -80,8 +81,9 @@ public class LoginController implements Initializable {
                 textFieldUsername.setPromptText("Entrez votre nom d’utilisateur...");
                 textFieldPassword.setPromptText("Entrez votre mot de passe..");
                 buttonLogin.setText("connectez-vous");
-                labelActualLocation.setText(countryName);
         }
+        labelActualLocation.setText(countryName);
+        labelFeedback.setText("");
 
     }
 
@@ -91,11 +93,8 @@ public class LoginController implements Initializable {
         String enteredUsername = textFieldUsername.getText();
         String enteredPassword = textFieldPassword.getText();
 
-        ObservableList<>
+        successful = Main.dbUsers.login(enteredUsername, enteredPassword);
 
-
-
-        successful = true;
         if (successful)
         {
             Scene partScene;
@@ -106,8 +105,13 @@ public class LoginController implements Initializable {
             partScene = new Scene(tempParent);
             stage.setScene(partScene);
         }
-        else{
-            labelFeedback.setText("Connexion incorrecte...");
+        else {
+            if (languageCode.contentEquals("fr")) {
+                labelFeedback.setText("Connexion incorrecte...");
+            } else {
+                labelFeedback.setText("Incorrect login...");
+            }
         }
+
     }
 }

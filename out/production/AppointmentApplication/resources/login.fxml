@@ -12,24 +12,24 @@
    <children>
       <VBox alignment="CENTER" fillWidth="false" layoutX="88.0" layoutY="8.0" prefHeight="389.0" prefWidth="408.0" spacing="10.0">
          <children>
-            <Label fx:id="LabelWelcome" alignment="TOP_RIGHT" contentDisplay="CENTER" text="Welcome">
+            <Label fx:id="labelWelcome" alignment="TOP_RIGHT" contentDisplay="CENTER" text="Welcome">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <Label fx:id="LabelLogin" text="Login to continue">
+            <Label fx:id="labelLogin" text="Login to continue">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="LabelUsername" text="Username:" />
-            <TextField fx:id="TextFieldUsername" prefHeight="25.0" prefWidth="200.0" promptText="Enter your username..." />
-            <Label fx:id="LabelPassword" text="Password:" />
-            <PasswordField fx:id="TextFieldPassword" prefHeight="25.0" prefWidth="200.0" promptText="Enter your password..." />
-            <Button fx:id="ButtonLogin" mnemonicParsing="false" onAction="#AttemptLogin" text="Login" />
-            <Label fx:id="LabelFeedback" alignment="CENTER" maxHeight="-Infinity" prefHeight="50.0" prefWidth="350.0" text="Failed login text" textFill="RED" />
-            <Label fx:id="LabelLocation" text="Location:" />
-            <Label fx:id="LabelActualLocation" text="Location not found..." />
+            <Label fx:id="labelUsername" text="Username:" />
+            <TextField fx:id="textFieldUsername" prefHeight="25.0" prefWidth="200.0" promptText="Enter your username..." />
+            <Label fx:id="labelPassword" text="Password:" />
+            <PasswordField fx:id="textFieldPassword" prefHeight="25.0" prefWidth="200.0" promptText="Enter your password..." />
+            <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#AttemptLogin" text="Login" />
+            <Label fx:id="labelFeedback" alignment="CENTER" maxHeight="-Infinity" prefHeight="50.0" prefWidth="350.0" text="Failed login text" textFill="RED" />
+            <Label fx:id="labelLocation" text="Location:" />
+            <Label fx:id="labelActualLocation" text="Location not found..." />
          </children>
       </VBox>
    </children>
