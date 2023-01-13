@@ -27,20 +27,7 @@ public class CustomerRecordsController implements Initializable {
     Label labelFeedback;
     @FXML
     TableView tableCustomerRecords;
-    @FXML
-    TableColumn columnCustomerId;
-    @FXML
-    TableColumn columnCustomerName;
-    @FXML
-    TableColumn columnPhoneNumber;
-    @FXML
-    TableColumn columnAddress;
-    @FXML
-    TableColumn columnPostalCode;
-    @FXML
-    TableColumn columnFirstDiv;
-    @FXML
-    TableColumn columnCountry;
+
 
 
     /**
@@ -55,13 +42,23 @@ public class CustomerRecordsController implements Initializable {
 
         ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
 
-        columnCustomerId.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
-        columnCustomerName.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
-        columnPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("Phone"));
-        columnAddress.setCellValueFactory(new PropertyValueFactory<>("Address"));
-        columnPostalCode.setCellValueFactory(new PropertyValueFactory<>("Postal_Code"));
-        columnFirstDiv.setCellValueFactory(new PropertyValueFactory<>("Division"));
-        columnCountry.setCellValueFactory(new PropertyValueFactory<>("Country"));
+
+
+        TableColumn<Customer, Integer> columnCustomerId = new TableColumn<>("ID");
+        TableColumn<Customer, String> columnCustomerName = new TableColumn<>("Name");
+        TableColumn<Customer, String> columnPhoneNumber = new TableColumn<>("Phone");
+        TableColumn<Customer, String> columnAddress = new TableColumn<>("Address");
+        TableColumn<Customer, String> columnPostalCode = new TableColumn<>("Postal Code");
+        TableColumn<Customer, String> columnFirstDiv = new TableColumn<>("Division");
+        TableColumn<Customer, String> columnCountry = new TableColumn<>("Country");
+
+        columnCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        columnCustomerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        columnPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        columnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        columnPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        columnFirstDiv.setCellValueFactory(new PropertyValueFactory<>("division"));
+        columnCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
 
 
         tableCustomerRecords.getColumns().addAll(columnCustomerId, columnCustomerName, columnPhoneNumber, columnAddress, columnPostalCode, columnFirstDiv, columnCountry);

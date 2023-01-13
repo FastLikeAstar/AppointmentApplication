@@ -42,45 +42,42 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
     public FirstLevelDivision getById(int id) {
         FirstLevelDivision divisionIfExists = null;
         String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
-        System.out.println(sql);
+
 
 
         try {
-            System.out.println("Connected");
+
             Connection connection = Jdbc.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
-            System.out.println("prepared");
+
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
-            System.out.println("asking and results:");
+
 
             while(results.next()) {
                 int divisionId = results.getInt("Division_ID");
-                System.out.println(divisionId);
+
                 String divisionName = results.getString("Division");
-                System.out.println(divisionName);
                 Timestamp createdDate = results.getTimestamp("Create_Date");
-                System.out.println(createdDate);
                 String createdBy = results.getString("Created_By");
-                System.out.println(createdBy);
                 Timestamp lastUpdate = results.getTimestamp("Last_Update");
-                System.out.println(lastUpdate);
+
                 String lastUpdatedBy = results.getString("Last_Updated_By");
-                System.out.println(lastUpdatedBy);
+
                 int countryId = results.getInt("Country_ID");
-                System.out.println(countryId);
+
 
 
                 divisionIfExists = new FirstLevelDivision(divisionId, divisionName, createdDate, createdBy, lastUpdate, lastUpdatedBy, countryId);
                 if (divisionIfExists == null) {
-                    System.out.println("division was not constructed.");
+
                 }
             }
         } catch (SQLException throwable) {
-            System.out.println("Pooping");
+
             throwable.printStackTrace();
         }
-        System.out.println("Returning ");
+
         return divisionIfExists;
     }
 

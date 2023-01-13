@@ -40,16 +40,16 @@ public class MainMenuController implements Initializable {
 
         if (!upcomingAppointments.isEmpty()){
             TableColumn<Appointment, String> nameColumn = new TableColumn<>("Title");
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
             TableColumn<Appointment, String> locationColumn = new TableColumn<>("Location");
-            locationColumn.setCellValueFactory(new PropertyValueFactory<>("Location"));
+            locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
 
             TableColumn<Appointment, String> startTimeColumn = new TableColumn<>("Start");
-            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("Start"));
+            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
             TableColumn<Appointment, String> endTimeColumn = new TableColumn<>("End");
-            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("End"));
+            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 
             tableUpcomingAppointment.getColumns().addAll(nameColumn, locationColumn, startTimeColumn, endTimeColumn);
 

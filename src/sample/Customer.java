@@ -57,11 +57,9 @@ public class Customer {
         this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
         this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
 
-        System.out.println("dID in customer " + divisionId);
+
         FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);
-        if (firstLevelDivision == null){
-            System.out.println("not finding div");
-        }
+
         Country countryOfDivision = Main.dbCountries.getById(firstLevelDivision.getCountryId());
         this.country = countryOfDivision.getCountryName();
         this.division = firstLevelDivision.getDivisionName();
