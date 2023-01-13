@@ -60,8 +60,6 @@ public class MainMenuController implements Initializable {
             Label label = new Label("This will populate with appointment(s) occurring within 15 minutes. \n Please click Customer Appointments to view Appointments in detail.");
             tableUpcomingAppointment.setPlaceholder(label);
         }
-
-
     }
 
     public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
