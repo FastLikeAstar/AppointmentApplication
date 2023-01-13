@@ -56,6 +56,8 @@ public class CustomerRecordsController implements Initializable {
     @FXML
     TableView<Customer> tableCustomerRecords;
 
+    String selectedCountry;
+
 
 
     /**
@@ -140,6 +142,7 @@ public class CustomerRecordsController implements Initializable {
         textFieldPostalCode.setText(selectedCustomer.getPostalCode());
         textFieldCustomerId.setDisable(true);
         comboCountry.setValue(selectedCustomer.getCountry());
+        selectedCountry = selectedCustomer.getCountry();
         comboFirstDiv.setValue(selectedCustomer.getDivision());
 
         labelFeedback.setText("You may now edit the selected customer.");
@@ -151,9 +154,39 @@ public class CustomerRecordsController implements Initializable {
     }
 
     public void SaveChanges(ActionEvent actionEvent) {
+
     }
 
     public void CancelChanges(ActionEvent actionEvent) {
+        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+
+        ObservableList<Country> countries = Main.dbCountries.getAllCountries();
+        // Lambda 3
+        ObservableList<String> countryNames = countries.stream()
+                .map(c -> c.getCountryName())
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        comboCountry.setItems(countryNames);
+
+        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
+
+        if (!possibleDivisions.isEmpty()){
+            comboFirstDiv.setItems(possibleDivisions);
+        }
+        else{
+            labelFeedback.setText("No Divisions Found in Country.");
+        }
+
+
+        textFieldCustomerId.setText(""+ selectedCustomer.getCustomerId() + "");
+        textFieldCustomerName.setText(selectedCustomer.getCustomerName());
+        textFieldAddress.setText(selectedCustomer.getAddress());
+        textFieldPhoneNumber.setText(selectedCustomer.getPhone());
+        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
+        textFieldCustomerId.setDisable(true);
+        comboCountry.setValue(selectedCustomer.getCountry());
+        comboFirstDiv.setValue(selectedCustomer.getDivision());
+
+        labelFeedback.setText("Values reset.");
     }
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
@@ -166,15 +199,15 @@ public class CustomerRecordsController implements Initializable {
     }
 
     public void UpdateDivisionSelection(ActionEvent actionEvent){
-        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
-        String country = selectedCustomer.getCountry();
-        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(country);
+        if (comboCountry.getValue() != null) {
+            selectedCountry = comboCountry.getValue().toString();
+            ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCountry);
 
-        if (!possibleDivisions.isEmpty()){
-            comboFirstDiv.setItems(possibleDivisions);
-        }
-        else {
-            labelFeedback.setText("No Divisions Found in Country.");
+            if (!possibleDivisions.isEmpty()) {
+                comboFirstDiv.setItems(possibleDivisions);
+            } else {
+                labelFeedback.setText("No Divisions Found in Country.");
+            }
         }
     }
 }
