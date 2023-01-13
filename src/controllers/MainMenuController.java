@@ -66,7 +66,7 @@ public class MainMenuController implements Initializable {
         Scene productScene;
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/customer-records.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-records.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);

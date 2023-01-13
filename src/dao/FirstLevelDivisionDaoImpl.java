@@ -164,4 +164,49 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
             throwable.printStackTrace();
         }
     }
+
+    public int getIdFromName(String name) {
+        int divisionId = -1;
+        String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+                divisionId = results.getInt("Division_ID");
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return divisionId;
+    }
+
+    public ObservableList<String> getDivisionsFromCountry(String country){
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+        String sql = "SELECT first_level_divisions.Division "+
+                "FROM first_level_divisions " +
+                "JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID " +
+                "WHERE countries.Country = ?";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,country);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                String divisionName = results.getString("Division");
+                divisionList.add(divisionName);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return divisionList;
+    }
 }

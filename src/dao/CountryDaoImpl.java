@@ -146,4 +146,25 @@ public class CountryDaoImpl implements CountryDao{
             throwable.printStackTrace();
         }
     }
+
+    public int getIdFromName(String name) {
+        int countryId = -1;
+        String sql = "SELECT Country_ID FROM countries WHERE Country = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+                countryId = results.getInt("Country_ID");
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return countryId;
+    }
 }

@@ -104,6 +104,7 @@ public class CustomerDaoImpl implements CustomerDao{
 
             affectedRows = statement.executeUpdate();
             ResultSet generatedKey = statement.getGeneratedKeys();
+            generatedKey.next();
             customer.setCustomerId(generatedKey.getInt(1));
 
             // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).

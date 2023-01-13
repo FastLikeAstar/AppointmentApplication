@@ -52,10 +52,12 @@ public class Customer {
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
 
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        if (!(createdDate == null)) {
+            this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+            this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+            this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+            this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        }
 
 
         FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);

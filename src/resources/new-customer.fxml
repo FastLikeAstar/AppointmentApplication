@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NewCustomerController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -39,12 +38,12 @@
                   <Label text="Postal Code" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Country" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="First Division" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField fx:id="TextFieldName" promptText="Enter customer name here..." GridPane.columnIndex="2" />
-                  <TextField fx:id="TextFieldPhoneNumber" promptText="Enter phone number here..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <TextField fx:id="TextFieldAddress" promptText="Enter street address here..." GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <TextField fx:id="TextFieldPostalCode" promptText="Enter postal code here..." GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="ComboCountry" prefHeight="25.0" prefWidth="233.0" promptText="Select Country" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <ComboBox fx:id="ComboFirstDiv" prefHeight="25.0" prefWidth="230.0" promptText="Select State/Province" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="textFieldName" promptText="Enter customer name here..." GridPane.columnIndex="2" />
+                  <TextField fx:id="textFieldPhoneNumber" promptText="Enter phone number here..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="textFieldAddress" promptText="Enter street address here..." GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="textFieldPostalCode" promptText="Enter postal code here..." GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="comboCountry" onAction="#UpdateDivisionSelection" prefHeight="25.0" prefWidth="233.0" promptText="Select Country" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="comboFirstDiv" prefHeight="25.0" prefWidth="230.0" promptText="Select State/Province" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                </children>
             </GridPane>
          </children>
@@ -53,9 +52,9 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="BOTTOM_CENTER">
          <children>
-            <Label fx:id="LabelFeedback" text="Error Feedback" textFill="RED" wrapText="true" />
-            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#SaveData" text="Save" />
-            <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#NavToCustomerRecords" text="Cancel" />
+            <Label fx:id="labelFeedback" text="Error Feedback" textFill="RED" wrapText="true" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#SaveData" text="Save" />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#NavToCustomerRecords" text="Cancel" />
          </children>
          <opaqueInsets>
             <Insets right="20.0" top="20.0" />
