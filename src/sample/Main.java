@@ -12,14 +12,15 @@ import java.util.Locale;
 public class Main extends Application {
     public static String user = "";
 
+
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
 //        HelloApplication.class.getResource("hello-view.fxml")
         Parent mainMenu = loader.load(Main.class.getResource("/login.fxml"));
 
-        Locale montreal = new Locale("fr", "CA");
-        Locale.getDefault();
+
 
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/login.fxml"));
