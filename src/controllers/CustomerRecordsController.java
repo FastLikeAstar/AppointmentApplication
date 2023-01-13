@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sample.Appointment;
@@ -135,6 +136,7 @@ public class CustomerRecordsController implements Initializable {
             comboFirstDiv.setItems(possibleDivisions);
         }
         else{
+            labelFeedback.setTextFill(Color.RED);
             labelFeedback.setText("No Divisions Found in Country.");
         }
 
@@ -158,16 +160,19 @@ public class CustomerRecordsController implements Initializable {
         textFieldPostalCode.setDisable(false);
         textFieldPostalCode.setEditable(true);
 
-
+        labelFeedback.setTextFill(Color.DARKGREEN);
         labelFeedback.setText("You may now edit the selected customer.");
 
 
     }
 
     public void DeleteSelectedCustomer(ActionEvent actionEvent) {
+        labelFeedback.setTextFill(Color.BLUE);
+        labelFeedback.setText("Customer and Appointments Deleted.");
     }
 
     public void SaveChanges(ActionEvent actionEvent) {
+
 
     }
 
@@ -187,6 +192,7 @@ public class CustomerRecordsController implements Initializable {
             comboFirstDiv.setItems(possibleDivisions);
         }
         else{
+            labelFeedback.setTextFill(Color.RED);
             labelFeedback.setText("No Divisions Found in Country.");
         }
 
@@ -200,6 +206,7 @@ public class CustomerRecordsController implements Initializable {
         comboCountry.setValue(selectedCustomer.getCountry());
         comboFirstDiv.setValue(selectedCustomer.getDivision());
 
+        labelFeedback.setTextFill(Color.DARKGREEN);
         labelFeedback.setText("Values reset.");
     }
 
@@ -220,6 +227,7 @@ public class CustomerRecordsController implements Initializable {
             if (!possibleDivisions.isEmpty()) {
                 comboFirstDiv.setItems(possibleDivisions);
             } else {
+                labelFeedback.setTextFill(Color.RED);
                 labelFeedback.setText("No Divisions Found in Country.");
             }
         }
