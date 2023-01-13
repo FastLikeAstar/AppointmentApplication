@@ -1,5 +1,6 @@
 package sample;
 
+import dao.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,14 +11,23 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class Main extends Application {
+    public static String user = "";
+    public static AppointmentDaoImpl dbAppointments;
+    public static ContactDaoImpl dbContacts;
+    public static CountryDaoImpl dbCountries;
+    public static CustomerDaoImpl dbCustomers;
+    public static FirstLevelDivisionDaoImpl dbDivisions;
+    public static UserDaoImpl dbUsers;
+
+
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
 //        HelloApplication.class.getResource("hello-view.fxml")
         Parent mainMenu = loader.load(Main.class.getResource("/login.fxml"));
 
-        Locale montreal = new Locale("fr", "CA");
-        Locale.getDefault();
+
 
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/login.fxml"));
@@ -32,6 +42,13 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Jdbc.openConnection();
+        dbAppointments = new AppointmentDaoImpl();
+        dbContacts = new ContactDaoImpl();
+        dbCountries = new CountryDaoImpl();
+        dbCustomers = new CustomerDaoImpl();
+        dbDivisions = new FirstLevelDivisionDaoImpl();
+        dbUsers = new UserDaoImpl();
+
         launch();
         Jdbc.closeConnection();
     }
