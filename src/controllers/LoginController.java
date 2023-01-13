@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,6 +88,10 @@ public class LoginController implements Initializable {
     public void AttemptLogin(ActionEvent actionEvent) throws IOException {
         boolean successful = false;
 
+        String enteredUsername = textFieldUsername.getText();
+        String enteredPassword = textFieldPassword.getText();
+
+        ObservableList<>
 
 
 
