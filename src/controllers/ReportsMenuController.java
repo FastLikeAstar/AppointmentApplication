@@ -42,6 +42,7 @@ public class ReportsMenuController implements Initializable {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 
     public void NavToContactSchedule(ActionEvent actionEvent) throws IOException {
@@ -52,6 +53,7 @@ public class ReportsMenuController implements Initializable {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 
     public void ShowLoginLogPath(ActionEvent actionEvent) {
@@ -65,5 +67,6 @@ public class ReportsMenuController implements Initializable {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 }

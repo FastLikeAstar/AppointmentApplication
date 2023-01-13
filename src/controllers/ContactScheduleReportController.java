@@ -31,5 +31,6 @@ public class ContactScheduleReportController implements Initializable {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 }

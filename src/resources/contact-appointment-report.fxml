@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactAppointmentReportController">
+<?import javafx.scene.layout.StackPane?>
+<StackPane alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactAppointmentReportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" >
    <children>
       <VBox layoutX="105.0" prefHeight="720.0" prefWidth="1051.0">
          <children>
@@ -43,3 +44,4 @@
       </VBox>
    </children>
 </AnchorPane>
+</StackPane>

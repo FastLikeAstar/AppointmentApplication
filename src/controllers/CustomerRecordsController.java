@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sample.Appointment;
 import sample.Customer;
 import sample.Main;
@@ -68,14 +69,14 @@ public class CustomerRecordsController implements Initializable {
     }
 
     public void CreateNewCustomer(ActionEvent actionEvent) throws IOException {
-        Scene productScene;
+        Scene scene;
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/new-customer.fxml"));
         Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/new-customer.fxml"));
-        Stage stage = new Stage();
-        productScene = new Scene(tempParent);
-        stage.setScene(productScene);
-        stage.show();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(tempParent);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     public void EditSelectedCustomer(ActionEvent actionEvent) {
@@ -91,12 +92,13 @@ public class CustomerRecordsController implements Initializable {
     }
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
-        Scene productScene;
+        Scene scene;
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/main-menu.fxml"));
         Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/main-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        productScene = new Scene(tempParent);
-        stage.setScene(productScene);
+        scene = new Scene(tempParent);
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 }
