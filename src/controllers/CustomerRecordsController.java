@@ -69,6 +69,8 @@ public class CustomerRecordsController implements Initializable {
 
         labelFeedback.setText("");
         textFieldCustomerId.setDisable(true);
+        comboCountry.setDisable(true);
+        comboFirstDiv.setDisable(true);
 
 
         ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
@@ -115,6 +117,8 @@ public class CustomerRecordsController implements Initializable {
      * @param actionEvent
      */
     public void EditSelectedCustomer(ActionEvent actionEvent) {
+        comboCountry.setDisable(false);
+        comboFirstDiv.setDisable(false);
 
         Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
 
@@ -144,6 +148,16 @@ public class CustomerRecordsController implements Initializable {
         comboCountry.setValue(selectedCustomer.getCountry());
         selectedCountry = selectedCustomer.getCountry();
         comboFirstDiv.setValue(selectedCustomer.getDivision());
+
+        textFieldCustomerName.setDisable(false);
+        textFieldCustomerName.setEditable(true);
+        textFieldAddress.setDisable(false);
+        textFieldAddress.setEditable(true);
+        textFieldPhoneNumber.setDisable(false);
+        textFieldPhoneNumber.setEditable(true);
+        textFieldPostalCode.setDisable(false);
+        textFieldPostalCode.setEditable(true);
+
 
         labelFeedback.setText("You may now edit the selected customer.");
 
