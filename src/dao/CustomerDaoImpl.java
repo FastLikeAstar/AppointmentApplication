@@ -19,7 +19,10 @@ public class CustomerDaoImpl implements CustomerDao{
     @Override
     public ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM customers";
+        String sql = "SELECT * FROM customers " +
+                    "WHERE NOT EXISTS " +
+                    "(SELECT * FROM customers " +
+                    "WHERE customers.Customer_Name IS NULL)";
         try {
             Connection connection = Jdbc.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);

@@ -58,23 +58,24 @@ public class AppointmentDaoImpl implements AppointmentDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int appointmentId = results.getInt("Appointment_ID");
-            String appointmentName = results.getString("Title");
-            String description = results.getString("Description");
-            String location = results.getString("Location");
-            String type = results.getString("Type");
-            Timestamp startTime = results.getTimestamp("Start");
-            Timestamp endTime = results.getTimestamp("End");
-            Timestamp createdDate = results.getTimestamp("Create_Date");
-            String createdBy = results.getString("Created_By");
-            Timestamp lastUpdate = results.getTimestamp("Last_Update");
-            String lastUpdateBy = results.getString("Last_Updated_By");
-            int customerId = results.getInt("Customer_ID");
-            int userId = results.getInt("User_ID");
-            int contactId = results.getInt("Contact_ID");
+            while(results.next()) {
+                int appointmentId = results.getInt("Appointment_ID");
+                String appointmentName = results.getString("Title");
+                String description = results.getString("Description");
+                String location = results.getString("Location");
+                String type = results.getString("Type");
+                Timestamp startTime = results.getTimestamp("Start");
+                Timestamp endTime = results.getTimestamp("End");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdateBy = results.getString("Last_Updated_By");
+                int customerId = results.getInt("Customer_ID");
+                int userId = results.getInt("User_ID");
+                int contactId = results.getInt("Contact_ID");
 
-            appointmentIfExists = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
-
+                appointmentIfExists = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate, createdBy, lastUpdate, lastUpdateBy, customerId, userId, contactId);
+            }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -190,9 +191,9 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
     public ObservableList<Appointment> getUpcomingAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM appointments" +
-                "WHERE start_time <= DATE_ADD(NOW(), INTERVAL 15 MINUTE)" +
-                "AND end_time >= NOW();";
+        String sql = "SELECT * FROM appointments " +
+                "WHERE Start <= DATE_ADD(NOW(), INTERVAL 15 MINUTE) " +
+                "AND End >= NOW();";
         try {
             Connection connection = Jdbc.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
