@@ -16,6 +16,7 @@ import sample.Main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -70,7 +71,6 @@ public class LoginController implements Initializable {
         locale = Locale.getDefault();
         //Locale locale = new Locale("fr", "CA"); // Test Locale.
         languageCode = locale.getLanguage();
-        countryName = locale.getDisplayCountry();
 
         if (languageCode.contentEquals("fr")){
                 labelWelcome.setText("Bienvenu");
@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
                 textFieldPassword.setPromptText("Entrez votre mot de passe..");
                 buttonLogin.setText("connectez-vous");
         }
-        labelActualLocation.setText(countryName);
+        labelActualLocation.setText(ZoneId.systemDefault().toString());
         labelFeedback.setText("");
 
     }
