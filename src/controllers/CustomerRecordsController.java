@@ -58,6 +58,7 @@ public class CustomerRecordsController implements Initializable {
     TableView<Customer> tableCustomerRecords;
 
     String selectedCountry;
+    Customer customerBeingChanged;
 
 
 
@@ -72,11 +73,13 @@ public class CustomerRecordsController implements Initializable {
         textFieldCustomerId.setDisable(true);
         comboCountry.setDisable(true);
         comboFirstDiv.setDisable(true);
+        LoadTable();
+    }
 
-
+    public void LoadTable(){
+        tableCustomerRecords.getItems().clear();
+        tableCustomerRecords.getColumns().clear();
         ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
-
-
 
         TableColumn<Customer, Integer> columnCustomerId = new TableColumn<>("ID");
         TableColumn<Customer, String> columnCustomerName = new TableColumn<>("Name");
@@ -98,7 +101,6 @@ public class CustomerRecordsController implements Initializable {
         tableCustomerRecords.getColumns().addAll(columnCustomerId, columnCustomerName, columnPhoneNumber, columnAddress, columnPostalCode, columnFirstDiv, columnCountry);
 
         tableCustomerRecords.setItems(customers);
-
     }
 
     public void CreateNewCustomer(ActionEvent actionEvent) throws IOException {
@@ -122,6 +124,8 @@ public class CustomerRecordsController implements Initializable {
         comboFirstDiv.setDisable(false);
 
         Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+        customerBeingChanged = selectedCustomer;
+
 
         ObservableList<Country> countries = Main.dbCountries.getAllCountries();
         // Lambda 3
@@ -161,7 +165,7 @@ public class CustomerRecordsController implements Initializable {
         textFieldPostalCode.setEditable(true);
 
         labelFeedback.setTextFill(Color.DARKGREEN);
-        labelFeedback.setText("You may now edit the selected customer.");
+        labelFeedback.setText("You may now edit the \n selected customer.");
 
 
     }
@@ -171,7 +175,45 @@ public class CustomerRecordsController implements Initializable {
         labelFeedback.setText("Customer and Appointments Deleted.");
     }
 
-    public void SaveChanges(ActionEvent actionEvent) {
+    public void SaveChanges(ActionEvent actionEvent) throws IOException {
+
+        boolean valid = false;
+
+        if (comboCountry.getValue() != null && comboFirstDiv.getValue() != null) {
+            int id = Integer.valueOf(textFieldCustomerId.getText());
+            String name = textFieldCustomerName.getText();
+            String number = textFieldPhoneNumber.getText();
+            String address = textFieldAddress.getText();
+            String postalCode = textFieldPostalCode.getText();
+            String country = comboCountry.getValue().toString();
+            String division = comboFirstDiv.getValue().toString();
+
+
+            valid = (!(name.isBlank()) &&
+                    !(number.isBlank()) &&
+                    !(address.isBlank()) &&
+                    !(postalCode.isBlank()) &&
+                    !(comboCountry.getSelectionModel().isEmpty()) &&
+                    !(comboFirstDiv.getSelectionModel().isEmpty()));
+
+            if (valid) {
+                int divisionId = Main.dbDivisions.getIdFromName(division);
+                Customer customer = new Customer(id, name, address, postalCode, number, customerBeingChanged.getCreatedDate(), customerBeingChanged.getCreatedBy(), customerBeingChanged.getLastUpdate(), Main.user, divisionId);
+                Main.dbCustomers.update(customer);
+                LoadTable();
+
+                labelFeedback.setTextFill(Color.DARKGREEN);
+                labelFeedback.setText("Customer Updated Successfully.");
+            }
+            else{
+                labelFeedback.setTextFill(Color.RED);
+                labelFeedback.setText("Please check that all \n fields have a valid entry.");
+            }
+        }
+        else {
+            labelFeedback.setTextFill(Color.RED);
+            labelFeedback.setText("Please check that all \n fields have a valid entry.");
+        }
 
 
     }

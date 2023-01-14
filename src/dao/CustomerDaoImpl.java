@@ -125,12 +125,12 @@ public class CustomerDaoImpl implements CustomerDao{
         int affectedRows = -1;
         String sql = "UPDATE customers " +
                 "SET Customer_Name = ?, " +
-                "SET Address = ?, " +
-                "SET Postal_Code = ?, " +
-                "SET Phone = ?, " +
-                "SET Last_Update = NOW(), " +
-                "SET Last_Updated_By = ?, " +
-                "SET Division_ID = ? "+
+                "Address = ?, " +
+                "Postal_Code = ?, " +
+                "Phone = ?, " +
+                "Last_Update = NOW(), " +
+                "Last_Updated_By = ?, " +
+                "Division_ID = ? "+
                 "WHERE Customer_ID = ?";
 
         try{
