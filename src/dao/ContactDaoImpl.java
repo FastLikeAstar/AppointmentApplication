@@ -46,11 +46,13 @@ public class ContactDaoImpl implements ContactDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int contactId = results.getInt("Contact_ID");
-            String contactName = results.getString("Contact_Name");
-            String email = results.getString("Email");
+            while(results.next()) {
+                int contactId = results.getInt("Contact_ID");
+                String contactName = results.getString("Contact_Name");
+                String email = results.getString("Email");
 
-            contactIfExists = new Contact(contactId, contactName, email);
+                contactIfExists = new Contact(contactId, contactName, email);
+            }
 
         } catch (SQLException throwable) {
             throwable.printStackTrace();

@@ -49,16 +49,17 @@ public class UserDaoImpl implements UserDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int userId = results.getInt("User_ID");
-            String userName = results.getString("User_Name");
-            String password = results.getString("Password");
-            Timestamp createdDate = results.getTimestamp("Create_Date");
-            String createdBy = results.getString("Created_By");
-            Timestamp lastUpdate = results.getTimestamp("Last_Update");
-            String lastUpdatedBy = results.getString("Last_Updated_By");
+            while(results.next()) {
+                int userId = results.getInt("User_ID");
+                String userName = results.getString("User_Name");
+                String password = results.getString("Password");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdatedBy = results.getString("Last_Updated_By");
 
-            userIfExists = new User(userId, userName, password, createdDate, createdBy, lastUpdate, lastUpdatedBy);
-
+                userIfExists = new User(userId, userName, password, createdDate, createdBy, lastUpdate, lastUpdatedBy);
+            }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }

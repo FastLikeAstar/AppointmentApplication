@@ -19,7 +19,10 @@ public class CustomerDaoImpl implements CustomerDao{
     @Override
     public ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM customers";
+        String sql = "SELECT * FROM customers " +
+                    "WHERE NOT EXISTS " +
+                    "(SELECT * FROM customers " +
+                    "WHERE customers.Customer_Name IS NULL)";
         try {
             Connection connection = Jdbc.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -101,6 +104,7 @@ public class CustomerDaoImpl implements CustomerDao{
 
             affectedRows = statement.executeUpdate();
             ResultSet generatedKey = statement.getGeneratedKeys();
+            generatedKey.next();
             customer.setCustomerId(generatedKey.getInt(1));
 
             // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).
@@ -121,12 +125,12 @@ public class CustomerDaoImpl implements CustomerDao{
         int affectedRows = -1;
         String sql = "UPDATE customers " +
                 "SET Customer_Name = ?, " +
-                "SET Address = ?, " +
-                "SET Postal_Code = ?, " +
-                "SET Phone = ?, " +
-                "SET Last_Update = NOW(), " +
-                "SET Last_Updated_By = ?, " +
-                "SET Division_ID = ? "+
+                "Address = ?, " +
+                "Postal_Code = ?, " +
+                "Phone = ?, " +
+                "Last_Update = NOW(), " +
+                "Last_Updated_By = ?, " +
+                "Division_ID = ? "+
                 "WHERE Customer_ID = ?";
 
         try{

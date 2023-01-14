@@ -18,6 +18,8 @@ public class Customer {
     Timestamp lastUpdate;
     String lastUpdatedBy;
     int divisionId;
+    String division;
+    String country;
 
     LocalDateTime createdDateAsLocal;
     LocalDateTime lastUpdateAsLocal;
@@ -50,10 +52,19 @@ public class Customer {
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
 
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        if (!(createdDate == null)) {
+            this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
+            this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
+            this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+            this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        }
+
+
+        FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);
+
+        Country countryOfDivision = Main.dbCountries.getById(firstLevelDivision.getCountryId());
+        this.country = countryOfDivision.getCountryName();
+        this.division = firstLevelDivision.getDivisionName();
     }
 
     /**
@@ -164,6 +175,32 @@ public class Customer {
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
+    }
+
+    public String getDivision() {
+        if (this.division == null){
+            FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(this.divisionId);
+            this.division = firstLevelDivision.getDivisionName();
+        }
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
+    public String getCountry() {
+        if (this.country == null){
+            FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);
+            Country countryOfDivision = Main.dbCountries.getById(firstLevelDivision.getCountryId());
+            this.country = countryOfDivision.getCountryName();
+        }
+
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public ZonedDateTime getCreatedDateAsUtc() {

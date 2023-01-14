@@ -40,16 +40,16 @@ public class MainMenuController implements Initializable {
 
         if (!upcomingAppointments.isEmpty()){
             TableColumn<Appointment, String> nameColumn = new TableColumn<>("Title");
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
             TableColumn<Appointment, String> locationColumn = new TableColumn<>("Location");
-            locationColumn.setCellValueFactory(new PropertyValueFactory<>("Location"));
+            locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
 
             TableColumn<Appointment, String> startTimeColumn = new TableColumn<>("Start");
-            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("Start"));
+            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
             TableColumn<Appointment, String> endTimeColumn = new TableColumn<>("End");
-            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("End"));
+            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 
             tableUpcomingAppointment.getColumns().addAll(nameColumn, locationColumn, startTimeColumn, endTimeColumn);
 
@@ -60,38 +60,33 @@ public class MainMenuController implements Initializable {
             Label label = new Label("This will populate with appointment(s) occurring within 15 minutes. \n Please click Customer Appointments to view Appointments in detail.");
             tableUpcomingAppointment.setPlaceholder(label);
         }
-
-
     }
 
     public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/customer-records.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-records.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 
     public void NavToCustomerAppointments(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/customer-appointments.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/customer-appointments.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 
     public void NavToReportsMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/reports-menu.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/reports-menu.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 
     public void ExitApplication(ActionEvent actionEvent) {

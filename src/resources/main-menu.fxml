@@ -10,7 +10,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainMenuController">
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainMenuController">
+<AnchorPane>
    <children>
       <HBox prefHeight="720.0" prefWidth="1280.0">
          <children>
@@ -66,3 +69,4 @@
       </HBox>
    </children>
 </AnchorPane>
+</StackPane>

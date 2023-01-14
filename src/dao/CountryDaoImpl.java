@@ -48,14 +48,16 @@ public class CountryDaoImpl implements CountryDao{
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
-            int countryId = results.getInt("Country_ID");
-            String countryName = results.getString("Country");
-            Timestamp createdDate = results.getTimestamp("Create_Date");
-            String createdBy = results.getString("Created_By");
-            Timestamp lastUpdate = results.getTimestamp("Last_Update");
-            String lastUpdatedBy = results.getString("Last_Updated_By");
+            while(results.next()) {
+                int countryId = results.getInt("Country_ID");
+                String countryName = results.getString("Country");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdatedBy = results.getString("Last_Updated_By");
 
-            countryIfExists = new Country(countryId, countryName, createdDate, createdBy, lastUpdate, lastUpdatedBy);
+                countryIfExists = new Country(countryId, countryName, createdDate, createdBy, lastUpdate, lastUpdatedBy);
+            }
 
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -143,5 +145,26 @@ public class CountryDaoImpl implements CountryDao{
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+    }
+
+    public int getIdFromName(String name) {
+        int countryId = -1;
+        String sql = "SELECT Country_ID FROM countries WHERE Country = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+                countryId = results.getInt("Country_ID");
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return countryId;
     }
 }

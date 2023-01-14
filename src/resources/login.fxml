@@ -8,7 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<?import javafx.scene.layout.StackPane?>
+<StackPane alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" >
    <children>
       <VBox alignment="CENTER" fillWidth="false" layoutX="88.0" layoutY="8.0" prefHeight="389.0" prefWidth="408.0" spacing="10.0">
          <children>
@@ -34,3 +36,4 @@
       </VBox>
    </children>
 </AnchorPane>
+</StackPane>

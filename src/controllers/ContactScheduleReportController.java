@@ -25,11 +25,10 @@ public class ContactScheduleReportController implements Initializable {
 
     public void BackToReports(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/reports-menu.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/reports-menu.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
+        stage.centerOnScreen();
     }
 }
