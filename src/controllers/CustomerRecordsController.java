@@ -21,6 +21,7 @@ import sample.Main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -170,7 +171,30 @@ public class CustomerRecordsController implements Initializable {
 
     }
 
+    /**
+     * Lambda 2: Lambda is used to contain the majority of relevant code in this code block. Lambda increases the
+     * maintainability of this method by avoiding creating additional methods across different classes to achieve
+     * the same result.
+     * @param actionEvent
+     */
     public void DeleteSelectedCustomer(ActionEvent actionEvent) {
+        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+        ObservableList<Appointment> appointments = Main.dbAppointments.getAllAppointments();
+        int customerIdToDelete = selectedCustomer.getCustomerId();
+
+        // Lambda 2
+       List<Integer> appointmentIdsOfCustomer = appointments.stream()
+                .filter(appointment -> appointment.getCustomerId() == customerIdToDelete)
+                .map(Appointment::getAppointmentId)
+                .collect(Collectors.toList());
+
+       for (int appointmentId : appointmentIdsOfCustomer){
+           Main.dbAppointments.delete(appointmentId);
+       }
+
+       Main.dbCustomers.delete(customerIdToDelete);
+
+        LoadTable();
         labelFeedback.setTextFill(Color.BLUE);
         labelFeedback.setText("Customer and Appointments Deleted.");
     }
