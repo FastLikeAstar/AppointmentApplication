@@ -244,36 +244,37 @@ public class CustomerRecordsController implements Initializable {
 
     public void CancelChanges(ActionEvent actionEvent) {
         Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+        if (customerBeingChanged == selectedCustomer) {
 
-        ObservableList<Country> countries = Main.dbCountries.getAllCountries();
-        // Lambda 3
-        ObservableList<String> countryNames = countries.stream()
-                .map(c -> c.getCountryName())
-                .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        comboCountry.setItems(countryNames);
+            ObservableList<Country> countries = Main.dbCountries.getAllCountries();
+            // Lambda 3
+            ObservableList<String> countryNames = countries.stream()
+                    .map(c -> c.getCountryName())
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            comboCountry.setItems(countryNames);
 
-        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
+            ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
 
-        if (!possibleDivisions.isEmpty()){
-            comboFirstDiv.setItems(possibleDivisions);
+            if (!possibleDivisions.isEmpty()) {
+                comboFirstDiv.setItems(possibleDivisions);
+            } else {
+                labelFeedback.setTextFill(Color.RED);
+                labelFeedback.setText("No Divisions Found in Country.");
+            }
+
+
+            textFieldCustomerId.setText("" + selectedCustomer.getCustomerId() + "");
+            textFieldCustomerName.setText(selectedCustomer.getCustomerName());
+            textFieldAddress.setText(selectedCustomer.getAddress());
+            textFieldPhoneNumber.setText(selectedCustomer.getPhone());
+            textFieldPostalCode.setText(selectedCustomer.getPostalCode());
+            textFieldCustomerId.setDisable(true);
+            comboCountry.setValue(selectedCustomer.getCountry());
+            comboFirstDiv.setValue(selectedCustomer.getDivision());
+
+            labelFeedback.setTextFill(Color.DARKGREEN);
+            labelFeedback.setText("Values reset.");
         }
-        else{
-            labelFeedback.setTextFill(Color.RED);
-            labelFeedback.setText("No Divisions Found in Country.");
-        }
-
-
-        textFieldCustomerId.setText(""+ selectedCustomer.getCustomerId() + "");
-        textFieldCustomerName.setText(selectedCustomer.getCustomerName());
-        textFieldAddress.setText(selectedCustomer.getAddress());
-        textFieldPhoneNumber.setText(selectedCustomer.getPhone());
-        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
-        textFieldCustomerId.setDisable(true);
-        comboCountry.setValue(selectedCustomer.getCountry());
-        comboFirstDiv.setValue(selectedCustomer.getDivision());
-
-        labelFeedback.setTextFill(Color.DARKGREEN);
-        labelFeedback.setText("Values reset.");
     }
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
