@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -18,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomerAppointmentsController">
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomerAppointmentsController">
 <VBox prefHeight="720.0">
    <children>
       <Label text="Customer Appointments">
@@ -29,62 +28,41 @@
             <Insets left="10.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="434.0" >
+      <HBox prefHeight="434.0">
          <children>
             <VBox alignment="CENTER" prefHeight="434.0" prefWidth="153.0" spacing="15.0">
                <children>
-                  <Button fx:id="ButtonNewAppointment" mnemonicParsing="false" onAction="#CreateNewAppointment" prefHeight="60.0" prefWidth="130.0" text="New Appointment" />
-                  <Button fx:id="ButtonEditAppointment" mnemonicParsing="false" onAction="#EditSelectedAppointment" prefHeight="50.0" prefWidth="130.0" text="Edit Appointment" />
-                  <Button fx:id="ButtonCancelAppointment" mnemonicParsing="false" onAction="#CancelSelectedAppointment" prefHeight="40.0" prefWidth="130.0" text="Cancel Appointment" />
-                  <Label fx:id="LabelFeedback" text="Feedback Label" textFill="RED" />
+                  <Button fx:id="buttonNewAppointment" mnemonicParsing="false" onAction="#CreateNewAppointment" prefHeight="60.0" prefWidth="130.0" text="New Appointment" />
+                  <Button fx:id="buttonEditAppointment" mnemonicParsing="false" onAction="#EditSelectedAppointment" prefHeight="50.0" prefWidth="130.0" text="Edit Appointment" />
+                  <Button fx:id="buttonCancelAppointment" mnemonicParsing="false" onAction="#CancelSelectedAppointment" prefHeight="40.0" prefWidth="130.0" text="Cancel Appointment" />
+                  <Label fx:id="labelFeedback" text="Feedback Label" textFill="RED" />
                </children>
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
             </VBox>
-            <TabPane prefHeight="434.0"  tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="434.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="TabWeek" text="View Upcoming Week">
+                <Tab fx:id="tabAll" text="All Appointments">
                      <content>
-                        <TableView fx:id="TableWeekView" prefHeight="405.0" >
-                          <columns>
-                            <TableColumn fx:id="ColumnWeekAppointmentId" prefWidth="105.0" text="Appointment_ID" />
-                            <TableColumn fx:id="ColumnWeekTitle" prefWidth="101.0" text="Title" />
-                              <TableColumn fx:id="ColumnWeekDescription" prefWidth="96.0" text="Description" />
-                              <TableColumn fx:id="ColumnWeekLocation" prefWidth="74.0" text="Location" />
-                              <TableColumn fx:id="ColumnWeekContact" prefWidth="135.0" text="Contact" />
-                              <TableColumn fx:id="ColumnWeekType" prefWidth="87.0" text="Type" />
-                              <TableColumn fx:id="ColumnWeekStartTime" prefWidth="138.0" text="Start Date and Time" />
-                              <TableColumn fx:id="ColumnWeekEndTime" prefWidth="151.0" text="End Date and Time" />
-                              <TableColumn fx:id="ColumnWeekCustomerId" prefWidth="100.0" text="Customer_ID" />
-                              <TableColumn fx:id="ColumnWeekUserId" prefWidth="122.0" text="User_ID" />
-                          </columns>
-                        </TableView>
+                        <TableView fx:id="tableAllView" prefHeight="405.0" />
                      </content>
                   </Tab>
-                <Tab fx:id="TabMonth" text="View Upcoming Month">
+                <Tab fx:id="tabMonth" text="View Upcoming Month">
                      <content>
-                        <TableView fx:id="TableMonthView" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="ColumnMonthAppointmentId" prefWidth="105.0" text="Appointment_ID" />
-                              <TableColumn fx:id="ColumnMonthTitle" prefWidth="101.0" text="Title" />
-                              <TableColumn fx:id="ColumnMonthDescription" prefWidth="96.0" text="Description" />
-                              <TableColumn fx:id="ColumnMonthLocation" prefWidth="74.0" text="Location" />
-                              <TableColumn fx:id="ColumnMonthContact" prefWidth="135.0" text="Contact" />
-                              <TableColumn fx:id="ColumnMonthType" prefWidth="87.0" text="Type" />
-                              <TableColumn fx:id="ColumnMonthStartTime" prefWidth="138.0" text="Start Date and Time" />
-                              <TableColumn fx:id="ColumnMonthEndTime" prefWidth="151.0" text="End Date and Time" />
-                              <TableColumn fx:id="ColumnMonthCustomerId" prefWidth="100.0" text="Customer_ID" />
-                              <TableColumn fx:id="ColumnMonthUserId" prefWidth="122.0" text="User_ID" />
-                           </columns>
-                        </TableView>
+                        <TableView fx:id="tableMonthView" prefHeight="200.0" prefWidth="200.0" />
                      </content>
                   </Tab>
+                     <Tab fx:id="tabWeek1" text="View Upcoming Week">
+                        <content>
+                           <TableView fx:id="tableWeekView1" prefHeight="405.0" />
+                        </content>
+                     </Tab>
               </tabs>
             </TabPane>
          </children>
       </HBox>
-      <Label fx:id="LabelSelectedAppointment" text="Selected Appointment">
+      <Label fx:id="labelSelectedAppointment" text="Selected Appointment">
          <font>
             <Font size="18.0" />
          </font>
@@ -118,16 +96,16 @@
             <Label text="End Date and Time" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <Label text="Customer" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <Label text="Contact" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-            <TextField fx:id="TextFieldAppointmentId" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="155.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <TextField fx:id="TextFieldTitle" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <TextField fx:id="TextFieldDescription" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <ComboBox fx:id="ComboCustomer" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <ComboBox fx:id="ComboType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <ComboBox fx:id="ComboUser" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <ComboBox fx:id="ComboContact" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <TextField fx:id="TextFieldStartTime" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <TextField fx:id="TextFieldEndTime" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <TextField fx:id="TextFieldLocation" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <TextField fx:id="textFieldAppointmentId" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="155.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldTitle" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldDescription" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <ComboBox fx:id="comboCustomer" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <ComboBox fx:id="comboType" prefWidth="150.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <ComboBox fx:id="comboUser" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <ComboBox fx:id="comboContact" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldStartTime" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldEndTime" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldLocation" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
          </children>
          <VBox.margin>
             <Insets left="20.0" top="10.0" />
@@ -135,10 +113,10 @@
       </GridPane>
       <HBox alignment="CENTER_RIGHT" prefHeight="52.0" spacing="30.0">
          <children>
-            <Button fx:id="ButtonSaveChanges" mnemonicParsing="false" onAction="#SaveChanges" prefHeight="50.0" prefWidth="130.0" text="Save Changes" />
-            <Button fx:id="ButtonCancelChanges" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#CancelChanges" prefHeight="50.0" prefWidth="64.0" text="Cancel Changes" wrapText="true" />
+            <Button fx:id="buttonSaveChanges" mnemonicParsing="false" onAction="#SaveChanges" prefHeight="50.0" prefWidth="130.0" text="Save Changes" />
+            <Button fx:id="buttonCancelChanges" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#CancelChanges" prefHeight="50.0" prefWidth="64.0" text="Cancel Changes" wrapText="true" />
             <Separator orientation="VERTICAL" prefHeight="52.0" prefWidth="740.0" visible="false" />
-            <Button fx:id="ButtonBack" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#BackToMainMenu" text="Back to Main Menu">
+            <Button fx:id="buttonBack" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#BackToMainMenu" text="Back to Main Menu">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
