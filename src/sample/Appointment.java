@@ -20,6 +20,8 @@ public class Appointment {
     String createdBy;
     Timestamp lastUpdate;
     String lastUpdatedBy;
+
+    String contactName;
     int customerId;
     int userId;
     int contactId;
@@ -57,6 +59,9 @@ public class Appointment {
         this.endTimeAsLocal = DateConverter.convertUtcToLocal(endTimeAsUtc);
         this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
         this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+
+        Contact contact = Main.dbContacts.getById(contactId);
+        this.contactName = contact.getContactName();
 
     }
 
@@ -179,6 +184,8 @@ public class Appointment {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+        Contact contact = Main.dbContacts.getById(contactId);
+        this.contactName = contact.getContactName();
     }
 
     public LocalDateTime getStartTimeAsLocal() {
@@ -259,5 +266,9 @@ public class Appointment {
         this.lastUpdateAsUtc = lastUpdateAsUtc;
         this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
         this.lastUpdate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
+    }
+
+    public String getContactName() {
+        return contactName;
     }
 }

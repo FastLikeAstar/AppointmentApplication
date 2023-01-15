@@ -228,4 +228,84 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
         return appointmentList;
     }
+
+    public ObservableList<Appointment> getNextMonthOfAppointments() {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments " +
+                "WHERE Start <= DATE_ADD(NOW(), INTERVAL 1 MONTH) " +
+                "AND DATE_ADD(NOW(), INTERVAL 2 MONTH);";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int appointmentId = results.getInt("Appointment_ID");
+                String appointmentName = results.getString("Title");
+                String description = results.getString("Description");
+                String location = results.getString("Location");
+                String type = results.getString("Type");
+                Timestamp startTime = results.getTimestamp("Start");
+                Timestamp endTime = results.getTimestamp("End");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdateBy = results.getString("Last_Updated_By");
+                int customerId = results.getInt("Customer_ID");
+                int userId = results.getInt("User_ID");
+                int contactId = results.getInt("Contact_ID");
+
+
+
+
+                Appointment appointment = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
+                appointmentList.add(appointment);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return appointmentList;
+    }
+
+    public ObservableList<Appointment> getNextWeekOfAppointments() {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments " +
+                "WHERE Start <= DATE_ADD(NOW(), INTERVAL 1 WEEK) " +
+                "AND DATE_ADD(NOW(), INTERVAL 2 WEEK);";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int appointmentId = results.getInt("Appointment_ID");
+                String appointmentName = results.getString("Title");
+                String description = results.getString("Description");
+                String location = results.getString("Location");
+                String type = results.getString("Type");
+                Timestamp startTime = results.getTimestamp("Start");
+                Timestamp endTime = results.getTimestamp("End");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdateBy = results.getString("Last_Updated_By");
+                int customerId = results.getInt("Customer_ID");
+                int userId = results.getInt("User_ID");
+                int contactId = results.getInt("Contact_ID");
+
+
+
+
+                Appointment appointment = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
+                appointmentList.add(appointment);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return appointmentList;
+    }
 }
