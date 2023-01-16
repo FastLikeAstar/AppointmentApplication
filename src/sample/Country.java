@@ -39,8 +39,8 @@ public class Country {
 
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Country {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(this.createdDateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
     public String getCreatedBy() {
@@ -112,7 +112,7 @@ public class Country {
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(this.lastUpdateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
     }
 
     public String getLastUpdatedBy() {
@@ -129,7 +129,7 @@ public class Country {
 
     public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
         this.createdDateAsUtc = createdDateAsUtc;
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
         this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
     }
 
@@ -139,7 +139,7 @@ public class Country {
 
     public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
         this.lastUpdateAsUtc = lastUpdateAsUtc;
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
         this.lastUpdate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
     }
 

@@ -139,4 +139,26 @@ public class ContactDaoImpl implements ContactDao{
             throwable.printStackTrace();
         }
     }
+
+
+    public ObservableList<String> getAllContactsNames() {
+        ObservableList<String> contactList = FXCollections.observableArrayList();
+        String sql = "SELECT Contact_Name FROM contacts";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+
+                String contactName = results.getString("Contact_Name");
+                contactList.add(contactName);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return contactList;
+    }
 }

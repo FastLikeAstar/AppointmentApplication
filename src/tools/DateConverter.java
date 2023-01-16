@@ -2,22 +2,19 @@ package tools;
 
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class DateConverter {
 
     /**
-     * Helper method to convert a given UTC ZonedDate into the LocalDateTime.
-     * This is important because the database stores all time in UTC.
-     * @param utcDateTime the given Date to convert into Local time
-     * @return the provided UTC Date Time as Local Date Time
+     * Helper method to convert a given ZonedDate into the LocalDateTime.
+     * This is important because the database stores all time in UTC and the business hours are EST.
+     * @param zonedDateTime the given Date to convert into Local time
+     * @return the provided Zoned Date Time as Local Date Time
      */
-    public static LocalDateTime convertUtcToLocal(ZonedDateTime utcDateTime){
+    public static LocalDateTime convertZonedToLocal(ZonedDateTime zonedDateTime){
         LocalDateTime localeDateTime;
-        localeDateTime = utcDateTime.toLocalDateTime();
+        localeDateTime = zonedDateTime.toLocalDateTime();
 
         return localeDateTime;
     }
@@ -36,6 +33,14 @@ public class DateConverter {
         localInUtcTime = localToZoned.withZoneSameLocal(ZoneId.of("UTC"));
 
         return localInUtcTime;
+    }
+
+    public static ZonedDateTime convertLocalDateToUTC(LocalDate date) {
+        ZoneId userTimeZone = ZoneId.systemDefault();
+        LocalDateTime dateTime = date.atStartOfDay();
+        ZonedDateTime zonedDateTime = dateTime.atZone(userTimeZone);
+        ZonedDateTime dateAsUtc = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+        return dateAsUtc;
     }
 
     /**
@@ -63,5 +68,20 @@ public class DateConverter {
         utcFromTimestamp = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
 
         return utcFromTimestamp;
+    }
+
+    /**
+     * Helper method to convert a given timestamp from the database to local time (was UTC).
+     * The provided timestamp should be of zoned UTC or this will lead to inaccurate conversions.
+     * @param timestamp Timestamp from database. (This should be UTC)
+     * @return Timestamp of local time of provided Timestamp.
+     */
+    public static Timestamp convertUtcToLocalTimestamp(Timestamp timestamp) {
+        Timestamp timeToReturn;
+        Instant instant = timestamp.toInstant();
+        ZoneId localZone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, localZone);
+        timeToReturn = Timestamp.valueOf(localDateTime);
+        return timeToReturn;
     }
 }

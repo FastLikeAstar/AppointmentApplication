@@ -35,12 +35,12 @@
                <children>
                      <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="10.0">
                         <children>
-                           <RadioButton fx:id="viewAll" mnemonicParsing="false" text="View All">
+                           <RadioButton fx:id="viewAll" mnemonicParsing="false" text="View All" onAction="#ToggleAll">
                               <toggleGroup>
                                  <ToggleGroup fx:id="ViewSelect" />
                               </toggleGroup></RadioButton>
-                           <RadioButton fx:id="viewMonth" mnemonicParsing="false" text="View Month" toggleGroup="$ViewSelect" />
-                           <RadioButton fx:id="viewWeek" mnemonicParsing="false" text="View Week" toggleGroup="$ViewSelect" />
+                           <RadioButton fx:id="viewMonth" mnemonicParsing="false" text="View Month" toggleGroup="$ViewSelect" onAction="#ToggleMonth" />
+                           <RadioButton fx:id="viewWeek" mnemonicParsing="false" text="View Week" toggleGroup="$ViewSelect" onAction="#ToggleWeek"/>
                         </children>
                         <opaqueInsets>
                            <Insets />

@@ -6,6 +6,10 @@ import sample.Appointment;
 import sample.Jdbc;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Iterator;
 
 public class AppointmentDaoImpl implements AppointmentDao{
     @Override
@@ -232,7 +236,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
     public ObservableList<Appointment> getNextMonthOfAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments " +
-                "WHERE Start <= DATE_ADD(NOW(), INTERVAL 1 MONTH) " +
+                "WHERE Start BETWEEN DATE_ADD(NOW(), INTERVAL 1 MONTH) " +
                 "AND DATE_ADD(NOW(), INTERVAL 2 MONTH);";
         try {
             Connection connection = Jdbc.getConnection();
@@ -272,7 +276,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
     public ObservableList<Appointment> getNextWeekOfAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments " +
-                "WHERE Start <= DATE_ADD(NOW(), INTERVAL 1 WEEK) " +
+                "WHERE Start BETWEEN DATE_ADD(NOW(), INTERVAL 1 WEEK) " +
                 "AND DATE_ADD(NOW(), INTERVAL 2 WEEK);";
         try {
             Connection connection = Jdbc.getConnection();
@@ -308,4 +312,64 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
         return appointmentList;
     }
+
+    public void removeUnavailableStartTimes(ObservableList<LocalTime> possibleStartTimes, LocalDate selectedDate) {
+        String sql = "SELECT Start, END FROM appointments WHERE DATE(Start) = ? ORDER BY Start";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setDate(1, Date.valueOf(selectedDate));
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                LocalTime startTime = resultSet.getTimestamp("Start").toLocalDateTime().toLocalTime();
+                LocalTime endTime = resultSet.getTimestamp("End").toLocalDateTime().toLocalTime();
+                for (Iterator<LocalTime> iterator = possibleStartTimes.iterator(); iterator.hasNext(); ) {
+                    LocalTime time = iterator.next();
+                    if (time.isAfter(startTime) && time.isBefore(endTime)) {
+                        iterator.remove();
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+        public ObservableList<Timestamp> getAvailableEndTimes(Timestamp startTime, int endOfDayHour){
+        ObservableList<Timestamp> availableEndTimes = FXCollections.observableArrayList();
+
+        String sql = "SELECT Start FROM appointments WHERE Start = ? " +
+                "ORDER BY Start";
+
+        try {
+
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setTimestamp(1, startTime);
+            ResultSet resultSet = statement.executeQuery();
+
+            LocalDateTime end = startTime.toLocalDateTime().plusMinutes(30); // appointment duration of 30 minutes
+            while (resultSet.next()) {
+                Timestamp nextAppointmentStartTime = resultSet.getTimestamp("start_time");
+                LocalDateTime nextAppointmentStart = nextAppointmentStartTime.toLocalDateTime();
+                if (nextAppointmentStart.isAfter(LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), end.toLocalTime()))) {
+                    end = nextAppointmentStart;
+                }
+            }
+            LocalDateTime endOfDay = LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), LocalTime.of(endOfDayHour, 0));
+            if (endOfDay.isBefore(end)) {
+                end = endOfDay;
+            }
+            while (end.isBefore(LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), LocalTime.of(endOfDayHour, 0)))) {
+                availableEndTimes.add(Timestamp.valueOf(end));
+                end = end.plusMinutes(30);
+            }
+
+            } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return availableEndTimes;
+    }
 }
+
