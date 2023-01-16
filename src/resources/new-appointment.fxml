@@ -48,14 +48,14 @@
                   <TextField fx:id="locationTextField" promptText="Enter Location..." GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <ComboBox fx:id="contactCombo" prefWidth="150.0" promptText="Select Contact" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <TextField fx:id="typeTextField" layoutX="277.0" layoutY="31.0" promptText="Enter Meeting Type.." GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <DatePicker fx:id="datePicker" onAction="#UpdateStartTimeSelection" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="datePicker" onAction="#updateStartTimeSelection" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                   <ComboBox fx:id="customerIdCombo" onAction="#customerSelected" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                   <ComboBox fx:id="userIdCombo" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                   <Label text="Customer ID"  GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <Label text="User ID" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                   <Label text="Start Time" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <Label text="End Time" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <ComboBox fx:id="startTimeCombo" onAction="#UpdateEndTimeSelection" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <ComboBox fx:id="startTimeCombo" onAction="#updateEndTimeSelection" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <ComboBox fx:id="endTimeCombo" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                </children>
             </GridPane>

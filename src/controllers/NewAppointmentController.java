@@ -148,7 +148,7 @@ public class NewAppointmentController implements Initializable {
     }
 
 
-    public void UpdateEndTimeSelection(ActionEvent actionEvent) {
+    public void updateEndTimeSelection(ActionEvent actionEvent) {
         if (startTimeCombo.getValue() != null) {
             endTimeCombo.setDisable(false);
             LocalDate selectedDate = datePicker.getValue();
@@ -198,7 +198,7 @@ public class NewAppointmentController implements Initializable {
         }
     }
 
-    public void UpdateStartTimeSelection(ActionEvent actionEvent) {
+    public void updateStartTimeSelection(ActionEvent actionEvent) {
         startTimeCombo.setDisable(false);
         endTimeCombo.setDisable(true);
         endTimeCombo.setValue(null);
