@@ -152,7 +152,7 @@ public class NewAppointmentController implements Initializable {
         if (startTimeCombo.getValue() != null) {
             endTimeCombo.setDisable(false);
             LocalDate selectedDate = datePicker.getValue();
-            Integer selectedCustomerId = (Integer) customerIdCombo.getValue();
+            Integer selectedCustomerId = customerIdCombo.getValue();
 
             ObservableList<Appointment> customerAppointments = Main.dbAppointments.getCustomerAppointments(selectedCustomerId.intValue());
 
@@ -169,29 +169,37 @@ public class NewAppointmentController implements Initializable {
             LocalDateTime endOfSelectedDateTime = LocalDateTime.of(selectedDate, endOfDay);
             ZonedDateTime endOfSelectedDateTimeAsEst = ZonedDateTime.of(endOfSelectedDateTime, ZoneId.of("America/New_York"));
 
-            ZonedDateTime opening = beginningOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault());
             ZonedDateTime closing = endOfSelectedDateTimeAsEst.withZoneSameInstant(ZoneId.systemDefault());
             for (int i = startTimeCombo.getValue().getHour(); i < closing.getHour(); i++) {
                 hours.add(LocalTime.of(i, 0));
                 hours.add(LocalTime.of(i, 30));
             }
 
-            for (Appointment appointment : customerAppointments) {
-                ZonedDateTime appointmentStart = appointment.getStartTimeAsUtc();
-                appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
-
-                ZonedDateTime appointmentEnd = appointment.getEndTimeAsUtc();
-//                appointmentEnd = appointmentEnd.withZoneSameInstant(ZoneId.systemDefault());
-
-                LocalTime finalAppointmentStart = appointmentStart.toLocalTime();
-//                LocalTime finalAppointmentEnd = appointmentEnd.toLocalTime();
-                Iterator<LocalTime> iterator = hours.iterator();
-                while (iterator.hasNext()) {
-                    LocalTime hour = iterator.next();
-                    if (hour.isAfter(finalAppointmentStart)) {
-                        iterator.remove();
-                    }
+            Iterator<LocalTime> iterator = hours.iterator();
+            while (iterator.hasNext()) {
+                LocalTime hour = iterator.next();
+                if (hour.isBefore(startTimeCombo.getValue()) || hour.equals(startTimeCombo.getValue())) {
+                    iterator.remove();
                 }
+            }
+
+            for (Appointment appointment : customerAppointments) {
+                    ZonedDateTime appointmentStart = appointment.getStartTimeAsUtc();
+                    appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
+
+                    LocalDate previousAppointment = appointmentStart.toLocalDate();
+
+
+                    if (previousAppointment.equals(datePicker.getValue())) {
+                        LocalTime finalAppointmentStart = appointmentStart.toLocalTime();
+                        Iterator<LocalTime> iteratorHour = hours.iterator();
+                        while (iteratorHour.hasNext()) {
+                            LocalTime hour2 = iteratorHour.next();
+                            if (hour2.isAfter(finalAppointmentStart)) {
+                                iteratorHour.remove();
+                            }
+                        }
+                    }
 
             }
             endTimeCombo.setItems(hours);
@@ -214,11 +222,10 @@ public class NewAppointmentController implements Initializable {
         }
         else{
 
-            Integer selectedCustomerId = (Integer) customerIdCombo.getValue();
+            Integer selectedCustomerId = customerIdCombo.getValue();
 
             ObservableList<Appointment> customerAppointments = Main.dbAppointments.getCustomerAppointments(selectedCustomerId.intValue());
 
-            startTimeCombo.setValue(null);
             startTimeCombo.setDisable(false);
             endTimeCombo.setDisable(true);
             endTimeCombo.setValue(null);

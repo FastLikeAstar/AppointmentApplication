@@ -22,8 +22,10 @@ import tools.DateConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -69,14 +71,14 @@ public class CustomerAppointmentsController implements Initializable {
     public RadioButton viewWeek;
     @FXML
     public TableView <Appointment> table;
-    @FXML
+
     public int selection;
     @FXML
     public DatePicker startDatePicker;
     @FXML
-    public ComboBox startTimeCombo;
+    public ComboBox <LocalTime> startTimeCombo;
     @FXML
-    public ComboBox endTimeCombo;
+    public ComboBox <LocalTime> endTimeCombo;
 
     int previousCustomerId;
     int selectedAppointmentId;
@@ -105,11 +107,18 @@ public class CustomerAppointmentsController implements Initializable {
         startDatePicker.setDisable(true);
 
 
+        ObservableList<Integer> contacts = Main.dbContacts.getAllContactIds();
+        comboContact.setItems(contacts);
 
+        ObservableList<Integer> customers = Main.dbCustomers.getAllCustomerIds();
+        comboCustomer.setItems(customers);
+
+        ObservableList<Integer> users = Main.dbUsers.getAllUserIds();
+        comboUser.setItems(users);
 
         // All View is 1, Monthly View is 2, Weekly View is 3,
         viewAll.setSelected(true);
-        int selection = 1;
+        selection = 1;
         LoadTable(selection);
     }
 
@@ -191,65 +200,171 @@ public class CustomerAppointmentsController implements Initializable {
     }
 
     public void EditSelectedAppointment(ActionEvent actionEvent) {
+        if (table.getSelectionModel().getSelectedItem() != null) {
+            textFieldDescription.setDisable(false);
+            textFieldLocation.setDisable(false);
+            textFieldTitle.setDisable(false);
+            textFieldType.setDisable(false);
 
-        textFieldDescription.setDisable(false);
-        textFieldLocation.setDisable(false);
-        textFieldTitle.setDisable(false);
-        textFieldType.setDisable(false);
+            comboContact.setDisable(false);
+            comboCustomer.setDisable(false);
+            comboUser.setDisable(false);
 
-        comboContact.setDisable(false);
-        comboCustomer.setDisable(false);
-        comboUser.setDisable(false);
-
-        startTimeCombo.setDisable(false);
-        endTimeCombo.setDisable(false);
-        startDatePicker.setDisable(false);
-
-
+            startTimeCombo.setDisable(false);
+            endTimeCombo.setDisable(false);
+            startDatePicker.setDisable(false);
 
 
-        Appointment selectedAppointment = table.getSelectionModel().getSelectedItem();
-        selectedAppointmentId = selectedAppointment.getAppointmentId();
+            Appointment selectedAppointment = table.getSelectionModel().getSelectedItem();
+            selectedAppointmentId = selectedAppointment.getAppointmentId();
 
-        textFieldDescription.setText(selectedAppointment.getDescription());
-        textFieldLocation.setText(selectedAppointment.getLocation());
-        textFieldTitle.setText(selectedAppointment.getTitle());
-        textFieldType.setText(selectedAppointment.getType());
-        textFieldAppointmentId.setText(""+selectedAppointment.getAppointmentId());
+            textFieldAppointmentId.setText(selectedAppointmentId+"");
 
-        comboContact.setValue(selectedAppointment.getContactId());
-        comboCustomer.setValue(selectedAppointment.getCustomerId());
-        comboUser.setValue(selectedAppointment.getUserId());
-
-        ZonedDateTime startTime = selectedAppointment.getStartTimeAsUtc();
-        ZonedDateTime startTimeForUser = startTime.withZoneSameInstant(ZoneId.systemDefault());
-
-        ZonedDateTime endTime = selectedAppointment.getEndTimeAsUtc();
-        ZonedDateTime endTimeForUser = endTime.withZoneSameInstant(ZoneId.systemDefault());
+            textFieldDescription.setText(selectedAppointment.getDescription());
+            textFieldLocation.setText(selectedAppointment.getLocation());
+            textFieldTitle.setText(selectedAppointment.getTitle());
+            textFieldType.setText(selectedAppointment.getType());
 
 
-        startDatePicker.setValue(startTimeForUser.toLocalDate());
-        startTimeCombo.setValue(startTimeForUser.toLocalTime());
-        endTimeCombo.setValue(endTimeForUser.toLocalTime());
+            comboContact.setValue(selectedAppointment.getContactId());
+            comboCustomer.setValue(selectedAppointment.getCustomerId());
+            comboUser.setValue(selectedAppointment.getUserId());
 
-        startTimeCombo.setDisable(false);
-        endTimeCombo.setDisable(false);
-        startDatePicker.setDisable(false);
+            ZonedDateTime startTime = selectedAppointment.getStartTimeAsUtc();
+            ZonedDateTime startTimeForUser = startTime.withZoneSameInstant(ZoneId.systemDefault());
 
-        labelFeedback.setTextFill(Color.DARKGREEN);
-        labelFeedback.setText("You may now edit the \n selected customer.");
+            ZonedDateTime endTime = selectedAppointment.getEndTimeAsUtc();
+            ZonedDateTime endTimeForUser = endTime.withZoneSameInstant(ZoneId.systemDefault());
 
-        previousCustomerId = comboCustomer.getValue().intValue();
+
+            startDatePicker.setValue(startTimeForUser.toLocalDate());
+            startTimeCombo.setValue(startTimeForUser.toLocalTime());
+            endTimeCombo.setValue(endTimeForUser.toLocalTime());
+
+            startTimeCombo.setDisable(false);
+            endTimeCombo.setDisable(false);
+            startDatePicker.setDisable(false);
+
+            labelFeedback.setTextFill(Color.DARKGREEN);
+            labelFeedback.setText("You may now edit the \n selected appointment.");
+
+            previousCustomerId = comboCustomer.getValue().intValue();
+        }
+        else{
+            labelFeedback.setTextFill(Color.RED);
+            labelFeedback.setText("No appointment selected.");
+        }
 
     }
 
     public void CancelSelectedAppointment(ActionEvent actionEvent) {
+        if (table.getSelectionModel().getSelectedItem() != null) {
+            Appointment appointmentToDelete = table.getSelectionModel().getSelectedItem();
+            int id = appointmentToDelete.getAppointmentId();
+            String type = appointmentToDelete.getType();
+            Main.dbAppointments.delete(id);
+            LoadTable(selection);
+            labelFeedback.setTextFill(Color.BLUE);
+            labelFeedback.setText("Appointment " + id + " of type " + type + " Deleted.");
+
+        } else {
+            labelFeedback.setTextFill(Color.RED);
+            labelFeedback.setText("No appointment selected.");
+        }
     }
 
-    public void SaveChanges(ActionEvent actionEvent) {
+    public void SaveChanges(ActionEvent actionEvent) throws IOException {
+        boolean valid = false;
+
+        if (comboContact.getValue() != null && comboUser.getValue() != null && comboCustomer.getValue() != null
+                && startTimeCombo.getValue() != null && endTimeCombo.getValue() != null && startDatePicker.getValue() != null) {
+            String title = textFieldTitle.getText();
+            String description = textFieldDescription.getText();
+            String location = textFieldLocation.getText();
+            String type = textFieldType.getText();
+            int appointmentId = selectedAppointmentId;
+
+            LocalDate dateSelected = startDatePicker.getValue();
+            LocalTime startTime = startTimeCombo.getValue();
+            LocalTime endTime = endTimeCombo.getValue();
+
+            LocalDateTime localStart = LocalDateTime.of(dateSelected, startTime);
+            LocalDateTime localEnd = LocalDateTime.of(dateSelected, endTime);
+            ZonedDateTime utcStart = ZonedDateTime.of(localStart, ZoneId.systemDefault());
+            ZonedDateTime utcEnd = ZonedDateTime.of(localEnd, ZoneId.systemDefault());
+            Timestamp start = DateConverter.convertUtcToTimestamp(utcStart);
+            Timestamp end = DateConverter.convertUtcToTimestamp(utcEnd);
+
+            int customerId = comboCustomer.getValue().intValue();
+            int contactId = comboContact.getValue().intValue();
+            int userId = comboUser.getValue().intValue();
+
+
+            valid = (!(title.isBlank()) &&
+                    !(description.isBlank()) &&
+                    !(type.isBlank()) &&
+                    !(location.isBlank()) &&
+                    !(startTimeCombo.getSelectionModel().isEmpty()) &&
+                    !(endTimeCombo.getSelectionModel().isEmpty()) &&
+                    !(comboContact.getSelectionModel().isEmpty()) &&
+                    !(comboCustomer.getSelectionModel().isEmpty()) &&
+                    !(comboUser.getSelectionModel().isEmpty()));
+
+            if (valid) {
+
+                Appointment appointment = new Appointment(appointmentId, title, description, location, type, start, end, start, Main.user, start, Main.user, customerId, userId, contactId);
+                Main.dbAppointments.update(appointment);
+                LoadTable(this.selection);
+                labelFeedback.setTextFill(Color.DARKGREEN);
+                labelFeedback.setText("Appointment Updated Successfully");
+
+
+            }
+            else{
+                labelFeedback.setTextFill(Color.RED);
+                labelFeedback.setText("Please check that all fields have a valid entry.");
+            }
+        }
+        else {
+            labelFeedback.setTextFill(Color.RED);
+            labelFeedback.setText("Please check that all fields have a valid entry.");
+        }
+
     }
 
     public void CancelChanges(ActionEvent actionEvent) {
+        textFieldAppointmentId.setDisable(true);
+        textFieldDescription.setDisable(true);
+        textFieldLocation.setDisable(true);
+        textFieldTitle.setDisable(true);
+        textFieldType.setDisable(true);
+
+        comboContact.setDisable(true);
+        comboCustomer.setDisable(true);
+        comboUser.setDisable(true);
+
+        startTimeCombo.setDisable(true);
+        endTimeCombo.setDisable(true);
+        startDatePicker.setDisable(true);
+
+
+
+        textFieldAppointmentId.setText("");
+        textFieldDescription.setText("");
+        textFieldLocation.setText("");
+        textFieldTitle.setText("");
+        textFieldType.setText("");
+
+        comboContact.setValue(null);
+        comboCustomer.setValue(null);
+        comboUser.setValue(null);
+
+        startTimeCombo.setValue(null);
+        endTimeCombo.setValue(null);
+        startDatePicker.setValue(null);
+
+        selectedAppointmentId = -1;
+        previousCustomerId = -1;
     }
 
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
@@ -359,6 +474,67 @@ public class CustomerAppointmentsController implements Initializable {
             }
 
             startTimeCombo.setItems(hours);
+        }
+    }
+
+    public void updateEndTimeSelection(ActionEvent actionEvent) {
+        if (startTimeCombo.getValue() != null) {
+            endTimeCombo.setDisable(false);
+            LocalDate selectedDate = startDatePicker.getValue();
+            Integer selectedCustomerId = comboCustomer.getValue();
+
+            ObservableList<Appointment> customerAppointments = Main.dbAppointments.getCustomerAppointments(selectedCustomerId.intValue());
+
+
+            ObservableList<LocalTime> hours = FXCollections.observableArrayList();
+
+            LocalTime startOfDay = LocalTime.of(Main.START_OF_DAY, 0);
+            LocalTime endOfDay = LocalTime.of(Main.END_OF_DAY, 0);
+
+
+            LocalDateTime beginningOfSelectedDateTime = LocalDateTime.of(selectedDate, startOfDay);
+            ZonedDateTime beginningOfSelectedDateAsEst = ZonedDateTime.of(beginningOfSelectedDateTime, ZoneId.of("America/New_York"));
+
+            LocalDateTime endOfSelectedDateTime = LocalDateTime.of(selectedDate, endOfDay);
+            ZonedDateTime endOfSelectedDateTimeAsEst = ZonedDateTime.of(endOfSelectedDateTime, ZoneId.of("America/New_York"));
+
+            ZonedDateTime opening = beginningOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime closing = endOfSelectedDateTimeAsEst.withZoneSameInstant(ZoneId.systemDefault());
+            for (int i = startTimeCombo.getValue().getHour(); i < closing.getHour(); i++) {
+                hours.add(LocalTime.of(i, 0));
+                hours.add(LocalTime.of(i, 30));
+            }
+
+            Iterator<LocalTime> iterator = hours.iterator();
+            while (iterator.hasNext()) {
+                LocalTime hour = iterator.next();
+                if (hour.isBefore(startTimeCombo.getValue()) || hour.equals(startTimeCombo.getValue())) {
+                    iterator.remove();
+                }
+            }
+
+            for (Appointment appointment : customerAppointments) {
+                if (appointment.getAppointmentId() != selectedAppointmentId) {
+                    ZonedDateTime appointmentStart = appointment.getStartTimeAsUtc();
+                    appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
+
+                    LocalDate previousAppointment = appointmentStart.toLocalDate();
+
+
+                    if (previousAppointment.equals(startDatePicker.getValue())) {
+                        LocalTime finalAppointmentStart = appointmentStart.toLocalTime();
+                        Iterator<LocalTime> iteratorHour = hours.iterator();
+                        while (iteratorHour.hasNext()) {
+                            LocalTime hour2 = iteratorHour.next();
+                            if (hour2.isAfter(finalAppointmentStart)) {
+                                iteratorHour.remove();
+                            }
+                        }
+                    }
+                }
+
+            }
+            endTimeCombo.setItems(hours);
         }
     }
 }

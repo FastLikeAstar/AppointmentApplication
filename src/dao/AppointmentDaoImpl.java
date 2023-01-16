@@ -135,16 +135,16 @@ public class AppointmentDaoImpl implements AppointmentDao{
         int affectedRows = -1;
         String sql = "UPDATE appointments " +
                 "SET Title = ?, " +
-                "SET Description = ?, " +
-                "SET Location = ?, " +
-                "SET Type = ?, " +
-                "SET Start = ?, " +
-                "SET End = ?, " +
-                "SET Last_Update = NOW(), " +
-                "SET Last_Update_By = ?, " +
-                "SET Customer_ID = ?, " +
-                "SET User_ID = ?, " +
-                "SET Contact_ID = ?, " +
+                "Description = ?, " +
+                "Location = ?, " +
+                "Type = ?, " +
+                "Start = ?, " +
+                "End = ?, " +
+                "Last_Update = NOW(), " +
+                "Last_Updated_By = ?, " +
+                "Customer_ID = ?, " +
+                "User_ID = ?, " +
+                "Contact_ID = ? " +
                 "WHERE Appointment_ID = ?";
 
         try{

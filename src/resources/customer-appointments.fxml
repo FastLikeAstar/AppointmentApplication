@@ -104,7 +104,7 @@
             <ComboBox fx:id="comboContact" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <TextField fx:id="textFieldLocation" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                <DatePicker fx:id="startDatePicker" onAction="#updateStartTimeSelection" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-               <ComboBox fx:id="startTimeCombo" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+               <ComboBox fx:id="startTimeCombo" onAction="#updateEndTimeSelection" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                <ComboBox fx:id="endTimeCombo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                <TextField fx:id="textFieldType" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
