@@ -194,4 +194,24 @@ public class UserDaoImpl implements UserDao{
 
         return userList;
     }
+
+    public int getIdByName(String name) {
+        int userId = -1;
+        String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+                userId = results.getInt("User_ID");
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return userId;
+    }
 }

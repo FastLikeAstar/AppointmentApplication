@@ -33,13 +33,13 @@ public class NewAppointmentController implements Initializable {
     @FXML
     public TextField locationTextField;
     @FXML
-    public ComboBox contactCombo;
+    public ComboBox <Integer> contactCombo;
     @FXML
     public TextField typeTextField;
     @FXML
-    public ComboBox customerIdCombo;
+    public ComboBox <Integer> customerIdCombo;
     @FXML
-    public ComboBox userIdCombo;
+    public ComboBox <Integer> userIdCombo;
     @FXML
     public ComboBox<LocalTime> endTimeCombo;
     @FXML
@@ -60,17 +60,19 @@ public class NewAppointmentController implements Initializable {
         labelFeedback.setText("");
         startTimeCombo.setDisable(true);
         endTimeCombo.setDisable(true);
+        userIdCombo.setDisable(true);
         datePicker.setDisable(true);
 
-        ObservableList<String> contacts = Main.dbContacts.getAllContactsNames();
+        ObservableList<Integer> contacts = Main.dbContacts.getAllContactIds();
         contactCombo.setItems(contacts);
 
         ObservableList<Integer> customers = Main.dbCustomers.getAllCustomerIds();
         customerIdCombo.setItems(customers);
 
         ObservableList<Integer> users = Main.dbUsers.getAllUserIds();
-        customerIdCombo.setItems(users);
-
+        userIdCombo.setItems(users);
+        int userIdFromName = Main.dbUsers.getIdByName(Main.user);
+        userIdCombo.setValue(userIdFromName);
 
     }
 
@@ -87,45 +89,61 @@ public class NewAppointmentController implements Initializable {
     }
 
     public void SaveData(ActionEvent actionEvent) throws IOException {
-//        boolean valid = false;
-//
-//        if (contactCombo.getValue() != null && userIdCombo.getValue() != null && customerIdCombo.getValue() != null) {
-//            String title = titleTextField.getText();
-//            String description = descriptionTextField.getText();
-//            String location = locationTextField.getText();
-//            LocalDate dateSelected = datePicker.getValue();
-//            String country = comboCountry.getValue().toString();
-//            String division = comboFirstDiv.getValue().toString();
-//
-//
-//            valid = (!(title.isBlank()) &&
-//                    !(number.isBlank()) &&
-//                    !(address.isBlank()) &&
-//                    !(postalCode.isBlank()) &&
-//                    !(contactCombo.getSelectionModel().isEmpty()) &&
-//                    !(userIdCombo.getSelectionModel().isEmpty()) &&
-//                    !(customerIdCombo.getSelectionModel().isEmpty()));
-//
-//            if (valid) {
-//
-//                Customer customer = new Customer(-1, name, address, postalCode, number, null, Main.user, null, Main.user, divisionId);
-//                Main.dbCustomers.save(customer);
-//
-//                // Navigate back
-//                Scene productScene;
-//                Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
-//                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//                productScene = new Scene(tempParent);
-//                stage.setScene(productScene);
-//                stage.centerOnScreen();
-//            }
-//            else{
-//                labelFeedback.setText("Please check that all fields have a valid entry.");
-//            }
-//        }
-//        else {
-//            labelFeedback.setText("Please check that all fields have a valid entry.");
-//        }
+        boolean valid = false;
+
+        if (contactCombo.getValue() != null && userIdCombo.getValue() != null && customerIdCombo.getValue() != null
+            && startTimeCombo.getValue() != null && endTimeCombo.getValue() != null && datePicker.getValue() != null) {
+            String title = titleTextField.getText();
+            String description = descriptionTextField.getText();
+            String location = locationTextField.getText();
+            String type = typeTextField.getText();
+
+            LocalDate dateSelected = datePicker.getValue();
+            LocalTime startTime = startTimeCombo.getValue();
+            LocalTime endTime = endTimeCombo.getValue();
+
+            LocalDateTime localStart = LocalDateTime.of(dateSelected, startTime);
+            LocalDateTime localEnd = LocalDateTime.of(dateSelected, endTime);
+            ZonedDateTime utcStart = ZonedDateTime.of(localStart, ZoneId.systemDefault());
+            ZonedDateTime utcEnd = ZonedDateTime.of(localEnd, ZoneId.systemDefault());
+            Timestamp start = DateConverter.convertUtcToTimestamp(utcStart);
+            Timestamp end = DateConverter.convertUtcToTimestamp(utcEnd);
+
+            int customerId = customerIdCombo.getValue().intValue();
+            int contactId = contactCombo.getValue().intValue();
+            int userId = userIdCombo.getValue().intValue();
+
+
+            valid = (!(title.isBlank()) &&
+                    !(description.isBlank()) &&
+                    !(type.isBlank()) &&
+                    !(location.isBlank()) &&
+                    !(startTimeCombo.getSelectionModel().isEmpty()) &&
+                    !(endTimeCombo.getSelectionModel().isEmpty()) &&
+                    !(contactCombo.getSelectionModel().isEmpty()) &&
+                    !(userIdCombo.getSelectionModel().isEmpty()) &&
+                    !(customerIdCombo.getSelectionModel().isEmpty()));
+
+            if (valid) {
+
+                Appointment appointment = new Appointment(0, title, description, location, type, start, end, start, Main.user, start, Main.user, customerId, userId, contactId);
+                Main.dbAppointments.save(appointment);
+
+                // Navigate back
+                Scene productScene;
+                Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointments.fxml"));
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                productScene = new Scene(tempParent);
+                stage.setScene(productScene);
+                stage.centerOnScreen();
+            }
+            else{
+                labelFeedback.setText("Please check that all fields have a valid entry.");
+            }
+        }
+        else {
+            labelFeedback.setText("Please check that all fields have a valid entry.");
+        }
 
     }
 
@@ -170,7 +188,7 @@ public class NewAppointmentController implements Initializable {
                 Iterator<LocalTime> iterator = hours.iterator();
                 while (iterator.hasNext()) {
                     LocalTime hour = iterator.next();
-                    if (finalAppointmentStart.isAfter(hour)) {
+                    if (hour.isAfter(finalAppointmentStart)) {
                         iterator.remove();
                     }
                 }

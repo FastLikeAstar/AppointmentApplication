@@ -98,6 +98,7 @@ public class LoginController implements Initializable {
 
         if (successful)
         {
+            Main.user = enteredUsername;
             Scene mainMenuScene;
             Parent tempParent = FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
             Stage stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();

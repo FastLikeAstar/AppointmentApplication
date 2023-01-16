@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sample.Appointment;
 import sample.Jdbc;
+import sample.Main;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -92,7 +93,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
         int affectedRows = -1;
         String sql = "INSERT INTO appointments "+
                 "(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)"+
-                " VALUES (t?, d?, l?, t?, s?,e?, NOW(), c?, NOW(), l?, c?, u?, c?)";
+                " VALUES (?, ?, ?, ?, ?,?, NOW(), ?, NOW(), ?, ?, ?, ?)";
 
         try{
             Connection connection = Jdbc.getConnection();
@@ -104,8 +105,8 @@ public class AppointmentDaoImpl implements AppointmentDao{
             statement.setString(4, appointment.getType());
             statement.setTimestamp(5, appointment.getStartTime());
             statement.setTimestamp(6, appointment.getEndTime());
-            statement.setString(7, appointment.getCreatedBy());
-            statement.setString(8, appointment.getLastUpdatedBy());
+            statement.setString(7, Main.user);
+            statement.setString(8, Main.user);
             statement.setInt(9, appointment.getCustomerId());
             statement.setInt(10, appointment.getUserId());
             statement.setInt(11, appointment.getContactId());
@@ -113,6 +114,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
             affectedRows = statement.executeUpdate();
             ResultSet generatedKey = statement.getGeneratedKeys();
+            generatedKey.next();
             appointment.setAppointmentId(generatedKey.getInt(1));
 
             // If SQL statement fails or affectedRows included in case the database is full (should see and Int rollover).

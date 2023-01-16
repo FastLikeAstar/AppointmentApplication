@@ -140,6 +140,30 @@ public class ContactDaoImpl implements ContactDao{
         }
     }
 
+    public ObservableList<Integer> getAllContactIds() {
+        ObservableList<Integer> contactList = FXCollections.observableArrayList();
+        String sql = "SELECT Contact_ID FROM contacts " +
+                "WHERE NOT EXISTS " +
+                "(SELECT * FROM contacts " +
+                "WHERE contacts.Contact_Name IS NULL)";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int contactId = results.getInt("Contact_ID");
+
+
+                contactList.add(contactId);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return contactList;
+    }
 
     public ObservableList<String> getAllContactsNames() {
         ObservableList<String> contactList = FXCollections.observableArrayList();
