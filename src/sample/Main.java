@@ -20,7 +20,7 @@ public class Main extends Application {
     public static UserDaoImpl dbUsers;
 
     public static int START_OF_DAY = 8; // 8 + 5 EST is 5 hours behind UTC
-    public static int END_OF_DAY = 10; // (22 + 5 - 24) EST is 5 hours behind UTC
+    public static int END_OF_DAY = 22; // (22 + 5 - 24) EST is 5 hours behind UTC
 
 
     @Override

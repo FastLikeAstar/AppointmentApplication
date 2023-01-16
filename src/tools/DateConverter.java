@@ -26,7 +26,7 @@ public class DateConverter {
      * @param localDateTime Time from user's perspective.
      * @return returns the local time as a Utc Zoned Time
      */
-    public static ZonedDateTime convertLocalToUtc(LocalDateTime localDateTime){
+    public static ZonedDateTime convertSystemLocalDateTimeToUtc(LocalDateTime localDateTime){
         ZonedDateTime localInUtcTime;
         ZonedDateTime localToZoned;
         localToZoned = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
@@ -34,6 +34,7 @@ public class DateConverter {
 
         return localInUtcTime;
     }
+
 
     public static ZonedDateTime convertLocalDateToUTC(LocalDate date) {
         ZoneId userTimeZone = ZoneId.systemDefault();

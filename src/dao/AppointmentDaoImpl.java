@@ -313,27 +313,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return appointmentList;
     }
 
-    public void removeUnavailableStartTimes(ObservableList<LocalTime> possibleStartTimes, LocalDate selectedDate) {
-        String sql = "SELECT Start, END FROM appointments WHERE DATE(Start) = ? ORDER BY Start";
-        try {
-            Connection connection = Jdbc.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setDate(1, Date.valueOf(selectedDate));
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                LocalTime startTime = resultSet.getTimestamp("Start").toLocalDateTime().toLocalTime();
-                LocalTime endTime = resultSet.getTimestamp("End").toLocalDateTime().toLocalTime();
-                for (Iterator<LocalTime> iterator = possibleStartTimes.iterator(); iterator.hasNext(); ) {
-                    LocalTime time = iterator.next();
-                    if (time.isAfter(startTime) && time.isBefore(endTime)) {
-                        iterator.remove();
-                    }
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+
 
         public ObservableList<Timestamp> getAvailableEndTimes(Timestamp startTime, int endOfDayHour){
         ObservableList<Timestamp> availableEndTimes = FXCollections.observableArrayList();
@@ -370,6 +350,44 @@ public class AppointmentDaoImpl implements AppointmentDao{
         }
 
         return availableEndTimes;
+    }
+
+    public ObservableList<Appointment> getCustomerAppointments(int customerId) {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, customerId);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int appointmentId = results.getInt("Appointment_ID");
+                String appointmentName = results.getString("Title");
+                String description = results.getString("Description");
+                String location = results.getString("Location");
+                String type = results.getString("Type");
+                Timestamp startTime = results.getTimestamp("Start");
+                Timestamp endTime = results.getTimestamp("End");
+                Timestamp createdDate = results.getTimestamp("Create_Date");
+                String createdBy = results.getString("Created_By");
+                Timestamp lastUpdate = results.getTimestamp("Last_Update");
+                String lastUpdateBy = results.getString("Last_Updated_By");
+                int userId = results.getInt("User_ID");
+                int contactId = results.getInt("Contact_ID");
+
+
+
+
+                Appointment appointment = new Appointment(appointmentId, appointmentName, description, location, type, startTime, endTime, createdDate,createdBy, lastUpdate, lastUpdateBy, customerId,userId,contactId);
+                appointmentList.add(appointment);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return appointmentList;
     }
 }
 

@@ -10,22 +10,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 import sample.*;
 import tools.DateConverter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.*;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class NewAppointmentController implements Initializable {
 
@@ -48,7 +43,7 @@ public class NewAppointmentController implements Initializable {
     @FXML
     public ComboBox <Integer> endTimeCombo;
     @FXML
-    public ComboBox <Integer> startTimeCombo;
+    public ComboBox <LocalTime> startTimeCombo;
     @FXML
     public DatePicker datePicker;
 
@@ -65,6 +60,7 @@ public class NewAppointmentController implements Initializable {
         labelFeedback.setText("");
         startTimeCombo.setDisable(true);
         endTimeCombo.setDisable(true);
+        datePicker.setDisable(true);
 
         ObservableList<String> contacts = Main.dbContacts.getAllContactsNames();
         contactCombo.setItems(contacts);
@@ -135,53 +131,49 @@ public class NewAppointmentController implements Initializable {
 
 
     public void UpdateEndTimeSelection(ActionEvent actionEvent) {
-        endTimeCombo.setDisable(false);
-        endTimeCombo.setValue(null);
+        if (startTimeCombo.getValue() != null) {
+            endTimeCombo.setDisable(false);
 
-        LocalTime selectedTime = LocalTime.of(startTimeCombo.getValue(), 0);
-        LocalDate selectedDate = datePicker.getValue();
-        LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate,selectedTime);
+            LocalTime selectedTime = startTimeCombo.getValue();
+            LocalDate selectedDate = datePicker.getValue();
+            LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, selectedTime);
 
-        ZonedDateTime selectedDateAsUtc = DateConverter.convertLocalToUtc(selectedDateTime);
-        ZonedDateTime dateAsEst = selectedDateAsUtc.withZoneSameInstant(ZoneId.of("America/New_York"));
-
-
-        LocalTime startOfDay = LocalTime.of(Main.START_OF_DAY, 0);
-        LocalTime endOfDay = LocalTime.of(Main.END_OF_DAY, 0);
+            ZonedDateTime selectedDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(selectedDateTime);
+            ZonedDateTime dateAsEst = selectedDateAsUtc.withZoneSameInstant(ZoneId.of("America/New_York"));
 
 
-        LocalDateTime beginningOfSelectedDateTime = LocalDateTime.of(selectedDate,startOfDay);
-        ZonedDateTime beginningOfSelectedDateAsUtc = DateConverter.convertLocalToUtc(beginningOfSelectedDateTime);
-        ZonedDateTime beginningOfSelectedDateAsEst = beginningOfSelectedDateAsUtc.withZoneSameInstant(ZoneId.of("America/New_York"));
+            LocalTime startOfDay = LocalTime.of(Main.START_OF_DAY, 0);
+            LocalTime endOfDay = LocalTime.of(Main.END_OF_DAY, 0);
 
-        LocalDateTime endOfSelectedDateTime = LocalDateTime.of(selectedDate,startOfDay);
-        ZonedDateTime endOfSelectedDateAsUtc = DateConverter.convertLocalToUtc(endOfSelectedDateTime);
-        ZonedDateTime endOfSelectedDateAsEst = endOfSelectedDateAsUtc.withZoneSameInstant(ZoneId.of("America/New_York"));
 
-        if (dateAsEst.toLocalTime().isBefore(startOfDay) || dateAsEst.toLocalTime().isAfter(endOfDay))
-        {
-            labelFeedback.setTextFill(Color.RED);
-            LocalTime opening = beginningOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
-            LocalTime closing = endOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
-            labelFeedback.setText("Please select a time between:\n" + opening + " and " + closing );
-        }
-        else{
-            startTimeCombo.setValue(null);
-            startTimeCombo.setDisable(false);
-            endTimeCombo.setDisable(true);
-            endTimeCombo.setValue(null);
+            LocalDateTime beginningOfSelectedDateTime = LocalDateTime.of(selectedDate, startOfDay);
+            ZonedDateTime beginningOfSelectedDateAsEst = ZonedDateTime.of(beginningOfSelectedDateTime,ZoneId.of("America/New_York"));
 
-            ObservableList<Integer> localTimes = FXCollections.observableArrayList();
-            for (int i = 0; i < 24; i++){
-                localTimes.add(i);
+            LocalDateTime endOfSelectedDateTime = LocalDateTime.of(selectedDate, endOfDay);
+            ZonedDateTime endOfSelectedDateTimeAsEst = ZonedDateTime.of(endOfSelectedDateTime,ZoneId.of("America/New_York"));
+
+            ZonedDateTime opening = beginningOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime closing = endOfSelectedDateTimeAsEst.withZoneSameInstant(ZoneId.systemDefault());
+
+            if (selectedDateTime.toLocalTime().isBefore(opening.toLocalTime()) || selectedDateTime.toLocalTime().isAfter(closing.toLocalTime())) {
+                labelFeedback.setTextFill(Color.RED);
+
+                labelFeedback.setText("Please select a time between:\n" + opening.toLocalTime() + " and " + closing.toLocalTime());
+            } else {
+                endTimeCombo.setDisable(false);
+
+                ObservableList<Integer> localTimes = FXCollections.observableArrayList();
+                for (int i = 0; i < 24; i++) {
+                    localTimes.add(i);
+                }
+
+                endTimeCombo.setItems(localTimes);
             }
 
-            endTimeCombo.setItems(localTimes);
         }
     }
 
     public void UpdateStartTimeSelection(ActionEvent actionEvent) {
-        startTimeCombo.setValue(null);
         startTimeCombo.setDisable(false);
         endTimeCombo.setDisable(true);
         endTimeCombo.setValue(null);
@@ -189,23 +181,62 @@ public class NewAppointmentController implements Initializable {
         LocalDate selectedDate = datePicker.getValue();
         ZonedDateTime selectedDateAsUtc = DateConverter.convertLocalDateToUTC(selectedDate);
         ZonedDateTime dateAsEst = selectedDateAsUtc.withZoneSameInstant(ZoneId.of("America/New_York"));
+
         if (7 == dateAsEst.getDayOfWeek().getValue() || 6 == dateAsEst.getDayOfWeek().getValue())
         {
             labelFeedback.setTextFill(Color.RED);
             labelFeedback.setText("Please select a weekday.");
         }
         else{
+
+            Integer selectedCustomerId = (Integer) customerIdCombo.getValue();
+
+            ObservableList<Appointment> customerAppointments = Main.dbAppointments.getCustomerAppointments(selectedCustomerId.intValue());
+
             startTimeCombo.setValue(null);
             startTimeCombo.setDisable(false);
             endTimeCombo.setDisable(true);
             endTimeCombo.setValue(null);
 
-            ObservableList<Integer> localTimes = FXCollections.observableArrayList();
-            for (int i = 0; i < 24; i++){
-                localTimes.add(i);
+            ObservableList<LocalTime> hours = FXCollections.observableArrayList();
+
+            LocalTime startOfDay = LocalTime.of(Main.START_OF_DAY, 0);
+            LocalTime endOfDay = LocalTime.of(Main.END_OF_DAY, 0);
+
+
+            LocalDateTime beginningOfSelectedDateTime = LocalDateTime.of(selectedDate, startOfDay);
+            ZonedDateTime beginningOfSelectedDateAsEst = ZonedDateTime.of(beginningOfSelectedDateTime,ZoneId.of("America/New_York"));
+
+            LocalDateTime endOfSelectedDateTime = LocalDateTime.of(selectedDate, endOfDay);
+            ZonedDateTime endOfSelectedDateTimeAsEst = ZonedDateTime.of(endOfSelectedDateTime,ZoneId.of("America/New_York"));
+
+            ZonedDateTime opening = beginningOfSelectedDateAsEst.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime closing = endOfSelectedDateTimeAsEst.withZoneSameInstant(ZoneId.systemDefault());
+            for (int i = opening.getHour(); i < closing.getHour(); i++) {
+                hours.add(LocalTime.of(i, 0));
+                hours.add(LocalTime.of(i, 30));
             }
 
-            startTimeCombo.setItems(localTimes);
+            for (Appointment appointment : customerAppointments){
+                ZonedDateTime appointmentStart = appointment.getStartTimeAsUtc();
+                appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
+
+                ZonedDateTime appointmentEnd = appointment.getEndTimeAsUtc();
+                appointmentEnd = appointmentEnd.withZoneSameInstant(ZoneId.systemDefault());
+
+                LocalTime finalAppointmentStart = appointmentStart.toLocalTime();
+                LocalTime finalAppointmentEnd = appointmentEnd.toLocalTime();
+                Iterator<LocalTime> iterator = hours.iterator();
+                while (iterator.hasNext()){
+                    LocalTime hour = iterator.next();
+                    if (hour.isAfter(finalAppointmentStart) && hour.isBefore(finalAppointmentEnd)){
+                        iterator.remove();
+                    }
+                }
+
+            }
+
+            startTimeCombo.setItems(hours);
         }
 
 
@@ -217,5 +248,10 @@ public class NewAppointmentController implements Initializable {
             LocalTime time = t.toLocalDateTime().toLocalTime();
             comboBox.getItems().add(time);
         }
+    }
+
+    public void customerSelected(ActionEvent actionEvent) {
+        datePicker.setDisable(false);
+        startTimeCombo.setValue(null);
     }
 }

@@ -193,7 +193,7 @@ public class Appointment {
 
     public void setStartTimeAsLocal(LocalDateTime startTimeAsLocal) {
         this.startTimeAsLocal = startTimeAsLocal;
-        this.startTimeAsUtc = DateConverter.convertLocalToUtc(startTimeAsLocal);
+        this.startTimeAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(startTimeAsLocal);
         this.endTime = DateConverter.convertUtcToTimestamp(this.startTimeAsUtc);
     }
 
@@ -203,7 +203,7 @@ public class Appointment {
 
     public void setEndTimeAsLocal(LocalDateTime endTimeAsLocal) {
         this.endTimeAsLocal = endTimeAsLocal;
-        this.endTimeAsUtc = DateConverter.convertLocalToUtc(endTimeAsLocal);
+        this.endTimeAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(endTimeAsLocal);
         this.endTime = DateConverter.convertUtcToTimestamp(this.endTimeAsUtc);
     }
 
@@ -213,7 +213,7 @@ public class Appointment {
 
     public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
         this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertLocalToUtc(createdDateAsLocal);
+        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
         this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
     }
 
@@ -223,7 +223,7 @@ public class Appointment {
 
     public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
         this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertLocalToUtc(lastUpdateAsLocal);
+        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
         this.lastUpdate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
     }
 

@@ -229,7 +229,7 @@ public class Customer {
 
     public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
         this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertLocalToUtc(createdDateAsLocal);
+        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
         this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
     }
 
@@ -239,7 +239,7 @@ public class Customer {
 
     public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
         this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertLocalToUtc(lastUpdateAsLocal);
+        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
         this.lastUpdate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
     }
 }
