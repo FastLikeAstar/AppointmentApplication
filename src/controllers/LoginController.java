@@ -17,6 +17,7 @@ import sample.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -97,6 +98,7 @@ public class LoginController implements Initializable {
 
         if (successful)
         {
+            Main.user = enteredUsername;
             Scene mainMenuScene;
             Parent tempParent = FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
             Stage stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();

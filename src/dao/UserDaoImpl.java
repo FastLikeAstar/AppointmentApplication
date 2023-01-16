@@ -173,4 +173,45 @@ public class UserDaoImpl implements UserDao{
 
         return validLogin;
     }
+
+    public ObservableList<Integer> getAllUserIds() {
+        ObservableList<Integer> userList = FXCollections.observableArrayList();
+        String sql = "SELECT User_ID FROM users";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int userId = results.getInt("User_ID");
+
+                userList.add(userId);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return userList;
+    }
+
+    public int getIdByName(String name) {
+        int userId = -1;
+        String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
+
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+                userId = results.getInt("User_ID");
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return userId;
+    }
 }

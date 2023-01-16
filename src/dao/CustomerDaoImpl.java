@@ -178,4 +178,29 @@ public class CustomerDaoImpl implements CustomerDao{
         }
 
     }
+
+    public ObservableList<Integer> getAllCustomerIds() {
+        ObservableList<Integer> customerList = FXCollections.observableArrayList();
+        String sql = "SELECT Customer_ID FROM customers " +
+                "WHERE NOT EXISTS " +
+                "(SELECT * FROM customers " +
+                "WHERE customers.Customer_Name IS NULL)";
+        try {
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()){
+                int customerId = results.getInt("Customer_ID");
+
+
+                customerList.add(customerId);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return customerList;
+    }
 }

@@ -178,25 +178,31 @@ public class CustomerRecordsController implements Initializable {
      * @param actionEvent
      */
     public void DeleteSelectedCustomer(ActionEvent actionEvent) {
-        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
-        ObservableList<Appointment> appointments = Main.dbAppointments.getAllAppointments();
-        int customerIdToDelete = selectedCustomer.getCustomerId();
+        if (tableCustomerRecords.getSelectionModel().getSelectedItem() != null) {
 
-        // Lambda 2
-       List<Integer> appointmentIdsOfCustomer = appointments.stream()
-                .filter(appointment -> appointment.getCustomerId() == customerIdToDelete)
-                .map(Appointment::getAppointmentId)
-                .collect(Collectors.toList());
+            Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+            ObservableList<Appointment> appointments = Main.dbAppointments.getAllAppointments();
+            int customerIdToDelete = selectedCustomer.getCustomerId();
 
-       for (int appointmentId : appointmentIdsOfCustomer){
-           Main.dbAppointments.delete(appointmentId);
-       }
+            // Lambda 2
+            List<Integer> appointmentIdsOfCustomer = appointments.stream()
+                    .filter(appointment -> appointment.getCustomerId() == customerIdToDelete)
+                    .map(Appointment::getAppointmentId)
+                    .collect(Collectors.toList());
 
-       Main.dbCustomers.delete(customerIdToDelete);
+            for (int appointmentId : appointmentIdsOfCustomer) {
+                Main.dbAppointments.delete(appointmentId);
+            }
 
-        LoadTable();
-        labelFeedback.setTextFill(Color.BLUE);
-        labelFeedback.setText("Customer and Appointments Deleted.");
+            Main.dbCustomers.delete(customerIdToDelete);
+
+            LoadTable();
+            labelFeedback.setTextFill(Color.BLUE);
+            labelFeedback.setText("Customer and Appointments Deleted.");
+        } else {
+            labelFeedback.setTextFill(Color.RED);
+            labelFeedback.setText("No customer selected.");
+        }
     }
 
     public void SaveChanges(ActionEvent actionEvent) throws IOException {
@@ -244,7 +250,8 @@ public class CustomerRecordsController implements Initializable {
 
     public void CancelChanges(ActionEvent actionEvent) {
         Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
-        if (customerBeingChanged == selectedCustomer) {
+        if (selectedCustomer != null) {
+            if (customerBeingChanged == selectedCustomer) {
 
             ObservableList<Country> countries = Main.dbCountries.getAllCountries();
             // Lambda 3
@@ -274,6 +281,26 @@ public class CustomerRecordsController implements Initializable {
 
             labelFeedback.setTextFill(Color.DARKGREEN);
             labelFeedback.setText("Values reset.");
+        }
+        else {
+            textFieldCustomerId.setText("");
+            textFieldCustomerName.setText("");
+            textFieldAddress.setText("");
+            textFieldPhoneNumber.setText("");
+            textFieldPostalCode.setText("");
+            textFieldCustomerId.setDisable(true);
+            comboCountry.setValue(null);
+            comboFirstDiv.setValue(null);
+
+            textFieldCustomerName.setDisable(true);
+            textFieldAddress.setDisable(true);
+            textFieldPostalCode.setDisable(true);
+            textFieldPhoneNumber.setDisable(true);
+            comboCountry.setDisable(true);
+            comboFirstDiv.setDisable(true);
+
+
+         }
         }
     }
 

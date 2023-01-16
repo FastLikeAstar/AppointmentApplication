@@ -32,8 +32,8 @@ public class User {
 
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdateDate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
     }
 
     public int getUserId() {
@@ -67,7 +67,7 @@ public class User {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(this.createdDateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
     public String getCreatedBy() {
@@ -85,7 +85,7 @@ public class User {
     public void setLastUpdateDate(Timestamp lastUpdate) {
         this.lastUpdateDate = lastUpdate;
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(this.lastUpdateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
     }
 
     public String getLastUpdatedBy() {
@@ -102,7 +102,7 @@ public class User {
 
     public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
         this.createdDateAsUtc = createdDateAsUtc;
-        this.createdDateAsLocal = DateConverter.convertUtcToLocal(createdDateAsUtc);
+        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
         this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
     }
 
@@ -112,7 +112,7 @@ public class User {
 
     public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
         this.lastUpdateAsUtc = lastUpdateAsUtc;
-        this.lastUpdateAsLocal = DateConverter.convertUtcToLocal(lastUpdateAsUtc);
+        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
         this.lastUpdateDate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
     }
 
@@ -122,7 +122,7 @@ public class User {
 
     public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
         this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertLocalToUtc(createdDateAsLocal);
+        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
         this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
     }
 
@@ -132,7 +132,7 @@ public class User {
 
     public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
         this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertLocalToUtc(lastUpdateAsLocal);
+        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
         this.lastUpdateDate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
     }
 }
