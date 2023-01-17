@@ -391,5 +391,27 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
         return appointmentList;
     }
+
+
+    public int getAppointmentCountByTypeAndMonth(String type, int month){
+        int count = 0;
+
+        String sql = "SELECT COUNT(*) FROM appointments WHERE Type = ? AND MONTH(Start) = ?";
+        try{
+            Connection connection = Jdbc.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, type);
+            statement.setInt(2, month);
+            ResultSet results = statement.executeQuery();
+            if (results.next()){
+                count = results.getInt(1);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return count;
+    }
 }
 

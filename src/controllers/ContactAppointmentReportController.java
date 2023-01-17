@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import sample.Main;
 
@@ -14,6 +15,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ContactAppointmentReportController implements Initializable {
+    public TableView TableContactInfo;
+
     /**
      * @param url
      * @param resourceBundle

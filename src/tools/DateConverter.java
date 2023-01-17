@@ -52,7 +52,8 @@ public class DateConverter {
      */
     public static Timestamp convertUtcToTimestamp(ZonedDateTime utcDate){
         Timestamp timestamp;
-        Instant utcAsInstant = utcDate.toInstant();
+        ZonedDateTime utcZdt= utcDate.withZoneSameLocal(ZoneId.of("UTC"));
+        Instant utcAsInstant =  utcZdt.toInstant();
         timestamp = Timestamp.from(utcAsInstant);
         return timestamp;
     }
@@ -80,9 +81,27 @@ public class DateConverter {
     public static Timestamp convertUtcToLocalTimestamp(Timestamp timestamp) {
         Timestamp timeToReturn;
         Instant instant = timestamp.toInstant();
-        ZoneId localZone = ZoneId.systemDefault();
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, localZone);
-        timeToReturn = Timestamp.valueOf(localDateTime);
+
+        ZonedDateTime utcDateTime = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
+        ZonedDateTime localDateTime = utcDateTime.withZoneSameLocal(ZoneId.systemDefault());
+
+        timeToReturn = Timestamp.valueOf(localDateTime.toLocalDateTime());
+        return timeToReturn;
+    }
+
+    /**
+     * Helper method to convert a given timestamp from the database to local time (was UTC).
+     * The provided timestamp should be of zoned UTC or this will lead to inaccurate conversions.
+     * @param timestamp Timestamp from database. (This should be UTC)
+     * @return Timestamp of local time of provided Timestamp.
+     */
+    public static Timestamp convertLocalTsToUtcTimestamp(Timestamp timestamp) {
+        Timestamp timeToReturn;
+        Instant instant = timestamp.toInstant();
+        ZonedDateTime utcDateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+        ZonedDateTime localDateTime = utcDateTime.withZoneSameLocal(ZoneId.of("UTC"));
+
+        timeToReturn = Timestamp.valueOf(localDateTime.toLocalDateTime());
         return timeToReturn;
     }
 }
