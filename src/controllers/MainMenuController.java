@@ -49,10 +49,10 @@ public class MainMenuController implements Initializable {
             locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
 
             TableColumn<Appointment, String> startTimeColumn = new TableColumn<>("Start");
-            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTimeAsLocal"));
 
             TableColumn<Appointment, String> endTimeColumn = new TableColumn<>("End");
-            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+            endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTimeAsLocal"));
 
             tableUpcomingAppointment.getColumns().addAll(nameColumn, locationColumn, startTimeColumn, endTimeColumn);
 
