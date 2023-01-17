@@ -9,6 +9,10 @@ import java.sql.*;
 
 public class CountryDaoImpl implements CountryDao{
 
+    /**
+     * Gets all countries in the database.
+     * @return Observable List to possibly display in JavaFX.
+     */
     @Override
     public ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryList = FXCollections.observableArrayList();
@@ -37,6 +41,11 @@ public class CountryDaoImpl implements CountryDao{
         return countryList;
     }
 
+    /**
+     * Gets country information from a country id.
+     * @param id provided country id.
+     * @return country information in country object.
+     */
     @Override
     public Country getById(int id) {
         Country countryIfExists = null;
@@ -66,6 +75,11 @@ public class CountryDaoImpl implements CountryDao{
         return countryIfExists;
     }
 
+    /**
+     * Creates a new country record in the database.
+     * @param country information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(Country country) {
         int affectedRows = -1;
@@ -98,6 +112,11 @@ public class CountryDaoImpl implements CountryDao{
         return affectedRows;
     }
 
+    /**
+     * Updates a country already recorded in the database.
+     * @param country information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(Country country) {
         int affectedRows = -1;
@@ -130,6 +149,10 @@ public class CountryDaoImpl implements CountryDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes a country record by id.
+     * @param id of country to delete.
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM countries WHERE Country_ID = ?";
@@ -147,6 +170,11 @@ public class CountryDaoImpl implements CountryDao{
         }
     }
 
+    /**
+     * Gets the country id from a country's name
+     * @param name of country.
+     * @return id of country.
+     */
     public int getIdFromName(String name) {
         int countryId = -1;
         String sql = "SELECT Country_ID FROM countries WHERE Country = ?";

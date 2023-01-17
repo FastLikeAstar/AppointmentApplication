@@ -10,6 +10,10 @@ import java.sql.*;
 public class ContactDaoImpl implements ContactDao{
 
 
+    /**
+     * Gets all contacts in the database.
+     * @return Observable List to possibly display in JavaFX.
+     */
     @Override
     public ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> contactList = FXCollections.observableArrayList();
@@ -35,6 +39,11 @@ public class ContactDaoImpl implements ContactDao{
         return contactList;
     }
 
+    /**
+     * Gets contact information from a contact id.
+     * @param id provided contact id.
+     * @return contact information in contact object.
+     */
     @Override
     public Contact getById(int id) {
         Contact contactIfExists = null;
@@ -61,6 +70,11 @@ public class ContactDaoImpl implements ContactDao{
         return contactIfExists;
     }
 
+    /**
+     * Creates a new contact record in the database.
+     * @param contact information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(Contact contact) {
         int affectedRows = -1;
@@ -92,6 +106,11 @@ public class ContactDaoImpl implements ContactDao{
         return affectedRows;
     }
 
+    /**
+     * Updates a contact already recorded in the database.
+     * @param contact information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(Contact contact) {
         int affectedRows = -1;
@@ -123,6 +142,10 @@ public class ContactDaoImpl implements ContactDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes a contact record by id.
+     * @param id of contact to delete.
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM contacts WHERE Contact_ID = ?";
@@ -140,6 +163,10 @@ public class ContactDaoImpl implements ContactDao{
         }
     }
 
+    /**
+     * Gets a list of all contact ids.
+     * @return list of contact ids.
+     */
     public ObservableList<Integer> getAllContactIds() {
         ObservableList<Integer> contactList = FXCollections.observableArrayList();
         String sql = "SELECT Contact_ID FROM contacts " +
@@ -165,6 +192,10 @@ public class ContactDaoImpl implements ContactDao{
         return contactList;
     }
 
+    /**
+     * Gets a list of all contact names in the database.
+     * @return list of contact names.
+     */
     public ObservableList<String> getAllContactsNames() {
         ObservableList<String> contactList = FXCollections.observableArrayList();
         String sql = "SELECT Contact_Name FROM contacts";
