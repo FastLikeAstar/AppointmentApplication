@@ -9,6 +9,10 @@ import java.sql.*;
 
 public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
 
+    /**
+     * Gets all divisions in the database.
+     * @return Observable List to possibly display in JavaFX.
+     */
     @Override
     public ObservableList<FirstLevelDivision> getAllDivisions() {
         ObservableList<FirstLevelDivision> divisionList = FXCollections.observableArrayList();
@@ -38,6 +42,11 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         return divisionList;
     }
 
+    /**
+     * Gets division information from a division id.
+     * @param id provided division id.
+     * @return division information in division object.
+     */
     @Override
     public FirstLevelDivision getById(int id) {
         FirstLevelDivision divisionIfExists = null;
@@ -81,6 +90,12 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         return divisionIfExists;
     }
 
+
+    /**
+     * Creates a new division record in the database.
+     * @param division information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(FirstLevelDivision division) {
         int affectedRows = -1;
@@ -114,6 +129,12 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         return affectedRows;
     }
 
+
+    /**
+     * Updates a division already recorded in the database.
+     * @param division information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(FirstLevelDivision division) {
         int affectedRows = -1;
@@ -148,6 +169,10 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes a division record by id.
+     * @param id of division to delete.
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM first_level_divisions WHERE Division_ID = ?";
@@ -165,6 +190,11 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         }
     }
 
+    /**
+     * Returns the id of a division from its name.
+     * @param name of division
+     * @return id of division.
+     */
     public int getIdFromName(String name) {
         int divisionId = -1;
         String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
@@ -186,6 +216,11 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
         return divisionId;
     }
 
+    /**
+     * Gets a list of all divisions from a country's name.
+     * @param country's name.
+     * @return list of divisions in country.
+     */
     public ObservableList<String> getDivisionsFromCountry(String country){
         ObservableList<String> divisionList = FXCollections.observableArrayList();
         String sql = "SELECT first_level_divisions.Division "+

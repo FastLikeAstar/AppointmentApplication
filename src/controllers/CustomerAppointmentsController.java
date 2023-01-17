@@ -86,8 +86,10 @@ public class CustomerAppointmentsController implements Initializable {
 
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Sets up initial customer appointment viewing to all appointments.
+     * Disables all edit fields (because no appointment is selected yet).
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -122,6 +124,10 @@ public class CustomerAppointmentsController implements Initializable {
         LoadTable(selection);
     }
 
+    /**
+     * Loads table to display whatever view the user has selected from :All, month, or week.
+     * @param selection int corresponding to the view. 1 for all, 2 for month, 3 for week.
+     */
     public void LoadTable(int selection){
         table.getItems().clear();
         table.getColumns().clear();
@@ -190,6 +196,11 @@ public class CustomerAppointmentsController implements Initializable {
         table.setItems(appointmentsToShow);
     }
 
+    /**
+     * Event method fired from clicking new appointment. Navigates user to new appointment form.
+     * @param actionEvent fired from clicking new appointment.
+     * @throws IOException from getting fxml file.
+     */
     public void CreateNewAppointment(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/new-appointment.fxml"));
@@ -199,6 +210,10 @@ public class CustomerAppointmentsController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Allows user to edit the selected appointment in area below table after clicking "edit appointment".
+     * @param actionEvent fired from clicking edit appointment.
+     */
     public void EditSelectedAppointment(ActionEvent actionEvent) {
         if (table.getSelectionModel().getSelectedItem() != null) {
             textFieldDescription.setDisable(false);
@@ -257,6 +272,10 @@ public class CustomerAppointmentsController implements Initializable {
 
     }
 
+    /**
+     * Deletes the selected appointment and displays feedback describing which appointment was deleted.
+     * @param actionEvent fires from "cancel appointment".
+     */
     public void CancelSelectedAppointment(ActionEvent actionEvent) {
         if (table.getSelectionModel().getSelectedItem() != null) {
             Appointment appointmentToDelete = table.getSelectionModel().getSelectedItem();
@@ -265,7 +284,7 @@ public class CustomerAppointmentsController implements Initializable {
             Main.dbAppointments.delete(id);
             LoadTable(selection);
             labelFeedback.setTextFill(Color.BLUE);
-            labelFeedback.setText("Appointment " + id + " of type " + type + " Deleted.");
+            labelFeedback.setText("Appointment " + id + " \n of type " + type + "\n Deleted.");
 
         } else {
             labelFeedback.setTextFill(Color.RED);
@@ -273,6 +292,11 @@ public class CustomerAppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * Validates then saves changes to edited appointment to the database (if valid).
+     * @param actionEvent save button clicked.
+     * @throws IOException uses database connection.
+     */
     public void SaveChanges(ActionEvent actionEvent) throws IOException {
         boolean valid = false;
 
@@ -322,16 +346,20 @@ public class CustomerAppointmentsController implements Initializable {
             }
             else{
                 labelFeedback.setTextFill(Color.RED);
-                labelFeedback.setText("Please check that all fields have a valid entry.");
+                labelFeedback.setText("Please check that all \n fields have a valid entry.");
             }
         }
         else {
             labelFeedback.setTextFill(Color.RED);
-            labelFeedback.setText("Please check that all fields have a valid entry.");
+            labelFeedback.setText("Please check that all \n fields have a valid entry.");
         }
 
     }
 
+    /**
+     * Cancels edits and removes any changes.
+     * @param actionEvent cancel changes clicked.
+     */
     public void CancelChanges(ActionEvent actionEvent) {
         textFieldAppointmentId.setDisable(true);
         textFieldDescription.setDisable(true);
@@ -367,6 +395,11 @@ public class CustomerAppointmentsController implements Initializable {
         previousCustomerId = -1;
     }
 
+    /**
+     * Navigates user back to main menu.
+     * @param actionEvent fired when back is clicked.
+     * @throws IOException from reading in fxml location.
+     */
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
@@ -376,24 +409,42 @@ public class CustomerAppointmentsController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Triggers when View All is selected and updates table accordingly.
+     * @param actionEvent View All toggled.
+     */
     public void ToggleAll(ActionEvent actionEvent) {
         this.viewAll.setSelected(true);
         this.selection = 1;
         LoadTable(this.selection);
     }
 
+    /**
+     * Triggers when View Month is selected and updates table accordingly.
+     * @param actionEvent View Month toggled.
+     */
     public void ToggleMonth(ActionEvent actionEvent) {
         this.viewMonth.setSelected(true);
         this.selection = 2;
         LoadTable(this.selection);
     }
 
+    /**
+     * Triggers when View Week is selected and updates table accordingly.
+     * @param actionEvent View Week toggled.
+     */
     public void ToggleWeek(ActionEvent actionEvent) {
         this.viewWeek.setSelected(true);
         this.selection = 3;
         LoadTable(this.selection);
     }
 
+    /**
+     * Triggers when a customer combo box is selected when editing. Resets date and time selects because the schedule is
+     * customer dependent. Locks the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid schedule
+     * conflicts from being created.
+     * @param actionEvent fires when Customer combo box is selected.
+     */
     public void customerSelected(ActionEvent actionEvent) {
 
         if (comboCustomer.getValue().intValue() != previousCustomerId){
@@ -407,6 +458,15 @@ public class CustomerAppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * Triggers when a date is selected when editing. Allows the user to now select a start time.
+     * Locks are in place to force the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid
+     * schedule conflicts from being created.
+     * Also rejects the user from picking a weekend by not unlocking unless a weekday is selected.
+     * Populates the possible start times to be between the business hours and not during an other appointment (for the
+     * same customer).
+     * @param actionEvent fires when a date from the date picker is selected.
+     */
     public void updateStartTimeSelection(ActionEvent actionEvent) {
         startTimeCombo.setDisable(false);
         endTimeCombo.setDisable(true);
@@ -477,6 +537,13 @@ public class CustomerAppointmentsController implements Initializable {
         }
     }
 
+    /**
+     * Triggers when a start time is selected when editing. Allows the user to now select an end time.
+     * Locks are in place to force the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid
+     * schedule conflicts from being created.
+     * Populates the possible end times to be between the start time and the start of the next appointment or end of day.
+     * @param actionEvent fires when a date from the date picker is selected.
+     */
     public void updateEndTimeSelection(ActionEvent actionEvent) {
         if (startTimeCombo.getValue() != null) {
             endTimeCombo.setDisable(false);

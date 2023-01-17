@@ -23,18 +23,21 @@ import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
 
+    public Label labelWelcome;
     @FXML
     TableView tableUpcomingAppointment;
     @FXML
     Label labelAppointmentWarning;
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Welcomes the user and alerts users to upcoming appointments.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        labelWelcome.setText("Welcome " + Main.user);
 
         ObservableList<Appointment> upcomingAppointments = Main.dbAppointments.getUpcomingAppointments();
 
@@ -62,6 +65,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Navigates to the Customer Records form when clicked.
+     * @param actionEvent onClick from customer records button.
+     * @throws IOException from loading fxml.
+     */
     public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
@@ -71,6 +79,11 @@ public class MainMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Navigates to the Appointments form when clicked.
+     * @param actionEvent onClick from customer appointments button.
+     * @throws IOException from loading fxml.
+     */
     public void NavToCustomerAppointments(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointments.fxml"));
@@ -80,6 +93,11 @@ public class MainMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Navigates to the Reports Menu form when clicked.
+     * @param actionEvent onClick from reports menu button.
+     * @throws IOException from loading fxml.
+     */
     public void NavToReportsMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));
@@ -89,9 +107,12 @@ public class MainMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Exits the program.
+     * @param actionEvent event that triggers from close button.
+     */
     public void ExitApplication(ActionEvent actionEvent) {
 
-        // Exit the Program after disconnecting
         Platform.exit();
     }
 }

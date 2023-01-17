@@ -51,6 +51,11 @@ public class CustomerDaoImpl implements CustomerDao{
         return customerList;
     }
 
+    /**
+     * Gets customer information from an customer id.
+     * @param id provided customer id.
+     * @return customer information in customer object.
+     */
     @Override
     public Customer getById(int id) {
 
@@ -83,6 +88,11 @@ public class CustomerDaoImpl implements CustomerDao{
         return customerIfExists;
     }
 
+    /**
+     * Creates a new customer record in the database.
+     * @param customer information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(Customer customer) {
         int affectedRows = -1;
@@ -120,6 +130,11 @@ public class CustomerDaoImpl implements CustomerDao{
     return affectedRows;
     }
 
+    /**
+     * Updates a customer already recorded in the database.
+     * @param customer information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(Customer customer) {
         int affectedRows = -1;
@@ -160,6 +175,10 @@ public class CustomerDaoImpl implements CustomerDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes a customer record by id.
+     * @param id of customer to delete.
+     */
     @Override
     public void delete(int id) {
 
@@ -179,6 +198,10 @@ public class CustomerDaoImpl implements CustomerDao{
 
     }
 
+    /**
+     * Gets a list of all customer ids
+     * @return list of customer ids
+     */
     public ObservableList<Integer> getAllCustomerIds() {
         ObservableList<Integer> customerList = FXCollections.observableArrayList();
         String sql = "SELECT Customer_ID FROM customers " +
@@ -204,6 +227,10 @@ public class CustomerDaoImpl implements CustomerDao{
         return customerList;
     }
 
+    /**
+     * Counts how many customers have a create_date of within a year from today.
+     * @return count of customers acquired the past year.
+     */
     public int getCountCustomersLastYear() {
         int count = 0;
         String sql = "SELECT COUNT(*) FROM customers WHERE Create_Date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";

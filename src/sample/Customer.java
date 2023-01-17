@@ -113,62 +113,109 @@ public class Customer {
         return address;
     }
 
+    /**
+     * @param address is the new address of the customer
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * @return postal code of customer
+     */
     public String getPostalCode() {
         return postalCode;
     }
 
+    /**
+     * @param postalCode is the new postal code of the customer
+     */
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
+    /**
+     * @return phone number of customer
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * @param phone is the new phone number of the customer
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+
+    /**
+     * Getter for user date of creation (in db)
+     * @return created date
+     */
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
+    /**
+     * @param createdDate timestamp (UTC) of when record was added to database.
+     */
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
         this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
+    /**
+     * Getter for name of user that created this user (in db)
+     * @return creator of user's username.
+     */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * @param createdBy username of creator (should not change unless to correct)
+     */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Getter for user date of last update (in db)
+     * @return last update date
+     */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
+    /**
+     * @param lastUpdate timestamp (utc) of last update
+     */
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
         this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
     }
 
+    /**
+     * Getter for user who performed last update (in db)
+     * @return last updater's username
+     */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * @param lastUpdatedBy user that last updated record
+     */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    /**
+     * @return divsion id assigned of customer
+     */
     public int getDivisionId() {
         return divisionId;
     }
@@ -177,6 +224,9 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    /**
+     * @return divsion name assigned of customer
+     */
     public String getDivision() {
         if (this.division == null){
             FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(this.divisionId);
@@ -185,10 +235,16 @@ public class Customer {
         return division;
     }
 
+    /**
+     * @param division name of division the customer belongs to.
+     */
     public void setDivision(String division) {
         this.division = division;
     }
 
+    /**
+     * @return country name assigned of customer
+     */
     public String getCountry() {
         if (this.country == null){
             FirstLevelDivision firstLevelDivision = Main.dbDivisions.getById(divisionId);
@@ -199,6 +255,10 @@ public class Customer {
         return country;
     }
 
+    /**
+     * Sets the name of the country.
+     * @param country is the name of the country
+     */
     public void setCountry(String country) {
         this.country = country;
     }

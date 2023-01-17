@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 
 public class UserDaoImpl implements UserDao{
 
+    /**
+     * Gets all users in the database.
+     * @return Observable List to possibly display in JavaFX.
+     */
     @Override
     public ObservableList<User> getAllUsers() {
         ObservableList<User> userList = FXCollections.observableArrayList();
@@ -42,6 +46,11 @@ public class UserDaoImpl implements UserDao{
         return userList;
     }
 
+    /**
+     * Gets user information from a user id.
+     * @param id provided user id.
+     * @return user information in user object.
+     */
     @Override
     public User getById(int id) {
         User userIfExists = null;
@@ -71,6 +80,11 @@ public class UserDaoImpl implements UserDao{
         return userIfExists;
     }
 
+    /**
+     * Creates a new user record in the database.
+     * @param user information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(User user) {
 
@@ -106,6 +120,11 @@ public class UserDaoImpl implements UserDao{
         return affectedRows;
     }
 
+    /**
+     * Updates a user already recorded in the database.
+     * @param user information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(User user) {
         int affectedRows = -1;
@@ -140,6 +159,10 @@ public class UserDaoImpl implements UserDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes a user record by id.
+     * @param id of user to delete.
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM users WHERE User_ID = ?";
@@ -157,6 +180,13 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * Validates a login attempt by seeing if both the username and password match with information in the database.
+     * Records the login attempt in a login attempt log.
+     * @param username user inputted username.
+     * @param password user inputted password.
+     * @return success or failure of login.
+     */
     public boolean login(String username, String password){
         boolean validLogin = false;
         String sql = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
@@ -197,6 +227,10 @@ public class UserDaoImpl implements UserDao{
         return validLogin;
     }
 
+    /**
+     * Gets a list of all user ids in the database.
+     * @return list of user ids.
+     */
     public ObservableList<Integer> getAllUserIds() {
         ObservableList<Integer> userList = FXCollections.observableArrayList();
         String sql = "SELECT User_ID FROM users";
@@ -218,6 +252,11 @@ public class UserDaoImpl implements UserDao{
         return userList;
     }
 
+    /**
+     * Gets the id of a user by their name.
+     * @param name of user.
+     * @return id of user.
+     */
     public int getIdByName(String name) {
         int userId = -1;
         String sql = "SELECT User_ID FROM users WHERE User_Name = ?";

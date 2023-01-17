@@ -15,10 +15,6 @@ public class Country {
     Timestamp lastUpdate;
     String lastUpdatedBy;
 
-    LocalDateTime createdDateAsLocal;
-    LocalDateTime lastUpdateAsLocal;
-    ZonedDateTime createdDateAsUtc;
-    ZonedDateTime lastUpdateAsUtc;
 
     /**
      * Constructor for Country. Data provided in database
@@ -37,10 +33,6 @@ public class Country {
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
 
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
     }
 
     /**
@@ -93,73 +85,52 @@ public class Country {
      */
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
+    /**
+     * Getter for name of user that created this user (in db)
+     * @return creator of user's username.
+     */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * @param createdBy username of creator (should not change unless to correct)
+     */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Getter for user date of last update (in db)
+     * @return last update date
+     */
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
+    /**
+     * @param lastUpdate timestamp (utc) of last update
+     */
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
+
     }
 
+    /**
+     * Getter for user who performed last update (in db)
+     * @return last updater's username
+     */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * @param lastUpdatedBy user that last updated record
+     */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public ZonedDateTime getCreatedDateAsUtc() {
-        return createdDateAsUtc;
-    }
-
-    public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
-        this.createdDateAsUtc = createdDateAsUtc;
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
-        this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
-    }
-
-    public ZonedDateTime getLastUpdateAsUtc() {
-        return lastUpdateAsUtc;
-    }
-
-    public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
-        this.lastUpdateAsUtc = lastUpdateAsUtc;
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
-        this.lastUpdate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
-    }
-
-    public LocalDateTime getCreatedDateAsLocal() {
-        return createdDateAsLocal;
-    }
-
-    public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
-        this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
-        this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
-    }
-
-    public LocalDateTime getLastUpdateAsLocal() {
-        return lastUpdateAsLocal;
-    }
-
-    public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
-        this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
-        this.lastUpdate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
-    }
 }

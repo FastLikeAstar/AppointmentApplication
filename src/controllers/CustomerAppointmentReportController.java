@@ -28,8 +28,9 @@ public class CustomerAppointmentReportController implements Initializable {
     public TableView TableCustomerAppointments;
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Fills in table for the report upon view.
+     * @param url JavaFx param.
+     * @param resourceBundle JavaFx param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,6 +70,11 @@ public class CustomerAppointmentReportController implements Initializable {
 
     }
 
+    /**
+     * Navigates user back to report menu.
+     * @param actionEvent fired when back is clicked.
+     * @throws IOException from reading in fxml location.
+     */
     public void BackToReportsMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));

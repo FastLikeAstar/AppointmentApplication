@@ -20,8 +20,9 @@ public class CustomerAcquiredReportController implements Initializable {
     public Label label;
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Fills in data of customer acquisitions for the past year.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -31,6 +32,11 @@ public class CustomerAcquiredReportController implements Initializable {
 
     }
 
+    /**
+     * Navigates user back to report menu.
+     * @param actionEvent fired when back is clicked.
+     * @throws IOException from reading in fxml location.
+     */
     public void BackToReportsMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));

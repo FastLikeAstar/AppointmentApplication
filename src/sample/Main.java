@@ -25,18 +25,20 @@ public class Main extends Application {
     public static int END_OF_DAY = 22; // (22 + 5 - 24) EST is 5 hours behind UTC
 
 
+    /**
+     * Starts the JavaFX rending by opening the initial stage.
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-//        HelloApplication.class.getResource("hello-view.fxml")
         Parent mainMenu = loader.load(Main.class.getResource("/login.fxml"));
 
 
 
         FXMLLoader controllerLoader = new FXMLLoader();
         controllerLoader.setLocation(getClass().getResource("/login.fxml"));
-//        Parent tempParent = (Parent) controllerLoader.load();
-
         Scene mainScene = new Scene(mainMenu);
 
         stage.setTitle("Appointment Manager");
@@ -44,6 +46,11 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Programs main.
+     * Opens the database connections for static fields.
+     * @param args
+     */
     public static void main(String[] args) {
         Jdbc.openConnection();
         dbAppointments = new AppointmentDaoImpl();

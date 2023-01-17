@@ -63,8 +63,10 @@ public class LoginController implements Initializable {
     private Label labelActualLocation;
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Login controller initialization.
+     * Sets language and timezone to default system.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,6 +90,12 @@ public class LoginController implements Initializable {
 
     }
 
+
+    /**
+     * Attempts a login, progressing the user to the main menu if a correct login is provided.
+     * @param actionEvent login clicked.
+     * @throws IOException from loading fxml file if successful.
+     */
     public void AttemptLogin(ActionEvent actionEvent) throws IOException {
         boolean successful = false;
 

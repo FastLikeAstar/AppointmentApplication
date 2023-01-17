@@ -48,6 +48,8 @@ public class NewCustomerController implements Initializable {
 
 
     /**
+     * Loads up form and country fills combo box while disabling the division combo box.
+     *
      * Lambda 1: Lambda is used to increase readability and maintainability of the code by using parsing through a list
      * of countries instead of writing an addition method in the CountryDaoImpl class that returns the names.
      * @param url
@@ -67,8 +69,11 @@ public class NewCustomerController implements Initializable {
     }
 
 
-
-
+    /**
+     * Returns the user back to the Customer Records without saving a new customer.
+     * @param actionEvent from cancel button fired.
+     * @throws IOException from loading fxml file.
+     */
     public void NavToCustomerRecords(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-records.fxml"));
@@ -78,6 +83,12 @@ public class NewCustomerController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Validates all fields are filled out and then saves the customer to database if valid.
+     * Navigates back to customer records if successful.
+     * @param actionEvent from save button clicked.
+     * @throws IOException from loading fxml file.
+     */
     public void SaveData(ActionEvent actionEvent) throws IOException {
         boolean valid = false;
 
@@ -120,6 +131,11 @@ public class NewCustomerController implements Initializable {
 
     }
 
+    /**
+     * Updates the division combo box with divisions that relate to the selected country.
+     * Enables the combo box to allow users to select a division now the country box has a value.
+     * @param actionEvent from selecting a country in the country combo box.
+     */
     public void UpdateDivisionSelection(ActionEvent actionEvent){
         comboFirstDiv.setDisable(false);
         String country = comboCountry.getValue().toString();

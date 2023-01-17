@@ -17,6 +17,9 @@ public abstract class Jdbc {
     private static final String password = "Passw0rd!";
     public static Connection connection;
 
+    /**
+     * Starts connection to database.
+     */
     public static void openConnection(){
         try {
             Class.forName(driver);
@@ -25,11 +28,13 @@ public abstract class Jdbc {
 
         } catch(Exception e)
         {
-//            System.out.println("Error: "+ e.getMessage());
             e.printStackTrace();
         }
     }
 
+    /**
+     * Closes connection to database.
+     */
     public static void closeConnection() {
         try {
             connection.close();

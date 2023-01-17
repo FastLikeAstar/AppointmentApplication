@@ -54,7 +54,14 @@ public class NewAppointmentController implements Initializable {
     Button saveButton;
 
 
-
+    /**
+     * Sets the form to restrict the flow of appointment creation.
+     * Flow should be Customer ID -> Date -> Start Time -> End Time.
+     * This prevents conflicting appointments to be scheduled.
+     * Populates combo boxes for selection.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         labelFeedback.setText("");
@@ -77,8 +84,11 @@ public class NewAppointmentController implements Initializable {
     }
 
 
-
-
+    /**
+     * Navigates back to appointment form without creating new customer.
+     * @param actionEvent from cancel button click.
+     * @throws IOException from loading fxml file.
+     */
     public void NavToAppointments(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointments.fxml"));
@@ -88,6 +98,12 @@ public class NewAppointmentController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Validates and then saves the new customer to the database (if valid).
+     * Returns back to appointment form.
+     * @param actionEvent from save button click.
+     * @throws IOException from loading fxml file.
+     */
     public void SaveData(ActionEvent actionEvent) throws IOException {
         boolean valid = false;
 
@@ -148,6 +164,13 @@ public class NewAppointmentController implements Initializable {
     }
 
 
+    /**
+     * Triggers when a start time is selected when editing. Allows the user to now select an end time.
+     * Locks are in place to force the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid
+     * schedule conflicts from being created.
+     * Populates the possible end times to be between the start time and the start of the next appointment or end of day.
+     * @param actionEvent fires when a date from the date picker is selected.
+     */
     public void updateEndTimeSelection(ActionEvent actionEvent) {
         if (startTimeCombo.getValue() != null) {
             endTimeCombo.setDisable(false);
@@ -206,6 +229,15 @@ public class NewAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Triggers when a date is selected when editing. Allows the user to now select a start time.
+     * Locks are in place to force the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid
+     * schedule conflicts from being created.
+     * Also rejects the user from picking a weekend by not unlocking unless a weekday is selected.
+     * Populates the possible start times to be between the business hours and not during an other appointment (for the
+     * same customer).
+     * @param actionEvent fires when a date from the date picker is selected.
+     */
     public void updateStartTimeSelection(ActionEvent actionEvent) {
         startTimeCombo.setDisable(false);
         endTimeCombo.setDisable(true);
@@ -274,14 +306,14 @@ public class NewAppointmentController implements Initializable {
 
     }
 
-    public void displayResultsInComboBox(ObservableList<Timestamp> results, ComboBox<LocalTime> comboBox) {
-        comboBox.getItems().clear();
-        for (Timestamp t : results) {
-            LocalTime time = t.toLocalDateTime().toLocalTime();
-            comboBox.getItems().add(time);
-        }
-    }
 
+
+    /**
+     * Triggers when a customer combo box is selected when editing. Resets date and time selects because the schedule is
+     * customer dependent. Locks the flow of selection to Customer -> Date -> Start Time -> End Time, to avoid schedule
+     * conflicts from being created.
+     * @param actionEvent fires when Customer combo box is selected.
+     */
     public void customerSelected(ActionEvent actionEvent) {
         datePicker.setDisable(false);
         startTimeCombo.setValue(null);

@@ -13,6 +13,11 @@ import java.time.LocalTime;
 import java.util.Iterator;
 
 public class AppointmentDaoImpl implements AppointmentDao{
+
+    /**
+     * Gets all appointments in the database.
+     * @return Observable List to possibly display in JavaFX.
+     */
     @Override
     public ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -52,6 +57,11 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return appointmentList;
     }
 
+    /**
+     * Gets appointment information from an appointment id.
+     * @param id provided appointment id.
+     * @return appointment information in appointment object.
+     */
     @Override
     public Appointment getById(int id) {
         Appointment appointmentIfExists = null;
@@ -88,6 +98,11 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return appointmentIfExists;
     }
 
+    /**
+     * Creates a new appointment record in the database.
+     * @param appointment information to be saved as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int save(Appointment appointment) {
         int affectedRows = -1;
@@ -130,6 +145,11 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return affectedRows;
     }
 
+    /**
+     * Updates an appointment already recorded in the database.
+     * @param appointment information to be updated as a record.
+     * @return returns the rows affected if verification is needed.
+     */
     @Override
     public int update(Appointment appointment) {
         int affectedRows = -1;
@@ -178,6 +198,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return affectedRows;
     }
 
+    /**
+     * Deletes an appointment record by id.
+     * @param id of appointment to delete.
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -195,6 +219,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
         }
     }
 
+    /**
+     * Gets a list of upcoming appointments occurring in the next 15 minutes.
+     * @return List of appointments in JavaFX ObservableList (for easy display).
+     */
     public ObservableList<Appointment> getUpcomingAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments " +
@@ -235,6 +263,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return appointmentList;
     }
 
+    /**
+     * Gets a list of upcoming appointments occurring in the next month.
+     * @return List of appointments in JavaFX ObservableList (for easy display).
+     */
     public ObservableList<Appointment> getNextMonthOfAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments " +
@@ -275,6 +307,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
         return appointmentList;
     }
 
+    /**
+     * Gets a list of upcoming appointments occurring in the next week.
+     * @return List of appointments in JavaFX ObservableList (for easy display).
+     */
     public ObservableList<Appointment> getNextWeekOfAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments " +
@@ -316,44 +352,11 @@ public class AppointmentDaoImpl implements AppointmentDao{
     }
 
 
-
-        public ObservableList<Timestamp> getAvailableEndTimes(Timestamp startTime, int endOfDayHour){
-        ObservableList<Timestamp> availableEndTimes = FXCollections.observableArrayList();
-
-        String sql = "SELECT Start FROM appointments WHERE Start = ? " +
-                "ORDER BY Start";
-
-        try {
-
-            Connection connection = Jdbc.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setTimestamp(1, startTime);
-            ResultSet resultSet = statement.executeQuery();
-
-            LocalDateTime end = startTime.toLocalDateTime().plusMinutes(30); // appointment duration of 30 minutes
-            while (resultSet.next()) {
-                Timestamp nextAppointmentStartTime = resultSet.getTimestamp("start_time");
-                LocalDateTime nextAppointmentStart = nextAppointmentStartTime.toLocalDateTime();
-                if (nextAppointmentStart.isAfter(LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), end.toLocalTime()))) {
-                    end = nextAppointmentStart;
-                }
-            }
-            LocalDateTime endOfDay = LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), LocalTime.of(endOfDayHour, 0));
-            if (endOfDay.isBefore(end)) {
-                end = endOfDay;
-            }
-            while (end.isBefore(LocalDateTime.of(startTime.toLocalDateTime().toLocalDate(), LocalTime.of(endOfDayHour, 0)))) {
-                availableEndTimes.add(Timestamp.valueOf(end));
-                end = end.plusMinutes(30);
-            }
-
-            } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return availableEndTimes;
-    }
-
+    /**
+     * Gets all appointments related to a specific customer.
+     * @param customerId of customer that appointments relate to.
+     * @return List of appointments in JavaFX ObservableList (for easy display).
+     */
     public ObservableList<Appointment> getCustomerAppointments(int customerId) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
@@ -393,6 +396,12 @@ public class AppointmentDaoImpl implements AppointmentDao{
     }
 
 
+    /**
+     * Gets a count of appointments occurring in a month and of a specific type.
+     * @param type of appointment to look for.
+     * @param month when to look for that appointment.
+     * @return total occurrences of that appointment type given the month.
+     */
     public int getAppointmentCountByTypeAndMonth(String type, int month){
         int count = 0;
 
@@ -415,6 +424,11 @@ public class AppointmentDaoImpl implements AppointmentDao{
     }
 
 
+    /**
+     * Gets a list of appointments that relate to a specific contact.
+     * @param givenContactId the contact related to the appointments.
+     * @return list of all the contact's appointments.
+     */
     public ObservableList<Appointment> getAppointmentsForContact(int givenContactId) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";

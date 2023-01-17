@@ -36,103 +36,114 @@ public class User {
         this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
     }
 
+    /**
+     * Getter for user id.
+     * @return id of user
+     */
     public int getUserId() {
         return userId;
     }
 
+
+    /**
+     * @param userId is the new id for the user.
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    /**
+     * Getter for user name.
+     * @return name of user
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * @param userName is the new name for the user
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * Getter for user password.
+     * @return password of user
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @param password is the new password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Getter for user date of creation (in db)
+     * @return created date
+     */
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
+    /**
+     * @param createdDate timestamp (UTC) of when record was added to database.
+     */
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
         this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
+    /**
+     * Getter for name of user that created this user (in db)
+     * @return creator of user's username.
+     */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * @param createdBy username of creator (should not change unless to correct)
+     */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Getter for user date of last update (in db)
+     * @return last update date
+     */
     public Timestamp getLastUpdateDate() {
         return lastUpdateDate;
     }
 
+    /**
+     * @param lastUpdate timestamp (utc) of last update
+     */
     public void setLastUpdateDate(Timestamp lastUpdate) {
         this.lastUpdateDate = lastUpdate;
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
         this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
     }
 
+    /**
+     * Getter for user who performed last update (in db)
+     * @return last updater's username
+     */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * @param lastUpdatedBy user that last updated record
+     */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public ZonedDateTime getCreatedDateAsUtc() {
-        return createdDateAsUtc;
-    }
-
-    public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
-        this.createdDateAsUtc = createdDateAsUtc;
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
-        this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
-    }
-
-    public ZonedDateTime getLastUpdateAsUtc() {
-        return lastUpdateAsUtc;
-    }
-
-    public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
-        this.lastUpdateAsUtc = lastUpdateAsUtc;
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
-        this.lastUpdateDate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
-    }
-
-    public LocalDateTime getCreatedDateAsLocal() {
-        return createdDateAsLocal;
-    }
-
-    public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
-        this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
-        this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
-    }
-
-    public LocalDateTime getLastUpdateAsLocal() {
-        return lastUpdateAsLocal;
-    }
-
-    public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
-        this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
-        this.lastUpdateDate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
-    }
 }
