@@ -17,10 +17,7 @@ public class FirstLevelDivision {
     String lastUpdatedBy;
     int countryId;
 
-    LocalDateTime createdDateAsLocal;
-    LocalDateTime lastUpdateAsLocal;
-    ZonedDateTime createdDateAsUtc;
-    ZonedDateTime lastUpdateAsUtc;
+
 
     public FirstLevelDivision(int divisionId, String divisionName, Timestamp createdDate, String createdBy, Timestamp lastUpdateDate, String lastUpdatedBy, int countryId) {
         this.divisionId = divisionId;
@@ -31,109 +28,109 @@ public class FirstLevelDivision {
         this.lastUpdatedBy = lastUpdatedBy;
         this.countryId = countryId;
 
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdateDate);
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
     }
 
+    /**
+     * @return division id assigned to this division
+     */
     public int getDivisionId() {
         return divisionId;
     }
 
+    /**
+     * @param divisionId is the new id assigned to this division
+     */
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
 
+
+    /**
+     * @return country id assigned to this division
+     */
     public int getCountryId() {
         return countryId;
     }
 
+    /**
+     * @param countryId is the new country id assigned to this division
+     */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
+    /**
+     * @return name of this division
+     */
     public String getDivisionName() {
         return divisionName;
     }
 
+    /**
+     * @param divisionName is the new division name.
+     */
     public void setDivisionName(String divisionName) {
         this.divisionName = divisionName;
     }
 
+    /**
+     * Getter for user date of creation (in db)
+     * @return created date
+     */
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
+    /**
+     * @param createdDate timestamp (UTC) of when record was added to database.
+     */
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-        this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(this.createdDateAsUtc);
     }
 
+    /**
+     * Getter for name of user that created this user (in db)
+     * @return creator of user's username.
+     */
     public String getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * @param createdBy username of creator (should not change unless to correct)
+     */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Getter for user date of last update (in db)
+     * @return last update date
+     */
     public Timestamp getLastUpdateDate() {
         return lastUpdateDate;
     }
 
+    /**
+     * @param lastUpdate timestamp (utc) of last update
+     */
     public void setLastUpdateDate(Timestamp lastUpdate) {
         this.lastUpdateDate = lastUpdate;
-        this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(this.lastUpdateAsUtc);
     }
 
+    /**
+     * Getter for user who performed last update (in db)
+     * @return last updater's username
+     */
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * @param lastUpdatedBy user that last updated record
+     */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public ZonedDateTime getCreatedDateAsUtc() {
-        return createdDateAsUtc;
-    }
-
-    public void setCreatedDateAsUtc(ZonedDateTime createdDateAsUtc) {
-        this.createdDateAsUtc = createdDateAsUtc;
-        this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
-        this.createdDate = DateConverter.convertUtcToTimestamp(createdDateAsUtc);
-    }
-
-    public ZonedDateTime getLastUpdateAsUtc() {
-        return lastUpdateAsUtc;
-    }
-
-    public void setLastUpdateAsUtc(ZonedDateTime lastUpdateAsUtc) {
-        this.lastUpdateAsUtc = lastUpdateAsUtc;
-        this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
-        this.lastUpdateDate = DateConverter.convertUtcToTimestamp(lastUpdateAsUtc);
-    }
-
-    public LocalDateTime getCreatedDateAsLocal() {
-        return createdDateAsLocal;
-    }
-
-    public void setCreatedDateAsLocal(LocalDateTime createdDateAsLocal) {
-        this.createdDateAsLocal = createdDateAsLocal;
-        this.createdDateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(createdDateAsLocal);
-        this.createdDate = DateConverter.convertUtcToTimestamp(this.createdDateAsUtc);
-    }
-
-    public LocalDateTime getLastUpdateAsLocal() {
-        return lastUpdateAsLocal;
-    }
-
-    public void setLastUpdateAsLocal(LocalDateTime lastUpdateAsLocal) {
-        this.lastUpdateAsLocal = lastUpdateAsLocal;
-        this.lastUpdateAsUtc = DateConverter.convertSystemLocalDateTimeToUtc(lastUpdateAsLocal);
-        this.lastUpdateDate = DateConverter.convertUtcToTimestamp(this.lastUpdateAsUtc);
-    }
 }

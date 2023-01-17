@@ -13,14 +13,23 @@ public class AppointmentReport {
     }
 
 
+    /**
+     * @return number of appointments of type and in month.
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * @return month evaluated
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * @return type evaluated
+     */
     public String getType() {
         return type;
     }
