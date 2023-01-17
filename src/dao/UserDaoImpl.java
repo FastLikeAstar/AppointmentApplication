@@ -4,7 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sample.User;
 import sample.Jdbc;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 
 public class UserDaoImpl implements UserDao{
@@ -169,6 +173,25 @@ public class UserDaoImpl implements UserDao{
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
+
+        final String FILENAME = "login_activity.txt";
+        FileWriter fileWriter;
+
+        try {
+            fileWriter = new FileWriter(FILENAME, true);
+            LocalDateTime now = LocalDateTime.now();
+            String date = now.toLocalDate().toString();
+            String time = now.toLocalTime().toString();
+            String status = validLogin ? "SUCCESS" : "FAILURE";
+            fileWriter.append(username + "," + date + "," + time + "," + status + "\n");
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
 
         return validLogin;

@@ -34,7 +34,7 @@ public class ReportsMenuController implements Initializable {
 
     public void NavToContactAppointmentReport(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/contact-appointment-report.fxml"));
+        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customers-acquired-report.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);

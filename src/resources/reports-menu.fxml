@@ -28,7 +28,7 @@
                   <Insets left="100.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="ButtonContactAppointment" mnemonicParsing="false" onAction="#NavToContactAppointmentReport" text="Contact Appointment Breakdown">
+            <Button fx:id="ButtonContactAppointment" mnemonicParsing="false" onAction="#NavToContactAppointmentReport" text="Customers Acquired">
                <VBox.margin>
                   <Insets left="100.0" />
                </VBox.margin>
@@ -38,12 +38,7 @@
                   <Insets left="100.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="ButtonLogin" mnemonicParsing="false" onAction="#ShowLoginLogPath" text="Login Log">
-               <VBox.margin>
-                  <Insets left="100.0" />
-               </VBox.margin>
-            </Button>
-            <Label fx:id="LabelLoginLogPath" text="Login Log Pathway: " />
+            <Label fx:id="LabelLoginLogPath" text="Login Log Pathway: AppointmentApplication\login_activity.txt " />
             <Separator prefHeight="129.0" prefWidth="200.0" visible="false" />
          </children>
       </VBox>
