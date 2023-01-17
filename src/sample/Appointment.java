@@ -4,6 +4,7 @@ import tools.DateConverter;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class Appointment {
@@ -50,12 +51,22 @@ public class Appointment {
         this.contactId = contactId;
 
 
+
         this.startTimeAsUtc = DateConverter.convertTimestampToUtc(startTime);
         this.endTimeAsUtc = DateConverter.convertTimestampToUtc(endTime);
         this.createdDateAsUtc = DateConverter.convertTimestampToUtc(createdDate);
         this.lastUpdateAsUtc = DateConverter.convertTimestampToUtc(lastUpdate);
-        this.startTimeAsLocal = DateConverter.convertZonedToLocal(startTimeAsUtc);
-        this.endTimeAsLocal = DateConverter.convertZonedToLocal(endTimeAsUtc);
+
+
+        ZonedDateTime appointmentStart = startTimeAsUtc;
+        appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
+        this.startTimeAsLocal = appointmentStart.toLocalDateTime();
+
+        ZonedDateTime appointmentEnd = endTimeAsUtc;
+        appointmentEnd = appointmentEnd.withZoneSameInstant(ZoneId.systemDefault());
+        this.endTimeAsLocal = appointmentEnd.toLocalDateTime();
+
+
         this.createdDateAsLocal = DateConverter.convertZonedToLocal(createdDateAsUtc);
         this.lastUpdateAsLocal = DateConverter.convertZonedToLocal(lastUpdateAsUtc);
 
@@ -112,7 +123,11 @@ public class Appointment {
 
         this.startTime = startTime;
         this.startTimeAsUtc = DateConverter.convertTimestampToUtc(startTime);
-        this.startTimeAsLocal = DateConverter.convertZonedToLocal(this.startTimeAsUtc);
+
+        ZonedDateTime appointmentStart = startTimeAsUtc;
+        appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
+        this.startTimeAsLocal = appointmentStart.toLocalDateTime();
+
     }
 
     public Timestamp getEndTime() {
@@ -122,7 +137,11 @@ public class Appointment {
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
         this.endTimeAsUtc = DateConverter.convertTimestampToUtc(endTime);
-        this.endTimeAsLocal = DateConverter.convertZonedToLocal(this.endTimeAsUtc);
+
+
+        ZonedDateTime appointmentEnd = endTimeAsUtc;
+        appointmentEnd = appointmentEnd.withZoneSameInstant(ZoneId.systemDefault());
+        this.endTimeAsLocal = appointmentEnd.toLocalDateTime();
     }
 
     public Timestamp getCreatedDate() {

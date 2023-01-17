@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="CENTER"  xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactScheduleReportController">
+<StackPane alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactScheduleReportController">
 <VBox prefHeight="720.0">
    <children>
       <Separator prefHeight="42.0" visible="false" />
@@ -30,7 +29,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="ComboContactSelect" prefHeight="25.0" prefWidth="178.0" promptText="Please select a contact..." />
+            <ComboBox fx:id="ComboContactSelect" onAction="#contactSelected" prefHeight="25.0" prefWidth="178.0" promptText="Please select a contact..." />
          </children>
       </HBox>
       <HBox prefHeight="38.0" spacing="20.0">
@@ -43,18 +42,8 @@
             <Insets left="50.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="TableContactSchedule" prefHeight="396.0">
-         <columns>
-            <TableColumn fx:id="ColumnStartTime" prefWidth="128.0" text="Start Date and Time" />
-            <TableColumn fx:id="ColumnTitle" prefWidth="101.0" text="Title" />
-            <TableColumn fx:id="ColumnType" prefWidth="144.0" text="Type" />
-            <TableColumn fx:id="ColumnDescription" prefWidth="276.0" text="Description" />
-            <TableColumn fx:id="ColumnEndTime" prefWidth="139.0" text="End Date and Time" />
-            <TableColumn fx:id="ColumnCustomerId" prefWidth="137.0" text="Customer_ID" />
-            <TableColumn fx:id="ColumnAppointmentId" prefWidth="125.0" text="Appointment_ID" />
-         </columns>
-      </TableView>
-      <Separator prefHeight="28.0"  visible="false" />
+      <TableView fx:id="TableContactSchedule" prefHeight="396.0" />
+      <Separator prefHeight="28.0" visible="false" />
       <Button fx:id="ButtonBack" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#BackToReports" prefHeight="40.0" prefWidth="149.0" text="Back to Reports Menu">
          <VBox.margin>
             <Insets left="900.0" />

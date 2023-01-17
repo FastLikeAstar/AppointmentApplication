@@ -203,4 +203,19 @@ public class CustomerDaoImpl implements CustomerDao{
 
         return customerList;
     }
+
+    public int getCountCustomersLastYear() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM customers WHERE Create_Date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
+        try (Connection connection = Jdbc.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet results = statement.executeQuery(sql);
+            if (results.next()) {
+                count = results.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
