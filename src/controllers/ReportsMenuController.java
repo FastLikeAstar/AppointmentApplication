@@ -16,14 +16,21 @@ import java.util.ResourceBundle;
 public class ReportsMenuController implements Initializable {
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Initializes the reports menus.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+
+    /**
+     * Navigates the user to Customer Appointments Report.
+     * @param actionEvent fired from button clicked.
+     * @throws IOException from loading fxml file.
+     */
     public void NavToCustomerAppointmentReport(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customer-appointment-report.fxml"));
@@ -32,27 +39,40 @@ public class ReportsMenuController implements Initializable {
         stage.setScene(productScene);
     }
 
-    public void NavToContactAppointmentReport(ActionEvent actionEvent) throws IOException {
+    /**
+     * Navigates the user to Customers Acquired Report.
+     * @param actionEvent fired from button clicked.
+     * @throws IOException from loading fxml file.
+     */
+    public void NavToCustomersAcquiredReport(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/customers-acquired-report.fxml"));
+        Parent tempParent = FXMLLoader.load(Main.class.getResource("/customers-acquired-report.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
         stage.centerOnScreen();
     }
 
+    /**
+     * Navigates the user to Contact Schedule Report.
+     * @param actionEvent fired from button clicked.
+     * @throws IOException from loading fxml file.
+     */
     public void NavToContactSchedule(ActionEvent actionEvent) throws IOException {
         Scene productScene;
-        Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/contact-schedule-report.fxml"));
+        Parent tempParent = FXMLLoader.load(Main.class.getResource("/contact-schedule-report.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         productScene = new Scene(tempParent);
         stage.setScene(productScene);
         stage.centerOnScreen();
     }
 
-    public void ShowLoginLogPath(ActionEvent actionEvent) {
-    }
 
+    /**
+     * Navigates the user to back to the Main Menu.
+     * @param actionEvent fired from button clicked.
+     * @throws IOException from loading fxml file.
+     */
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));

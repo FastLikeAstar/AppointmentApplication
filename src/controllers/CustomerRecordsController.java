@@ -64,8 +64,9 @@ public class CustomerRecordsController implements Initializable {
 
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Sets up the initial table for customers to be displayed.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,6 +78,9 @@ public class CustomerRecordsController implements Initializable {
         LoadTable();
     }
 
+    /**
+     * Loads the table with customer data.
+     */
     public void LoadTable(){
         tableCustomerRecords.getItems().clear();
         tableCustomerRecords.getColumns().clear();
@@ -104,11 +108,14 @@ public class CustomerRecordsController implements Initializable {
         tableCustomerRecords.setItems(customers);
     }
 
+    /**
+     * Opens the new customer form when new customer is clicked.
+     * @param actionEvent new customer clicked.
+     * @throws IOException from loading fxml file.
+     */
     public void CreateNewCustomer(ActionEvent actionEvent) throws IOException {
         Scene scene;
-        FXMLLoader controllerLoader = new FXMLLoader();
-        controllerLoader.setLocation(getClass().getResource("/new-customer.fxml"));
-        Parent tempParent = (Parent) controllerLoader.load(Main.class.getResource("/new-customer.fxml"));
+        Parent tempParent = FXMLLoader.load(Main.class.getResource("/new-customer.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(tempParent);
         stage.setScene(scene);
@@ -116,66 +123,73 @@ public class CustomerRecordsController implements Initializable {
     }
 
     /**
+     * Allows the selected customer to be edited and updated with the fields below the table.
+     * Populates fields with data of selected customer.
+     *
      * Lambda 3: Lambda is used to increase readability and maintainability of the code by using parsing through a list
      * of countries instead of writing an addition method in the CountryDaoImpl class that returns the names.
-     * @param actionEvent
+     *
+     * @param actionEvent fires when edit customer is clicked.
      */
     public void EditSelectedCustomer(ActionEvent actionEvent) {
-        comboCountry.setDisable(false);
-        comboFirstDiv.setDisable(false);
+        if (tableCustomerRecords.getSelectionModel().getSelectedItem() != null) {
+            comboCountry.setDisable(false);
+            comboFirstDiv.setDisable(false);
 
-        Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
-        customerBeingChanged = selectedCustomer;
+            Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
+            customerBeingChanged = selectedCustomer;
 
 
-        ObservableList<Country> countries = Main.dbCountries.getAllCountries();
-        // Lambda 3
-        ObservableList<String> countryNames = countries.stream()
-                .map(c -> c.getCountryName())
-                .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        comboCountry.setItems(countryNames);
+            ObservableList<Country> countries = Main.dbCountries.getAllCountries();
+            // Lambda 3
+            ObservableList<String> countryNames = countries.stream()
+                    .map(c -> c.getCountryName())
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            comboCountry.setItems(countryNames);
 
-        ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
+            ObservableList<String> possibleDivisions = Main.dbDivisions.getDivisionsFromCountry(selectedCustomer.getCountry());
 
-        if (!possibleDivisions.isEmpty()){
-            comboFirstDiv.setItems(possibleDivisions);
+            if (!possibleDivisions.isEmpty()) {
+                comboFirstDiv.setItems(possibleDivisions);
+            } else {
+                labelFeedback.setTextFill(Color.RED);
+                labelFeedback.setText("No Divisions Found in Country.");
+            }
+
+
+            textFieldCustomerId.setText("" + selectedCustomer.getCustomerId() + "");
+            textFieldCustomerName.setText(selectedCustomer.getCustomerName());
+            textFieldAddress.setText(selectedCustomer.getAddress());
+            textFieldPhoneNumber.setText(selectedCustomer.getPhone());
+            textFieldPostalCode.setText(selectedCustomer.getPostalCode());
+            textFieldCustomerId.setDisable(true);
+            comboCountry.setValue(selectedCustomer.getCountry());
+            selectedCountry = selectedCustomer.getCountry();
+            comboFirstDiv.setValue(selectedCustomer.getDivision());
+
+            textFieldCustomerName.setDisable(false);
+            textFieldCustomerName.setEditable(true);
+            textFieldAddress.setDisable(false);
+            textFieldAddress.setEditable(true);
+            textFieldPhoneNumber.setDisable(false);
+            textFieldPhoneNumber.setEditable(true);
+            textFieldPostalCode.setDisable(false);
+            textFieldPostalCode.setEditable(true);
+
+            labelFeedback.setTextFill(Color.DARKGREEN);
+            labelFeedback.setText("You may now edit the \n selected customer.");
         }
-        else{
-            labelFeedback.setTextFill(Color.RED);
-            labelFeedback.setText("No Divisions Found in Country.");
-        }
-
-
-        textFieldCustomerId.setText(""+ selectedCustomer.getCustomerId() + "");
-        textFieldCustomerName.setText(selectedCustomer.getCustomerName());
-        textFieldAddress.setText(selectedCustomer.getAddress());
-        textFieldPhoneNumber.setText(selectedCustomer.getPhone());
-        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
-        textFieldCustomerId.setDisable(true);
-        comboCountry.setValue(selectedCustomer.getCountry());
-        selectedCountry = selectedCustomer.getCountry();
-        comboFirstDiv.setValue(selectedCustomer.getDivision());
-
-        textFieldCustomerName.setDisable(false);
-        textFieldCustomerName.setEditable(true);
-        textFieldAddress.setDisable(false);
-        textFieldAddress.setEditable(true);
-        textFieldPhoneNumber.setDisable(false);
-        textFieldPhoneNumber.setEditable(true);
-        textFieldPostalCode.setDisable(false);
-        textFieldPostalCode.setEditable(true);
-
-        labelFeedback.setTextFill(Color.DARKGREEN);
-        labelFeedback.setText("You may now edit the \n selected customer.");
-
 
     }
 
     /**
+     * Deletes the selected customer from the database and updates the table accordingly.
+     *
      * Lambda 2: Lambda is used to contain the majority of relevant code in this code block. Lambda increases the
      * maintainability of this method by avoiding creating additional methods across different classes to achieve
      * the same result.
-     * @param actionEvent
+     *
+     * @param actionEvent fires when deleted customer is selected.
      */
     public void DeleteSelectedCustomer(ActionEvent actionEvent) {
         if (tableCustomerRecords.getSelectionModel().getSelectedItem() != null) {
@@ -205,6 +219,11 @@ public class CustomerRecordsController implements Initializable {
         }
     }
 
+    /**
+     * Validates that all fields are populated and then saves updates to database if valid.
+     * @param actionEvent fires when save updates is clicked.
+     * @throws IOException from database connection.
+     */
     public void SaveChanges(ActionEvent actionEvent) throws IOException {
 
         boolean valid = false;
@@ -248,6 +267,10 @@ public class CustomerRecordsController implements Initializable {
 
     }
 
+    /**
+     * Resets the edit form to the original data or blank if a new customer is selected.
+     * @param actionEvent fired from cancel changes.
+     */
     public void CancelChanges(ActionEvent actionEvent) {
         Customer selectedCustomer = tableCustomerRecords.getSelectionModel().getSelectedItem();
         if (selectedCustomer != null) {
@@ -304,6 +327,11 @@ public class CustomerRecordsController implements Initializable {
         }
     }
 
+    /**
+     * Navigates user back to main menu.
+     * @param actionEvent fired when back is clicked.
+     * @throws IOException from reading in fxml location.
+     */
     public void BackToMainMenu(ActionEvent actionEvent) throws IOException {
         Scene scene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/main-menu.fxml"));
@@ -313,6 +341,11 @@ public class CustomerRecordsController implements Initializable {
         stage.centerOnScreen();
     }
 
+
+    /**
+     * Updates the Division selection to only display divisions from the selected country.
+     * @param actionEvent fires when the country combo box is selected.
+     */
     public void UpdateDivisionSelection(ActionEvent actionEvent){
         if (comboCountry.getValue() != null) {
             selectedCountry = comboCountry.getValue().toString();

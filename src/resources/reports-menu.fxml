@@ -28,7 +28,7 @@
                   <Insets left="100.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="ButtonContactAppointment" mnemonicParsing="false" onAction="#NavToContactAppointmentReport" text="Customers Acquired">
+            <Button fx:id="ButtonContactAppointment" mnemonicParsing="false" onAction="#NavToCustomersAcquiredReport" text="Customers Acquired">
                <VBox.margin>
                   <Insets left="100.0" />
                </VBox.margin>

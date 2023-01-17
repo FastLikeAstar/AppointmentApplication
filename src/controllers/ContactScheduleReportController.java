@@ -32,8 +32,9 @@ public class ContactScheduleReportController implements Initializable {
     public TextField TextFieldContactId;
 
     /**
-     * @param url
-     * @param resourceBundle
+     * Populates the combo box with Contact IDs to select.
+     * @param url JavaFX param.
+     * @param resourceBundle JavaFX param.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,6 +43,11 @@ public class ContactScheduleReportController implements Initializable {
 
     }
 
+    /**
+     * Method triggers on back button click to navigate the user back to the reports menu.
+     * @param actionEvent back button click.
+     * @throws IOException from reading in fxml file.
+     */
     public void BackToReports(ActionEvent actionEvent) throws IOException {
         Scene productScene;
         Parent tempParent = (Parent) FXMLLoader.load(Main.class.getResource("/reports-menu.fxml"));
@@ -51,6 +57,10 @@ public class ContactScheduleReportController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Populates table with schedule information for the selected contact.
+     * @param contactId contact id of the selected contact to view the schedule.
+     */
     public void LoadTable(int contactId){
 
         ObservableList<Appointment> appointmentsToShow = Main.dbAppointments.getAppointmentsForContact(contactId);
@@ -82,6 +92,11 @@ public class ContactScheduleReportController implements Initializable {
         TableContactSchedule.setItems(appointmentsToShow);
     }
 
+    /**
+     * Event when a contact is selected from the combo box.
+     * Fills page with Name and Id, as well as loads the table for their schedule.
+     * @param actionEvent trigger of onAction of combo box.
+     */
     public void contactSelected(ActionEvent actionEvent) {
         int contactId = ComboContactSelect.getValue().intValue();
         Contact selectedContact = Main.dbContacts.getById(contactId);
