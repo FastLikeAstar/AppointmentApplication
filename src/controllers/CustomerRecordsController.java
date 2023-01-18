@@ -1,7 +1,11 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import sample.Appointment;
 import sample.Country;
 import sample.Customer;
@@ -54,14 +57,17 @@ public class CustomerRecordsController implements Initializable {
     @FXML
     public Button buttonBack;
     @FXML
+    public TextField searchBar;
+    @FXML
     Label labelFeedback;
     @FXML
     TableView<Customer> tableCustomerRecords;
 
     String selectedCountry;
     Customer customerBeingChanged;
-
-
+    final StringProperty searchText = new SimpleStringProperty();
+    ObservableList<Customer> customers;
+    FilteredList<Customer> searchedItems;
 
     /**
      * Sets up the initial table for customers to be displayed.
@@ -70,12 +76,25 @@ public class CustomerRecordsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
         labelFeedback.setText("");
         textFieldCustomerId.setDisable(true);
         comboCountry.setDisable(true);
         comboFirstDiv.setDisable(true);
+        searchText.setValue("");
+        searchBar.textProperty().bindBidirectional(searchText);
+        searchedItems = new FilteredList<>(customers);
+
+        searchedItems.predicateProperty().bind(Bindings.createObjectBinding(() -> {
+            if (searchText.get().isEmpty()) {
+                return null;
+            }
+            return myData -> myData.getCustomerName().toLowerCase().contains(searchText.get().toLowerCase());
+        }, searchText));
+
         LoadTable();
+        tableCustomerRecords.setItems(searchedItems);
+
     }
 
     /**
@@ -84,7 +103,7 @@ public class CustomerRecordsController implements Initializable {
     public void LoadTable(){
         tableCustomerRecords.getItems().clear();
         tableCustomerRecords.getColumns().clear();
-        ObservableList<Customer> customers = Main.dbCustomers.getAllCustomers();
+        customers = Main.dbCustomers.getAllCustomers();
 
         TableColumn<Customer, Integer> columnCustomerId = new TableColumn<>("ID");
         TableColumn<Customer, String> columnCustomerName = new TableColumn<>("Name");
@@ -105,7 +124,7 @@ public class CustomerRecordsController implements Initializable {
 
         tableCustomerRecords.getColumns().addAll(columnCustomerId, columnCustomerName, columnPhoneNumber, columnAddress, columnPostalCode, columnFirstDiv, columnCountry);
 
-        tableCustomerRecords.setItems(customers);
+        tableCustomerRecords.setItems(searchedItems);
     }
 
     /**

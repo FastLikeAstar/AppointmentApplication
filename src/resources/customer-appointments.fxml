@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomerAppointmentsController">
+<StackPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomerAppointmentsController">
 <VBox>
    <children>
       <Label text="Customer Appointments">
@@ -88,7 +88,10 @@
             <Label text="Appointment ID" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <Label text="Title" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <Label text="Type" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-            <Label text="Description" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+            <Label text="Description" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <padding>
+                     <Insets bottom="3.0" />
+                  </padding></Label>
             <Label text="User" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <Label GridPane.columnIndex="4" GridPane.rowIndex="2" />
             <Label text="Location" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
@@ -98,7 +101,7 @@
             <Label text="Contact" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <TextField fx:id="textFieldAppointmentId" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="155.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <TextField fx:id="textFieldTitle" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <TextField fx:id="textFieldDescription" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <TextField fx:id="textFieldDescription" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="166.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <ComboBox fx:id="comboCustomer" onAction="#customerSelected" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <ComboBox fx:id="comboUser" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <ComboBox fx:id="comboContact" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
