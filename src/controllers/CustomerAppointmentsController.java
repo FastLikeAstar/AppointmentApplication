@@ -231,7 +231,7 @@ public class CustomerAppointmentsController implements Initializable {
 
 
             Appointment selectedAppointment = table.getSelectionModel().getSelectedItem();
-            selectedAppointmentId = selectedAppointment.getAppointmentId();
+            this.selectedAppointmentId = selectedAppointment.getAppointmentId();
 
             textFieldAppointmentId.setText(selectedAppointmentId+"");
 
@@ -469,6 +469,7 @@ public class CustomerAppointmentsController implements Initializable {
      */
     public void updateStartTimeSelection(ActionEvent actionEvent) {
         startTimeCombo.setDisable(false);
+        startTimeCombo.setValue(null);
         endTimeCombo.setDisable(true);
         endTimeCombo.setValue(null);
 
@@ -513,7 +514,7 @@ public class CustomerAppointmentsController implements Initializable {
 
             for (Appointment appointment : customerAppointments){
 
-                if (appointment.getAppointmentId() != selectedAppointmentId){
+                if (appointment.getAppointmentId() != this.selectedAppointmentId){
                     ZonedDateTime appointmentStart = appointment.getStartTimeAsUtc();
                     appointmentStart = appointmentStart.withZoneSameInstant(ZoneId.systemDefault());
 
@@ -571,11 +572,12 @@ public class CustomerAppointmentsController implements Initializable {
                 hours.add(LocalTime.of(i, 0));
                 hours.add(LocalTime.of(i, 30));
             }
+            hours.add(LocalTime.of(closing.getHour(), 0));
 
             Iterator<LocalTime> iterator = hours.iterator();
             while (iterator.hasNext()) {
                 LocalTime hour = iterator.next();
-                if (hour.isBefore(startTimeCombo.getValue()) || hour.equals(startTimeCombo.getValue())) {
+                if (hour.isBefore(this.startTimeCombo.getValue()) || hour.equals(this.startTimeCombo.getValue())) {
                     iterator.remove();
                 }
             }
@@ -588,7 +590,7 @@ public class CustomerAppointmentsController implements Initializable {
                     LocalDate previousAppointment = appointmentStart.toLocalDate();
 
 
-                    if (previousAppointment.equals(startDatePicker.getValue())) {
+                    if (previousAppointment.equals(this.startDatePicker.getValue())) {
                         LocalTime finalAppointmentStart = appointmentStart.toLocalTime();
                         Iterator<LocalTime> iteratorHour = hours.iterator();
                         while (iteratorHour.hasNext()) {

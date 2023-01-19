@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class ContactScheduleReportController implements Initializable {
+
     public ComboBox <Integer> ComboContactSelect;
     public TextField TextFieldContactName;
     public TableView <Appointment> TableContactSchedule;
@@ -105,4 +107,6 @@ public class ContactScheduleReportController implements Initializable {
         TextFieldContactId.setText(""+selectedContact.getContactId());
         LoadTable(contactId);
     }
+
 }
+

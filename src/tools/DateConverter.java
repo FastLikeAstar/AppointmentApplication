@@ -52,8 +52,7 @@ public class DateConverter {
      */
     public static Timestamp convertUtcToTimestamp(ZonedDateTime utcDate){
         Timestamp timestamp;
-        LocalDateTime localDateTime = utcDate.toLocalDateTime();
-        Instant utcAsInstant =  localDateTime.toInstant(ZoneOffset.UTC);
+        Instant utcAsInstant =  utcDate.toInstant();
         timestamp = Timestamp.from(utcAsInstant);
         return timestamp;
     }
