@@ -30,7 +30,7 @@ public class DateConverter {
         ZonedDateTime localInUtcTime;
         ZonedDateTime localToZoned;
         localToZoned = localDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
-        localInUtcTime = localToZoned.withZoneSameLocal(ZoneId.of("UTC"));
+        localInUtcTime = localToZoned.withZoneSameInstant(ZoneId.of("UTC"));
 
         return localInUtcTime;
     }
@@ -52,8 +52,8 @@ public class DateConverter {
      */
     public static Timestamp convertUtcToTimestamp(ZonedDateTime utcDate){
         Timestamp timestamp;
-        ZonedDateTime utcZdt= utcDate.withZoneSameLocal(ZoneId.of("UTC"));
-        Instant utcAsInstant =  utcZdt.toInstant();
+        LocalDateTime localDateTime = utcDate.toLocalDateTime();
+        Instant utcAsInstant =  localDateTime.toInstant(ZoneOffset.UTC);
         timestamp = Timestamp.from(utcAsInstant);
         return timestamp;
     }

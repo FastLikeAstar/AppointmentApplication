@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="AppointmentApplication">
+    <output-path>$PROJECT_DIR$/out/artifacts/AppointmentApplication</output-path>
+    <root id="archive" name="AppointmentApplication.jar">
+      <element id="archive" name="AppointmentApplication.jar">
+        <element id="module-output" name="AppointmentApplication" />
+      </element>
+    </root>
+  </artifact>
+</component>

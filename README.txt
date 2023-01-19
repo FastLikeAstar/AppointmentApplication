@@ -14,14 +14,23 @@ JavaFX: JavaFX-SDK-17.0.1
 MySQL Connection Driver: mysql-connector-java-8.0.25
 
 Directions to Run Application:
-- Place executable in a folder named AppointmentApplication
-- Run the application
+- run the jar file with this command in the cmd prompt:
+NOTE: You have to specify the path to the appointment application folder
+
+java -jar <your path to appointment application folder>\AppointmentApplication.jar
+
+- if JavaFX dependencies are missing use this command in the cmd prompt:
+NOTE: You have to specify the path to the appointment application folder
+
+java --module-path <your path to appointment application folder>\AppointmentApplication\.idea\libraries\javafx-sdk-17.0.1\lib --add-modules javafx.controls,javafx.fxml -jar <your_jar_name>.jar
+
+
 - Login using your username and password.
 
     If you do not have a username yet, use this information:
 
-    Username: test
-    Password: test
+    Username: tests
+    Password: tests
 
 - Upon logging in you will be displayed a menu of buttons and a table for upcoming appointments.
     If you have any appointments that occurs in 15 minutes or sooner from your login time, the appointments will be
